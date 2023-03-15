@@ -5,3 +5,9 @@ sim:
 	verilator -Wall vsrc/our.v csrc/sim_main.cpp --cc --trace --exe --build
 
 include ../Makefile
+
+clean:
+	-rm -f wave.vcd
+	-rm -rf obj_dir
+
+.PHONY: clean sim all

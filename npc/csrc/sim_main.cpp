@@ -14,6 +14,7 @@ int main(int argc, char** argv, char** env) {
   Vour* our = new Vour{contextp};
   
  
+  // wave part
   VerilatedVcdC* tfp = new VerilatedVcdC; //初始化VCD对象指针
   contextp->traceEverOn(true); //打开追踪功能
   our->trace(tfp, 0); //
@@ -28,11 +29,13 @@ int main(int argc, char** argv, char** env) {
     our->eval();
     printf("a = %d, b = %d, f = %d\n", a, b, our->f);
  
+    // wave part
     tfp->dump(contextp->time()); //dump wave
     contextp->timeInc(1); //推动仿真时间
  
     assert(our->f == a ^ b);
   }
+
   delete our;
   tfp->close();
   delete contextp;
