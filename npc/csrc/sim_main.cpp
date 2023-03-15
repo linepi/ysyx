@@ -15,10 +15,10 @@ int main(int argc, char** argv, char** env) {
   
  
   // wave part
-  VerilatedVcdC* tfp = new VerilatedVcdC; //初始化VCD对象指针
-  contextp->traceEverOn(true); //打开追踪功能
-  our->trace(tfp, 0); //
-  tfp->open("wave.vcd"); //设置输出的文件wave.vcd
+  // VerilatedVcdC* tfp = new VerilatedVcdC; //初始化VCD对象指针
+  // contextp->traceEverOn(true); //打开追踪功能
+  // our->trace(tfp, 0); //
+  // tfp->open("wave.vcd"); //设置输出的文件wave.vcd
  
  
   while (!contextp->gotFinish()) {
@@ -37,7 +37,7 @@ int main(int argc, char** argv, char** env) {
   }
 
   delete our;
-  tfp->close();
+  // tfp->close();
   delete contextp;
   return 0;
 }
