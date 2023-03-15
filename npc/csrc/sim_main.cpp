@@ -30,8 +30,8 @@ int main(int argc, char** argv, char** env) {
     printf("a = %d, b = %d, f = %d\n", a, b, our->f);
  
     // wave part
-    tfp->dump(contextp->time()); //dump wave
-    contextp->timeInc(1); //推动仿真时间
+    // tfp->dump(contextp->time()); //dump wave
+    // contextp->timeInc(1); //推动仿真时间
  
     assert(our->f == a ^ b);
   }
