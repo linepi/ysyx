@@ -5,9 +5,8 @@
 #include <Vtop.h>  
 #include <nvboard.h>
 
-
  
-// void nvboard_bind_all_pins(Vtop* top);
+void nvboard_bind_all_pins(Vtop* top);
  
 int main(int argc, char** argv, char** env) {
   VerilatedContext* contextp = new VerilatedContext;
