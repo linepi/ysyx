@@ -39,7 +39,7 @@ $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 default: $(BIN)
 
 run: $(BIN)
-	$^
+	$(abspath $^)
 
 clean:
 	-rm -rf obj_dir wave.vcd $(BIN) auto_bind.cpp
