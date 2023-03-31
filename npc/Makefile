@@ -25,7 +25,6 @@ INCFLAGS = $(addprefix -I, $(INC_PATH))
 CFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
 LDFLAGS += -lSDL2 -lSDL2_image
 
-default: $(TOPNAME)
 
 $(TOPNAME): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
@@ -41,5 +40,5 @@ run: $(TOPNAME)
 clean:
 	-rm -rf obj_dir wave.vcd $(TOPNAME) auto_bind.cpp
 
-.PHONY: clean
+.PHONY: clean run
 
