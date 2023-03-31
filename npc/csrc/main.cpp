@@ -5,9 +5,9 @@
 #include <Vtop.h>  
 #include <nvboard.h>
  
-#include <verilated_vcd_c.h> //可选，如果要导出vcd则需要加上
+// #include <verilated_vcd_c.h> //可选，如果要导出vcd则需要加上
 
-static TOP_NAME dut;
+// static TOP_NAME dut;
 void nvboard_bind_all_pins(Vtop* top);
  
 int main(int argc, char** argv, char** env) {
@@ -21,7 +21,7 @@ int main(int argc, char** argv, char** env) {
   // contextp->traceEverOn(true); //打开追踪功能
   // top->trace(tfp, 0); //
   // tfp->open("wave.vcd"); //设置输出的文件wave.vcd
-  nvboard_bind_all_pins(&dut);
+  nvboard_bind_all_pins(top);
   nvboard_init();
  
   while (!contextp->gotFinish()) {
