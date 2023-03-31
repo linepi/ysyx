@@ -1,4 +1,5 @@
 TOPNAME = top
+BIN = top
 NXDC_FILES = $(TOPNAME).nxdc
 VERILATOR = verilator
 VERILATOR_CFLAGS += -MMD --build -cc  \
@@ -31,7 +32,7 @@ $(TOPNAME): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
 		--top-module $(TOPNAME) $^ \
 		$(addprefix -CFLAGS , $(CFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
-		--exe -o $(TOPNAME)
+		--exe -o $(abspath $(BIN))
 
 run: $(TOPNAME)
 	$^
