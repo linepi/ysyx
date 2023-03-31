@@ -26,7 +26,7 @@ INCFLAGS = $(addprefix -I, $(INC_PATH))
 CFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
 LDFLAGS += -lSDL2 -lSDL2_image
 
-$(TOPNAME): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
+$(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	@rm -rf $(OBJ_DIR)
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
@@ -34,11 +34,11 @@ $(TOPNAME): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 		$(addprefix -CFLAGS , $(CFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
 		--exe -o $(abspath $(BIN))
 
-run: $(TOPNAME)
+run: $(BIN)
 	$^
 
 clean:
-	-rm -rf obj_dir wave.vcd $(TOPNAME) auto_bind.cpp
+	-rm -rf obj_dir wave.vcd $(BIN) auto_bind.cpp
 
 .PHONY: clean run
 
