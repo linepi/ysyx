@@ -30,7 +30,6 @@ int main(int argc, char** argv, char** env) {
     top->a = a;
     top->b = b;
     top->eval();
-    printf("a = %d, b = %d, f = %d\n", a, b, top->f);
     // wave part
     // tfp->dump(contextp->time()); //dump wave
     // contextp->timeInc(1); //推动仿真时间
