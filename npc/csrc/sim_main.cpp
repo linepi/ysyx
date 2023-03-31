@@ -5,7 +5,7 @@
 #include "Vtop.h"  
 #include "verilated.h"
  
-#include "verilated_vcd_c.h" //可选，如果要导出vcd则需要加上
+#include <verilated_vcd_c.h> //可选，如果要导出vcd则需要加上
  
 int main(int argc, char** argv, char** env) {
  
