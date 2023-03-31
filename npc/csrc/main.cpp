@@ -3,7 +3,7 @@
 #include <assert.h>
  
 #include <Vtop.h>  
-#include <verilated.h>
+#include <nvboard.h>
  
 #include <verilated_vcd_c.h> //可选，如果要导出vcd则需要加上
 
