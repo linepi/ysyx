@@ -16,7 +16,7 @@ int main(int argc, char** argv, char** env) {
   nvboard_init();
  
   while (!contextp->gotFinish()) {
-    // top->eval();
+    top->eval();
     nvboard_update();
   }
   delete top;
