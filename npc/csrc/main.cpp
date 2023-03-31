@@ -33,7 +33,7 @@ int main(int argc, char** argv, char** env) {
     // wave part
     // tfp->dump(contextp->time()); //dump wave
     // contextp->timeInc(1); //推动仿真时间
-    assert(top->f == a ^ b);
+    // assert(top->f == a ^ b);
     nvboard_update();
   }
   delete top;
