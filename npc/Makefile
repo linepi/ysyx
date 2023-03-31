@@ -26,6 +26,8 @@ INCFLAGS = $(addprefix -I, $(INC_PATH))
 CFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
 LDFLAGS += -lSDL2 -lSDL2_image
 
+
+
 $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	@rm -rf $(OBJ_DIR)
@@ -33,6 +35,8 @@ $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 		--top-module $(TOPNAME) $^ \
 		$(addprefix -CFLAGS , $(CFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
 		--exe -o $(abspath $(BIN))
+
+default: $(BIN)
 
 run: $(BIN)
 	$^
