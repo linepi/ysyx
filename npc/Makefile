@@ -7,4 +7,4 @@ include ../Makefile
 clean:
 	-rm -rf obj_dir wave_vcd
 
-.PHONY: clean run default
+.PHONY: clean sim default

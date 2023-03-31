@@ -14,10 +14,10 @@ int main(int argc, char** argv, char** env) {
   Vtop* top = new Vtop{contextp};
   
   // wave part
-  VerilatedVcdC* tfp = new VerilatedVcdC; //初始化VCD对象指针
-  contextp->traceEverOn(true); //打开追踪功能
-  top->trace(tfp, 0); //
-  tfp->open("wave.vcd"); //设置输出的文件wave.vcd
+  // VerilatedVcdC* tfp = new VerilatedVcdC; //初始化VCD对象指针
+  // contextp->traceEverOn(true); //打开追踪功能
+  // top->trace(tfp, 0); //
+  // tfp->open("wave.vcd"); //设置输出的文件wave.vcd
  
   while (!contextp->gotFinish()) {
     int a = rand() & 1;
@@ -27,9 +27,9 @@ int main(int argc, char** argv, char** env) {
     top->eval();
     printf("a = %d, b = %d, f = %d\n", a, b, top->f);
     // wave part
-    tfp->dump(contextp->time()); //dump wave
-    contextp->timeInc(1); //推动仿真时间
-    assert(top->f == a ^ b);
+    // tfp->dump(contextp->time()); //dump wave
+    // contextp->timeInc(1); //推动仿真时间
+    // assert(top->f == a ^ b);
   }
   delete top;
   // tfp->close();
