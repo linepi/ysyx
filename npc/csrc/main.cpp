@@ -28,10 +28,8 @@ int main(int argc, char** argv, char** env) {
   nvboard_bind_all_pins(top);
   nvboard_init();
  
-  reset(1);
   while (!contextp->gotFinish()) {
-    // top->eval();
-    top->eval();
+    single_cycle();
     nvboard_update();
   }
   delete top;
