@@ -6,6 +6,9 @@
 #include <verilated.h>
  
 #include <verilated_vcd_c.h> //可选，如果要导出vcd则需要加上
+
+static TOP_NAME dut;
+void nvboard_bind_all_pins(Vtop* top);
  
 int main(int argc, char** argv, char** env) {
  
@@ -18,6 +21,8 @@ int main(int argc, char** argv, char** env) {
   // contextp->traceEverOn(true); //打开追踪功能
   // top->trace(tfp, 0); //
   // tfp->open("wave.vcd"); //设置输出的文件wave.vcd
+  nvboard_bind_all_pins(&dut);
+  nvboard_init();
  
   while (!contextp->gotFinish()) {
     int a = rand() & 1;
@@ -29,10 +34,12 @@ int main(int argc, char** argv, char** env) {
     // wave part
     // tfp->dump(contextp->time()); //dump wave
     // contextp->timeInc(1); //推动仿真时间
-    // assert(top->f == a ^ b);
+    assert(top->f == a ^ b);
+    nvboard_update();
   }
   delete top;
   // tfp->close();
   delete contextp;
+  nvboard_quit();
   return 0;
 }
