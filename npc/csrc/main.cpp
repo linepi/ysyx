@@ -25,10 +25,10 @@ int main(int argc, char** argv, char** env) {
   nvboard_init();
  
   while (!contextp->gotFinish()) {
-    int a = rand() & 1;
-    int b = rand() & 1;
-    top->a = a;
-    top->b = b;
+    // int a = rand() & 1;
+    // int b = rand() & 1;
+    // top->a = a;
+    // top->b = b;
     top->eval();
     // wave part
     // tfp->dump(contextp->time()); //dump wave
