@@ -4,4 +4,4 @@ module top(
   output f
 );
   assign f = a ^ b;
-end module
+endmodule
