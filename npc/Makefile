@@ -1,4 +1,4 @@
-TOPNAME = top
+TOPNAME = a
 NXDC_FILES = $(TOPNAME).nxdc
 
 default: sim
