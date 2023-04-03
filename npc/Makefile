@@ -1,6 +1,6 @@
 TOPNAME = top
 BIN = top
-NXDC_FILES = $(TOPNAME).nxdc
+NXDC_FILES = vsrc/$(TOPNAME).nxdc
 VERILATOR = verilator
 VERILATOR_CFLAGS += -MMD --build -cc  \
 				# -O3 --x-assign fast --x-initial fast --noassert
