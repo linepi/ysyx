@@ -17,6 +17,7 @@ VL_INLINE_OPT void Vtop___024root___ico_sequent__TOP__0(Vtop___024root* vlSelf) 
     SData/*8:0*/ __Vtableidx1;
     __Vtableidx1 = 0;
     // Body
+    vlSelf->flag = ((0U != (IData)(vlSelf->x)) & (IData)(vlSelf->en));
     __Vtableidx1 = (((IData)(vlSelf->x) << 1U) | (IData)(vlSelf->en));
     if ((1U & Vtop__ConstPool__TABLE_hf9937e1a_0[__Vtableidx1])) {
         vlSelf->led = Vtop__ConstPool__TABLE_h0d68042a_0

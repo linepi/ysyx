@@ -4,7 +4,8 @@ module encode83(x, en, y);
   output reg [2:0] y;
   integer i;
 
-  always @ (x or en) begin
+  always @(x or en) begin
+    y = 0;
     if (en) begin
       for (i = 0; i < 8; i = i + 1) 
         if (x[i] == 1) y = i[2:0];
