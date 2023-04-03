@@ -23,7 +23,7 @@ VL_INLINE_OPT void Vtop___024root___ico_sequent__TOP__0(Vtop___024root* vlSelf) 
     vlSelf->seg = ((0U == (IData)(vlSelf->led)) ? 1U
                     : ((1U == (IData)(vlSelf->led))
                         ? 0x4fU : ((2U == (IData)(vlSelf->led))
-                                    ? 0x60U : ((3U 
+                                    ? 0x12U : ((3U 
                                                 == (IData)(vlSelf->led))
                                                 ? 0x70U
                                                 : 0U))));
