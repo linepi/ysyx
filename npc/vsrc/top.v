@@ -1,16 +1,20 @@
-module top(x1, x2, x3, x4, s, y);
-  input [1:0] x1;
-  input [1:0] x2;
-  input [1:0] x3;
-  input [1:0] x4;
-  input [1:0] s;
-  output reg [1:0] y;
-  always @ (s or x1 or x2 or x3 or x4)
-    case (s)
-      2'b00: y = x1;
-      2'b01: y = x2;
-      2'b10: y = x3;
-      2'b11: y = x4;
-      default: y = 2'b00;
-    endcase
+module mux21e(a,b,s,y);
+  input   a,b,s;
+  output  y;
+  MuxKey #(2, 1, 1) i0 (y, s, {
+    1'b0, a,
+    1'b1, b
+  });
+endmodule
+
+module mux41b(a,s,y);
+  input  [3:0] a;
+  input  [1:0] s;
+  output y;
+  MuxKeyWithDefault #(4, 2, 1) i0 (y, s, 1'b0, {
+    2'b00, a[0],
+    2'b01, a[1],
+    2'b10, a[2],
+    2'b11, a[3]
+  });
 endmodule
