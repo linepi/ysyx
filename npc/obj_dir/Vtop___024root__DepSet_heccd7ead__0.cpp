@@ -34,7 +34,7 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__0(Vtop___024root* vlSelf) 
                                                   & ((IData)(vlSelf->led) 
                                                      >> 0xfU)));
         }
-        __Vdly__top__DOT__count = ((0x4c4b40U <= vlSelf->top__DOT__count)
+        __Vdly__top__DOT__count = ((0xc350U <= vlSelf->top__DOT__count)
                                     ? 0U : ((IData)(1U) 
                                             + vlSelf->top__DOT__count));
     }
