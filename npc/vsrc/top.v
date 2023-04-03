@@ -22,7 +22,7 @@ module encode_seg(x, y);
     case(x)
       0: y = 7'b0000001;
       1: y = 7'b1001111;
-      2: y = 7'b1100000;
+      2: y = 7'b0010010;
       3: y = 7'b1110000;
       default: y = 7'b0000000;
     endcase
