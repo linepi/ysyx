@@ -1,0 +1,7 @@
+module adder
+#(N)
+(
+
+);
+
+endmodule
