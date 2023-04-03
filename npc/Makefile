@@ -3,7 +3,7 @@ BIN = top
 NXDC_FILES = $(TOPNAME).nxdc
 VERILATOR = verilator
 VERILATOR_CFLAGS += -MMD --build -cc  \
-				-O3 --x-assign fast --x-initial fast --noassert
+				# -O3 --x-assign fast --x-initial fast --noassert
 
 # constraint file
 SRC_AUTO_BIND = auto_bind.cpp
