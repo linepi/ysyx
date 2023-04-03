@@ -2,7 +2,7 @@ module top(x,en,y);
   input  [2:0] x;
   input  en;
   output reg [7:0]y;
-  integer [2:0] i;
+  reg [2:0] i;
 
   always @(x or en)
     if (en) begin
