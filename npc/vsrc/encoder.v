@@ -1,5 +1,5 @@
 module prior_encoder
-#(parameter INN = 4, OUTN = 2)
+#(parameter INN, OUTN)
 (
   input [INN-1 : 0] x,
   input en,

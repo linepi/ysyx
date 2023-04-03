@@ -1,8 +1,9 @@
 TOPNAME = top
-BIN = TOPNAME
+TESTNAME = testbench
+BIN = $(TOPNAME)
 NXDC_FILES = vsrc/$(TOPNAME).nxdc
 VERILATOR = verilator
-VERILATOR_CFLAGS += -MMD --build -cc  \
+VERILATOR_CFLAGS += -MMD --build -cc --timing \
 				# -O3 --x-assign fast --x-initial fast --noassert
 
 # constraint file
@@ -26,8 +27,6 @@ INCFLAGS = $(addprefix -I, $(INC_PATH))
 CFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
 LDFLAGS += -lSDL2 -lSDL2_image
 
-
-
 $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	@rm -rf $(OBJ_DIR)
@@ -36,14 +35,16 @@ $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 		$(addprefix -CFLAGS , $(CFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
 		--exe -o $(abspath $(BIN))
 
-default: $(BIN)
-
-run: $(BIN)
+nb: $(BIN)
 	$(abspath $^)
 	-rm -rf obj_dir $(BIN) auto_bind.cpp
+
+test: 
+	$(VERILATOR) --binary --timing vsrc/testbench.v --top-module testbench -o $(abspath $(TESTNAME))
+	-rm -rf obj_dir $(TESTNAME)
 
 clean:
 	-rm -rf obj_dir $(BIN) auto_bind.cpp
 
-.PHONY: clean run default
+.PHONY: clean default nb com
 

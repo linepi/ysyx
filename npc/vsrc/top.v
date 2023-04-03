@@ -1,15 +1,13 @@
-module top(x, en, led, flag, seg);
-  input [7:0] x;
-  input en;
-  output reg [2:0] led;
-  output reg flag; // 0 only when x = 0 else 1
-  output reg [6:0] seg;
+module top(x, y, seg1, seg0);
+  input [3:0] x;
+  input [3:0] y;
+  output reg [6:0] seg1;
+  output reg [6:0] seg0;
 
-  always @(*) begin
-    if (x != 0 && en) flag = 1;
-    else flag = 0;
-  end
-  prior_encoder #(8, 3) encoder83(.x(x), .en(en), .y(led));
-  encode_seg enc_seg(.x({1'b0, led}), .y(seg));
+  wire [3:0] s;
+  wire cout;
+  assign {cout, s} = x + y;
+  encode_seg enc1(.x(s), .y(seg0));
+  encode_seg enc2(.x({3'b000, cout}), .y(seg1));
 endmodule
 
