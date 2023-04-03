@@ -11,7 +11,7 @@ module prior_encoder
     y = 0;
     if (en) begin
       for (i = 0; i < INN; i = i + 1) 
-        if (x[i] == 1) y = i[OUTN : 0];
+        if (x[i] == 1) y = i[OUTN-1 : 0];
     end
     else y = 0;
   end 
