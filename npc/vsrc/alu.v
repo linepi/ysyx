@@ -3,7 +3,7 @@ module alu
 (
     input [N-1:0] A, B,  // ALU Inputs                 
     input [3:0] select,// ALU Selection
-    output [N-1:0] res, // ALU Output
+    output [N-1:0] res // ALU Output
 );
     always @(*)
     begin
