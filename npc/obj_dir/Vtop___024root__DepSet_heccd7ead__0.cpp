@@ -7,6 +7,7 @@
 #include "Vtop___024root.h"
 
 extern const VlUnpacked<CData/*2:0*/, 512> Vtop__ConstPool__TABLE_h0d68042a_0;
+extern const VlUnpacked<CData/*6:0*/, 16> Vtop__ConstPool__TABLE_h13ad9bfc_0;
 
 VL_INLINE_OPT void Vtop___024root___ico_sequent__TOP__0(Vtop___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
@@ -15,18 +16,16 @@ VL_INLINE_OPT void Vtop___024root___ico_sequent__TOP__0(Vtop___024root* vlSelf) 
     // Init
     SData/*8:0*/ __Vtableidx1;
     __Vtableidx1 = 0;
+    CData/*3:0*/ __Vtableidx2;
+    __Vtableidx2 = 0;
     // Body
     vlSelf->flag = ((0U != (IData)(vlSelf->x)) & (IData)(vlSelf->en));
     __Vtableidx1 = (((IData)(vlSelf->x) << 1U) | (IData)(vlSelf->en));
     vlSelf->led = Vtop__ConstPool__TABLE_h0d68042a_0
         [__Vtableidx1];
-    vlSelf->seg = ((0U == (IData)(vlSelf->led)) ? 1U
-                    : ((1U == (IData)(vlSelf->led))
-                        ? 0x4fU : ((2U == (IData)(vlSelf->led))
-                                    ? 0x12U : ((3U 
-                                                == (IData)(vlSelf->led))
-                                                ? 0x70U
-                                                : 0U))));
+    __Vtableidx2 = vlSelf->led;
+    vlSelf->seg = Vtop__ConstPool__TABLE_h13ad9bfc_0
+        [__Vtableidx2];
 }
 
 void Vtop___024root___eval_ico(Vtop___024root* vlSelf) {
@@ -84,7 +83,7 @@ void Vtop___024root___eval(Vtop___024root* vlSelf) {
 #ifdef VL_DEBUG
                 Vtop___024root___dump_triggers__ico(vlSelf);
 #endif
-                VL_FATAL_MT("/home/w/dev/ysyx-workbench/npc/vsrc/top.v", 32, "", "Input combinational region did not converge.");
+                VL_FATAL_MT("/home/w/dev/ysyx-workbench/npc/vsrc/top.v", 33, "", "Input combinational region did not converge.");
             }
             vlSelf->__VicoIterCount = ((IData)(1U) 
                                        + vlSelf->__VicoIterCount);
@@ -107,7 +106,7 @@ void Vtop___024root___eval(Vtop___024root* vlSelf) {
 #ifdef VL_DEBUG
                     Vtop___024root___dump_triggers__act(vlSelf);
 #endif
-                    VL_FATAL_MT("/home/w/dev/ysyx-workbench/npc/vsrc/top.v", 32, "", "Active region did not converge.");
+                    VL_FATAL_MT("/home/w/dev/ysyx-workbench/npc/vsrc/top.v", 33, "", "Active region did not converge.");
                 }
                 vlSelf->__VactIterCount = ((IData)(1U) 
                                            + vlSelf->__VactIterCount);
@@ -122,7 +121,7 @@ void Vtop___024root___eval(Vtop___024root* vlSelf) {
 #ifdef VL_DEBUG
                 Vtop___024root___dump_triggers__nba(vlSelf);
 #endif
-                VL_FATAL_MT("/home/w/dev/ysyx-workbench/npc/vsrc/top.v", 32, "", "NBA region did not converge.");
+                VL_FATAL_MT("/home/w/dev/ysyx-workbench/npc/vsrc/top.v", 33, "", "NBA region did not converge.");
             }
             __VnbaIterCount = ((IData)(1U) + __VnbaIterCount);
             Vtop___024root___eval_nba(vlSelf);
