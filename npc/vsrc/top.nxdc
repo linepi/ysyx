@@ -1,6 +1,8 @@
 top=top
 
-a SW0
-b SW1
-s SW2
-y LD0
+x1 (SW1, SW0)
+x2 (SW3, SW2)
+x3 (SW5, SW4)
+x4 (SW7, SW6)
+s (SW9, SW8)
+y (LD1, LD0)
