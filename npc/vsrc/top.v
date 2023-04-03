@@ -21,7 +21,7 @@ module encode_seg(x, y);
   begin
     case(x)
       0: y = 7'b0000001;
-      1: y = 7'b1000000;
+      1: y = 7'b1001111;
       2: y = 7'b1100000;
       3: y = 7'b1110000;
       default: y = 7'b0000000;
