@@ -4,19 +4,21 @@
  
 #include <Vtop.h>  
 #include <nvboard.h>
+// #define SEQUENTIAL
 
 Vtop *top;
 
+#ifdef SEQUENTIAL
 void single_cycle() {
   top->clk = 0; top->eval();
   top->clk = 1; top->eval();
 }
-
-// void reset(int n) {
-//   top->rst = 1;
-//   while (n-- > 0) single_cycle();
-//   top->rst = 0;
-// }
+void reset(int n) {
+  top->rst = 1;
+  while (n-- > 0) single_cycle();
+  top->rst = 0;
+}
+#endif
  
 void nvboard_bind_all_pins(Vtop* top);
  
@@ -29,7 +31,9 @@ int main(int argc, char** argv, char** env) {
   nvboard_init();
  
   while (!contextp->gotFinish()) {
+#ifdef SEQUENTIAL
     single_cycle();
+#endif
     nvboard_update();
   }
   delete top;
