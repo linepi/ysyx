@@ -12,11 +12,11 @@ void single_cycle() {
   top->clk = 1; top->eval();
 }
 
-void reset(int n) {
-  top->rst = 1;
-  while (n-- > 0) single_cycle();
-  top->rst = 0;
-}
+// void reset(int n) {
+//   top->rst = 1;
+//   while (n-- > 0) single_cycle();
+//   top->rst = 0;
+// }
  
 void nvboard_bind_all_pins(Vtop* top);
  
