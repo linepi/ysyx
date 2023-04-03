@@ -1,4 +1,4 @@
 module top(y);
   output [7:0]y;
-  assign y = 8'b11111111;
+  assign y = 8'b10000000;
 endmodule
