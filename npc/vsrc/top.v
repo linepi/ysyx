@@ -1,14 +1,15 @@
-module top(x1,x2,x3,x4,s,y);
-  input  [1:0] x1;
-  input  [1:0] x2;
-  input  [1:0] x3;
-  input  [1:0] x4;
-  input  [1:0] s;
-  output [1:0] y;
-  MuxKeyWithDefault #(4, 2, 2) i0 (y, s, 2'b00, {
-    2'b00, x1,
-    2'b01, x2,
-    2'b10, x3,
-    2'b11, x4
-  });
+module top(x, en, led, flag, seg);
+  input [7:0] x;
+  input en;
+  output reg [2:0] led;
+  output reg flag; // 0 only when x = 0 else 1
+  output reg [6:0] seg;
+
+  always @(*) begin
+    if (x != 0 && en) flag = 1;
+    else flag = 0;
+  end
+  prior_encoder #(8, 3) encoder83(.x(x), .en(en), .y(led));
+  encode_seg enc_seg(.x({1'b0, led}), .y(seg));
 endmodule
+
