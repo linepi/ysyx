@@ -33,6 +33,8 @@ int main(int argc, char** argv, char** env) {
   while (!contextp->gotFinish()) {
 #ifdef SEQUENTIAL
     single_cycle();
+#elif 
+    top->eval();
 #endif
     nvboard_update();
   }
