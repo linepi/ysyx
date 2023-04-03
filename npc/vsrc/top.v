@@ -37,6 +37,6 @@ module top(x, en, led, flag, seg);
 
 
   encode83 enc83(.x(x), .en(en), .y(led));
-  encode_seg enc_seg(.x(x), .y(seg));
+  encode_seg enc_seg(.x({1'b0, led}), .y(seg));
 endmodule
 
