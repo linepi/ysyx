@@ -1,5 +1,3 @@
 top=top
 
-x (SW3, SW2, SW1, SW0)
-en SW4
-y (LD1, LD0)
+y (SEG0A, SEG0B, SEG0C, SEG0D, SEG0E, SEG0F, SEG0G, DEC0P)
