@@ -7,5 +7,5 @@ module adder
     output [N-1 : 0] s,
     output cout
 );
-    assign {cout, s} = a + b + cin;
+    assign {cout, s} = a + b + {3'b000, cin};
 endmodule

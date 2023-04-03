@@ -8,6 +8,6 @@ module top(x, y, seg1, seg0);
   wire cout;
   adder #(4) adder_ins(.a(x), .b(y), .cin(0), .s(s), .cout(cout));
   encode_seg enc1(.x(s), .y(seg0));
-  encode_seg enc2(.x(cout), .y(seg1));
+  encode_seg enc2(.x({3'b000, cout}), .y(seg1));
 endmodule
 
