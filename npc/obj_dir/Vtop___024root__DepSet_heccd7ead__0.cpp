@@ -7,8 +7,7 @@
 #include "Vtop___024root.h"
 
 extern const VlUnpacked<CData/*2:0*/, 512> Vtop__ConstPool__TABLE_h0d68042a_0;
-extern const VlUnpacked<CData/*0:0*/, 16> Vtop__ConstPool__TABLE_h00cdb78b_0;
-extern const VlUnpacked<CData/*6:0*/, 16> Vtop__ConstPool__TABLE_h00c5e745_0;
+extern const VlUnpacked<CData/*6:0*/, 16> Vtop__ConstPool__TABLE_h6a560e40_0;
 
 VL_INLINE_OPT void Vtop___024root___ico_sequent__TOP__0(Vtop___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
@@ -25,10 +24,8 @@ VL_INLINE_OPT void Vtop___024root___ico_sequent__TOP__0(Vtop___024root* vlSelf) 
     vlSelf->led = Vtop__ConstPool__TABLE_h0d68042a_0
         [__Vtableidx1];
     __Vtableidx2 = vlSelf->led;
-    if (Vtop__ConstPool__TABLE_h00cdb78b_0[__Vtableidx2]) {
-        vlSelf->seg = Vtop__ConstPool__TABLE_h00c5e745_0
-            [__Vtableidx2];
-    }
+    vlSelf->seg = Vtop__ConstPool__TABLE_h6a560e40_0
+        [__Vtableidx2];
 }
 
 void Vtop___024root___eval_ico(Vtop___024root* vlSelf) {
