@@ -1,9 +1,9 @@
 module prior_encoder
 #(parameter INN = 4, OUTN = 2)
 (
-  input [INN-1 : 0] x;
-  input en;
-  output reg [OUTN-1 : 0] y;
+  input [INN-1 : 0] x,
+  input en,
+  output reg [OUTN-1 : 0] y
 );
   integer i;
 
