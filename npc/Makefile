@@ -1,6 +1,6 @@
 TOPNAME = top
-BIN = top
-NXDC_FILES = $(TOPNAME).nxdc
+BIN = TOPNAME
+NXDC_FILES = vsrc/$(TOPNAME).nxdc
 VERILATOR = verilator
 VERILATOR_CFLAGS += -MMD --build -cc  \
 				# -O3 --x-assign fast --x-initial fast --noassert
@@ -40,9 +40,10 @@ default: $(BIN)
 
 run: $(BIN)
 	$(abspath $^)
+	-rm -rf obj_dir $(BIN) auto_bind.cpp
 
 clean:
-	-rm -rf obj_dir wave.vcd $(BIN) auto_bind.cpp
+	-rm -rf obj_dir $(BIN) auto_bind.cpp
 
-.PHONY: clean run
+.PHONY: clean run default
 
