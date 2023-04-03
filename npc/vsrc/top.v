@@ -32,7 +32,7 @@ module top(x, en, led, flag, seg);
   input [7:0] x;
   input en;
   output [2:0] led;
-  // output flag; // 0 only when x = 0 else 1
+  output flag; // 0 only when x = 0 else 1
   output [6:0] seg;
 
 
