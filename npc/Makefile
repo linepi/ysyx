@@ -1,5 +1,5 @@
 TOPNAME = top
-BIN = top
+BIN = TOPNAME
 NXDC_FILES = vsrc/$(TOPNAME).nxdc
 VERILATOR = verilator
 VERILATOR_CFLAGS += -MMD --build -cc  \
@@ -45,5 +45,5 @@ run: $(BIN)
 clean:
 	-rm -rf obj_dir $(BIN) auto_bind.cpp
 
-.PHONY: clean run
+.PHONY: clean run default
 
