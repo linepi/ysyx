@@ -1,7 +1,7 @@
 module encode83(x, en, y);
   input [7:0] x;
   input en;
-  output [2:0] y;
+  output reg [2:0] y;
   integer i;
 
   always @ (x or en) begin
@@ -15,7 +15,7 @@ endmodule
 
 module encode_seg(x, y);
   input [3:0] x;
-  output [6:0] y;
+  output reg [6:0] y;
   always @ (x)
   begin
     case(x)
