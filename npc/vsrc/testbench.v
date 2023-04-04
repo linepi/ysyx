@@ -7,6 +7,6 @@ module testbench;
     clk = 0;
   end
   always @(posedge clk) begin
-    $display(res);
+    $display("%b", res);
   end
 endmodule
