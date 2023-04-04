@@ -40,8 +40,8 @@ nb: $(BIN)
 	-rm -rf obj_dir $(BIN) auto_bind.cpp
 
 test: 
-	$(VERILATOR) --binary --timing vsrc/testbench.v --top-module testbench -o $(abspath $(TESTNAME))
-	-rm -rf obj_dir $(TESTNAME)
+	$(VERILATOR) --binary --timing $(VSRCS) --top-module testbench -o $(abspath $(TESTNAME))
+	./$(TESTNAME)
 
 clean:
 	-rm -rf obj_dir $(BIN) auto_bind.cpp

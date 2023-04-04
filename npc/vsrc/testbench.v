@@ -1,26 +1,18 @@
 module testbench;
-  reg [3:0] a, b;
-  wire [3:0] sum;
-  adder add_inst (.a(a), .b(b), .sum(sum));
+  reg clk;
+  reg [7:0] res;
+  random_8 random_8_ins(.clk(clk), .res(res));
+  integer i;
 
   initial begin
-    #10;
-    a = 4'b0010;
-    b = 4'b1101;
-    #10;
+    clk = 0;
+    i = 0;
   end
 
-endmodule
-
-module adder(
-  input [3:0] a,
-  input [3:0] b,
-  output reg [3:0] sum
-);
-
-  always @(a, b) begin
-    sum = a + b;
-    $display("The sum of %d and %d is %d", a, b, sum);
+  always#10 clk = ~clk;
+  always @(posedge clk) begin
+    if(res == 8'b10000101 && i != 0) $finish;
+    $display("%0.d: %b", i, res);
+    i++;
   end
-
 endmodule
