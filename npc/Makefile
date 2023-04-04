@@ -1,6 +1,6 @@
 TOPNAME = top
 TESTNAME = testbench
-BIN = TOPNAME
+BIN = $(TOPNAME)
 NXDC_FILES = vsrc/$(TOPNAME).nxdc
 VERILATOR = verilator
 VERILATOR_CFLAGS += -MMD --build -cc --timing \
@@ -40,7 +40,8 @@ nb: $(BIN)
 	-rm -rf obj_dir $(BIN) auto_bind.cpp
 
 test: 
-	$(VERILATOR) --binary --timing vsrc/testbench.v --top-module testbench -o ./testbench
+	$(VERILATOR) --binary --timing $(VSRCS) --top-module testbench -o $(abspath $(TESTNAME))
+	./$(TESTNAME)
 
 clean:
 	-rm -rf obj_dir $(BIN) auto_bind.cpp

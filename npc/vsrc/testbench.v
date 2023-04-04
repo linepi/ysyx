@@ -1,26 +1,34 @@
 module testbench;
   reg [3:0] a, b;
   wire [3:0] sum;
-  adder add_inst (.a(a), .b(b), .sum(sum));
-
   initial begin
     #10;
     a = 4'b0010;
     b = 4'b1101;
     #10;
   end
-
 endmodule
 
-module adder(
-  input [3:0] a,
-  input [3:0] b,
-  output reg [3:0] sum
+module counter(
+  input clk,
+  output reg Q0,
+  output reg Q1,
+  output reg Q2
 );
+  wire w1, w2, w3;
+  dff dff_inst1(.clk(clk), .D(w1), .Q(Q0), ._Q(w1));
+  dff dff_inst2(.clk(w1), .D(w2), .Q(Q1), ._Q(w2));
+  dff dff_inst3(.clk(w2), .D(w3), .Q(Q2), ._Q(w3));
+endmodule
 
-  always @(a, b) begin
-    sum = a + b;
-    $display("The sum of %d and %d is %d", a, b, sum);
+module dff(
+  input clk,
+  input D,
+  output reg Q,
+  output reg _Q
+);
+  always @(posedge clk) begin
+    Q <= D;
+    _Q <= ~D; 
   end
-
 endmodule
