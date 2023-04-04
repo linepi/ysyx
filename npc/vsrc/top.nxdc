@@ -1,6 +1,4 @@
 top=top
 
 clk SW0
-Q2 LD2
-Q1 LD1
-Q0 LD0
+seg0 (SEG0A, SEG0B, SEG0C, SEG0D, SEG0E, SEG0F, SEG0G)
