@@ -3,8 +3,9 @@ module random_8(
     input clk,
     output reg [7:0] res
 );
+    reg newbit;
     always@(posedge clk) begin
-        assign newbit = res[0] ^ res[1] ^ res[4];
+        newbit <= res[0] ^ res[1] ^ res[4];
         res <= {newbit, res[7:1]};
     end
 endmodule
