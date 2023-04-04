@@ -11,8 +11,8 @@ module testbench;
 
   always#10 clk = ~clk;
   always @(posedge clk) begin
-    if(res == 8'b00101101 && i != 0) $finish;
-    $display("%d: %b", i, res);
+    if(res == 8'b10000101 && i != 0) $finish;
+    $display("%0.d: %b", i, res);
     i++;
   end
 endmodule

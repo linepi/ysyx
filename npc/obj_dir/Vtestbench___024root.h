@@ -16,6 +16,7 @@ class Vtestbench___024root final : public VerilatedModule {
     // DESIGN SPECIFIC STATE
     CData/*0:0*/ testbench__DOT__clk;
     CData/*7:0*/ testbench__DOT__res;
+    CData/*7:0*/ testbench__DOT__init_res;
     CData/*0:0*/ testbench__DOT__random_8_ins__DOT__newbit;
     CData/*0:0*/ __Vtrigrprev__TOP__testbench__DOT__clk;
     CData/*0:0*/ __VactContinue;

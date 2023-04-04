@@ -28,7 +28,7 @@ VL_INLINE_OPT VlCoroutine Vtestbench___024root___eval_initial__TOP__0(Vtestbench
     while (1U) {
         co_await vlSelf->__VdlySched.delay(0xaULL, 
                                            "/home/w/dev/ysyx-workbench/npc/vsrc/testbench.v", 
-                                           12);
+                                           14);
         vlSelf->testbench__DOT__clk = (1U & (~ (IData)(vlSelf->testbench__DOT__clk)));
     }
 }
@@ -39,31 +39,31 @@ void Vtestbench___024root___eval_act(Vtestbench___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtestbench___024root___eval_act\n"); );
 }
 
+extern const VlUnpacked<CData/*0:0*/, 512> Vtestbench__ConstPool__TABLE_h01c6ca4c_0;
+extern const VlUnpacked<CData/*7:0*/, 512> Vtestbench__ConstPool__TABLE_ha513e0f7_0;
+
 VL_INLINE_OPT void Vtestbench___024root___nba_sequent__TOP__0(Vtestbench___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vtestbench__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtestbench___024root___nba_sequent__TOP__0\n"); );
     // Init
-    CData/*0:0*/ __Vdly__testbench__DOT__random_8_ins__DOT__newbit;
-    __Vdly__testbench__DOT__random_8_ins__DOT__newbit = 0;
+    SData/*8:0*/ __Vtableidx1;
+    __Vtableidx1 = 0;
     // Body
-    __Vdly__testbench__DOT__random_8_ins__DOT__newbit 
-        = vlSelf->testbench__DOT__random_8_ins__DOT__newbit;
-    if (VL_UNLIKELY(((0xadU == (IData)(vlSelf->testbench__DOT__res)) 
+    if (VL_UNLIKELY((((IData)(vlSelf->testbench__DOT__res) 
+                      == (IData)(vlSelf->testbench__DOT__init_res)) 
                      & (0U != vlSelf->testbench__DOT__i)))) {
-        VL_FINISH_MT("/home/w/dev/ysyx-workbench/npc/vsrc/testbench.v", 14, "");
+        VL_FINISH_MT("/home/w/dev/ysyx-workbench/npc/vsrc/testbench.v", 16, "");
     }
-    VL_WRITEF("%11d: %b\n",32,vlSelf->testbench__DOT__i,
+    VL_WRITEF("%0.d: %b\n",32,vlSelf->testbench__DOT__i,
               8,(IData)(vlSelf->testbench__DOT__res));
     vlSelf->testbench__DOT__i = ((IData)(1U) + vlSelf->testbench__DOT__i);
-    __Vdly__testbench__DOT__random_8_ins__DOT__newbit 
-        = (1U & VL_REDXOR_8((0x13U & (IData)(vlSelf->testbench__DOT__res))));
-    vlSelf->testbench__DOT__res = (((IData)(vlSelf->testbench__DOT__random_8_ins__DOT__newbit) 
-                                    << 7U) | (0x7fU 
-                                              & ((IData)(vlSelf->testbench__DOT__res) 
-                                                 >> 1U)));
+    __Vtableidx1 = (((IData)(vlSelf->testbench__DOT__random_8_ins__DOT__newbit) 
+                     << 8U) | (IData)(vlSelf->testbench__DOT__res));
     vlSelf->testbench__DOT__random_8_ins__DOT__newbit 
-        = __Vdly__testbench__DOT__random_8_ins__DOT__newbit;
+        = Vtestbench__ConstPool__TABLE_h01c6ca4c_0[__Vtableidx1];
+    vlSelf->testbench__DOT__res = Vtestbench__ConstPool__TABLE_ha513e0f7_0
+        [__Vtableidx1];
 }
 
 void Vtestbench___024root___eval_nba(Vtestbench___024root* vlSelf) {
