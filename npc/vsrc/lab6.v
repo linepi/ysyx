@@ -5,7 +5,7 @@ module random_8(
 );
     reg newbit;
     initial begin
-        res = 8'b10101101;
+        res = 8'b00101101;
     end
     always@(posedge clk) begin
         newbit <= res[0] ^ res[1] ^ res[4];
