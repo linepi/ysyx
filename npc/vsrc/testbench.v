@@ -8,9 +8,4 @@ module testbench;
   // always @(posedge clk) begin
   //   $display("%d %d %d", Q2, Q1, Q0);
   // end
-  initial begin
-    $timeformat(-9, 0, "ns");
-    $monitor("%t: Message", $stime);
-    #100 $finish;
-  end
 endmodule
