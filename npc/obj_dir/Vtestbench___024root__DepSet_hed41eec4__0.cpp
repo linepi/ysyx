@@ -28,7 +28,7 @@ VL_INLINE_OPT VlCoroutine Vtestbench___024root___eval_initial__TOP__0(Vtestbench
     while (1U) {
         co_await vlSelf->__VdlySched.delay(0xaULL, 
                                            "/home/w/dev/ysyx-workbench/npc/vsrc/testbench.v", 
-                                           14);
+                                           12);
         vlSelf->testbench__DOT__clk = (1U & (~ (IData)(vlSelf->testbench__DOT__clk)));
     }
 }
@@ -50,10 +50,9 @@ VL_INLINE_OPT void Vtestbench___024root___nba_sequent__TOP__0(Vtestbench___024ro
     SData/*8:0*/ __Vtableidx1;
     __Vtableidx1 = 0;
     // Body
-    if (VL_UNLIKELY((((IData)(vlSelf->testbench__DOT__res) 
-                      == (IData)(vlSelf->testbench__DOT__init_res)) 
+    if (VL_UNLIKELY(((0x85U == (IData)(vlSelf->testbench__DOT__res)) 
                      & (0U != vlSelf->testbench__DOT__i)))) {
-        VL_FINISH_MT("/home/w/dev/ysyx-workbench/npc/vsrc/testbench.v", 16, "");
+        VL_FINISH_MT("/home/w/dev/ysyx-workbench/npc/vsrc/testbench.v", 14, "");
     }
     VL_WRITEF("%0.d: %b\n",32,vlSelf->testbench__DOT__i,
               8,(IData)(vlSelf->testbench__DOT__res));

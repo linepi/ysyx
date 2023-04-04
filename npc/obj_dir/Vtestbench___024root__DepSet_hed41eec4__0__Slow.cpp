@@ -19,7 +19,6 @@ VL_ATTR_COLD void Vtestbench___024root___eval_initial__TOP(Vtestbench___024root*
     // Body
     vlSelf->testbench__DOT__clk = 0U;
     vlSelf->testbench__DOT__i = 0U;
-    vlSelf->testbench__DOT__init_res = vlSelf->testbench__DOT__res;
     vlSelf->testbench__DOT__res = 0x85U;
 }
 
@@ -79,7 +78,6 @@ VL_ATTR_COLD void Vtestbench___024root___ctor_var_reset(Vtestbench___024root* vl
     vlSelf->testbench__DOT__clk = VL_RAND_RESET_I(1);
     vlSelf->testbench__DOT__res = VL_RAND_RESET_I(8);
     vlSelf->testbench__DOT__i = VL_RAND_RESET_I(32);
-    vlSelf->testbench__DOT__init_res = VL_RAND_RESET_I(8);
     vlSelf->testbench__DOT__random_8_ins__DOT__newbit = VL_RAND_RESET_I(1);
     vlSelf->__Vtrigrprev__TOP__testbench__DOT__clk = VL_RAND_RESET_I(1);
 }
