@@ -19,16 +19,12 @@ void single_cycle() {
 // }
 #endif
  
-void nvboard_bind_all_pins(Vtop* top);
  
 int main(int argc, char** argv, char** env) {
   VerilatedContext* contextp = new VerilatedContext;
   contextp->commandArgs(argc, argv);
   top = new Vtop{contextp};
   
-  nvboard_bind_all_pins(top);
-  nvboard_init();
- 
   while (!contextp->gotFinish()) {
     
 #ifdef SEQUENTIAL
@@ -37,11 +33,9 @@ int main(int argc, char** argv, char** env) {
     top->eval();
 #endif
 
-    nvboard_update();
   }
   top->final();
   delete top;
   delete contextp;
-  nvboard_quit();
   return 0;
 }

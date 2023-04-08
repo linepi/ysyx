@@ -42,10 +42,10 @@ nb: $(BIN)
 	-rm -rf obj_dir $(BIN) auto_bind.cpp
 
 # just for the simulator of verilator
-ver: $(VSRCS) $(CSRCS)
+ver: $(VSRCS) 
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	@rm -rf $(OBJ_DIR)
-	$(VERILATOR) $(VERILATOR_CFLAGS) \
+	$(VERILATOR) $(VERILATOR_CFLAGS) ver.cpp \
 		--top-module $(VERNAME) $^ \
 		--exe -o $(abspath $(VERNAME))
 # just for testbench of verilator
