@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <Vtop.h>  
 #include <nvboard.h>
-// #define SEQUENTIAL
+#define SEQUENTIAL
 
 Vtop *top;
 
