@@ -1,32 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <Vtop.h>  
+#include <Vnb.h>  
 #include <nvboard.h>
 // #define SEQUENTIAL
 
-Vtop *top;
+Vnb *nb;
 
 #ifdef SEQUENTIAL
 void single_cycle() {
-  top->clk = 0; top->eval();
-  top->clk = 1; top->eval();
+  nb->clk = 0; nb->eval();
+  nb->clk = 1; nb->eval();
 }
 // void reset(int n) {
-//   top->rst = 1;
+//   nb->rst = 1;
 //   while (n-- > 0) single_cycle();
-//   top->rst = 0;
+//   nb->rst = 0;
 // }
 #endif
  
-void nvboard_bind_all_pins(Vtop* top);
+void nvboard_bind_all_pins(Vnb* nb);
  
 int main(int argc, char** argv, char** env) {
   VerilatedContext* contextp = new VerilatedContext;
   contextp->commandArgs(argc, argv);
-  top = new Vtop{contextp};
+  nb = new Vnb{contextp};
   
-  nvboard_bind_all_pins(top);
+  nvboard_bind_all_pins(nb);
   nvboard_init();
  
   while (!contextp->gotFinish()) {
@@ -34,13 +34,13 @@ int main(int argc, char** argv, char** env) {
 #ifdef SEQUENTIAL
     single_cycle();
 #else
-    top->eval();
+    nb->eval();
 #endif
 
     nvboard_update();
   }
-  top->final();
-  delete top;
+  nb->final();
+  delete nb;
   delete contextp;
   nvboard_quit();
   return 0;
