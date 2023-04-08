@@ -1,41 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <Vtop.h>  
-#include <nvboard.h>
+#include <Vver.h>  
 // #define SEQUENTIAL
 
-Vtop *top;
+Vver *ver;
 
 #ifdef SEQUENTIAL
 void single_cycle() {
-  top->clk = 0; top->eval();
-  top->clk = 1; top->eval();
+  ver->clk = 0; ver->eval();
+  ver->clk = 1; ver->eval();
 }
-// void reset(int n) {
-//   top->rst = 1;
-//   while (n-- > 0) single_cycle();
-//   top->rst = 0;
-// }
+void reset(int n) {
+  ver->rst = 1;
+  while (n-- > 0) single_cycle();
+  ver->rst = 0;
+}
 #endif
  
  
 int main(int argc, char** argv, char** env) {
   VerilatedContext* contextp = new VerilatedContext;
   contextp->commandArgs(argc, argv);
-  top = new Vtop{contextp};
+  ver = new Vver{contextp};
   
   while (!contextp->gotFinish()) {
     
 #ifdef SEQUENTIAL
     single_cycle();
 #else
-    top->eval();
+    ver->eval();
 #endif
 
   }
-  top->final();
-  delete top;
+  ver->final();
+  delete ver;
   delete contextp;
   return 0;
 }
