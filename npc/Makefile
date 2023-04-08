@@ -30,7 +30,7 @@ INCFLAGS = $(addprefix -I, $(INC_PATH))
 CFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(NBNAME)\""
 LDFLAGS += -lSDL2 -lSDL2_image
 
-$(NBNAME): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
+$(NBNAME): $(VSRCS) $(NB_CSRCS) $(NVBOARD_ARCHIVE)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
 		--top-module $(NBNAME) $^ \
