@@ -1,4 +1,4 @@
-module top(
+module nb(
   input clk,
   input ps2_clk,
   input ps2_data,
