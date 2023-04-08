@@ -17,7 +17,7 @@ INC_PATH ?=
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
 NB_CSRCS = $(filter-out %ver.cpp, $(CSRCS))
-VER_CSRCS = $(filter-out %main.cpp %$(SRC_AUTO_BIND), $(CSRCS))
+VER_CSRCS = $(filter-out %nb.cpp %$(SRC_AUTO_BIND), $(CSRCS))
 CSRCS += $(SRC_AUTO_BIND)
 
 # rules for NVBoard
@@ -33,32 +33,30 @@ LDFLAGS += -lSDL2 -lSDL2_image
 $(NBNAME): $(VSRCS) $(NB_CSRCS) $(NVBOARD_ARCHIVE)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
-		--top-module $(NBNAME) $^ \
+		--top-module $(NBNAME) \
 		$(addprefix -CFLAGS , $(CFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
 		--exe -o $(abspath $(NBNAME))
 	$(abspath $(NBNAME))
 	-@rm -rf obj_dir $(NBNAME) auto_bind.cpp
 
-# for nvboard
-# $(NBNAME): $(BIN)
-# 	$(abspath $^)
-# 	-rm -rf obj_dir $(BIN) auto_bind.cpp
-
 # just for the simulator of verilator
 $(VERNAME): $(VSRCS) $(VER_CSRCS)
-	echo $(VER_CSRCS)
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
 		--top-module $(VERNAME) $^ \
 		--exe -o $(abspath $(VERNAME))
-	-rm -rf obj_dir 
+	$(abspath $(VERNAME))
+	-@rm -rf obj_dir $(VERNAME)
 
 # just for testbench of verilator
-$(TESTNAME): 
-	$(VERILATOR) --binary --timing $(VSRCS) --top-module $(TESTNAME) -o $(abspath $(TESTNAME))
-	./$(TESTNAME)
+$(TESTNAME): $(VSRCS)
+	$(VERILATOR) --binary --timing \
+		--top-module $(TESTNAME) $^ \
+		-o $(abspath $(TESTNAME))
+	$(abspath $(TESTNAME))
+	-@rm -rf obj_dir $(TESTNAME)
 
 clean:
-	-@rm -rf obj_dir auto_bind.cpp top ver testbench
+	-@rm -rf obj_dir auto_bind.cpp $(NBNAME) $(VERNAME) $(TESTNAME)
 
 .PHONY: clean default nb ver
 
