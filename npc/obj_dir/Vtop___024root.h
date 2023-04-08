@@ -17,10 +17,15 @@ class Vtop___024root final : public VerilatedModule {
     VL_IN8(ps2_clk,0,0);
     VL_IN8(ps2_data,0,0);
     VL_IN8(resetn,0,0);
+    CData/*3:0*/ top__DOT__keyboard_ins__DOT__count;
+    CData/*2:0*/ top__DOT__keyboard_ins__DOT__ps2_clk_sync;
+    CData/*0:0*/ top__DOT__keyboard_ins__DOT____Vlvbound_h1a91ade8__0;
+    CData/*0:0*/ __Vtrigrprev__TOP__clk;
     CData/*0:0*/ __VactContinue;
+    SData/*9:0*/ top__DOT__keyboard_ins__DOT__buffer;
     IData/*31:0*/ __VactIterCount;
-    VlTriggerVec<0> __VactTriggered;
-    VlTriggerVec<0> __VnbaTriggered;
+    VlTriggerVec<1> __VactTriggered;
+    VlTriggerVec<1> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     Vtop__Syms* const vlSymsp;

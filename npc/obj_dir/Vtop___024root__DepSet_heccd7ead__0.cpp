@@ -12,10 +12,65 @@ void Vtop___024root___eval_act(Vtop___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___eval_act\n"); );
 }
 
+VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__0(Vtop___024root* vlSelf) {
+    if (false && vlSelf) {}  // Prevent unused
+    Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___nba_sequent__TOP__0\n"); );
+    // Init
+    CData/*2:0*/ __Vdly__top__DOT__keyboard_ins__DOT__ps2_clk_sync;
+    __Vdly__top__DOT__keyboard_ins__DOT__ps2_clk_sync = 0;
+    CData/*3:0*/ __Vdly__top__DOT__keyboard_ins__DOT__count;
+    __Vdly__top__DOT__keyboard_ins__DOT__count = 0;
+    // Body
+    __Vdly__top__DOT__keyboard_ins__DOT__ps2_clk_sync 
+        = vlSelf->top__DOT__keyboard_ins__DOT__ps2_clk_sync;
+    __Vdly__top__DOT__keyboard_ins__DOT__count = vlSelf->top__DOT__keyboard_ins__DOT__count;
+    __Vdly__top__DOT__keyboard_ins__DOT__ps2_clk_sync 
+        = ((6U & ((IData)(vlSelf->top__DOT__keyboard_ins__DOT__ps2_clk_sync) 
+                  << 1U)) | (IData)(vlSelf->ps2_clk));
+    if (vlSelf->resetn) {
+        if ((IData)((4U == (6U & (IData)(vlSelf->top__DOT__keyboard_ins__DOT__ps2_clk_sync))))) {
+            if ((0xaU == (IData)(vlSelf->top__DOT__keyboard_ins__DOT__count))) {
+                if (VL_UNLIKELY((((~ (IData)(vlSelf->top__DOT__keyboard_ins__DOT__buffer)) 
+                                  & (IData)(vlSelf->ps2_data)) 
+                                 & VL_REDXOR_32((0x1ffU 
+                                                 & ((IData)(vlSelf->top__DOT__keyboard_ins__DOT__buffer) 
+                                                    >> 1U)))))) {
+                    VL_WRITEF("receive %x\n",8,(0xffU 
+                                                & ((IData)(vlSelf->top__DOT__keyboard_ins__DOT__buffer) 
+                                                   >> 1U)));
+                }
+                __Vdly__top__DOT__keyboard_ins__DOT__count = 0U;
+            } else {
+                vlSelf->top__DOT__keyboard_ins__DOT____Vlvbound_h1a91ade8__0 
+                    = vlSelf->ps2_data;
+                if (VL_LIKELY((9U >= (IData)(vlSelf->top__DOT__keyboard_ins__DOT__count)))) {
+                    vlSelf->top__DOT__keyboard_ins__DOT__buffer 
+                        = (((~ ((IData)(1U) << (IData)(vlSelf->top__DOT__keyboard_ins__DOT__count))) 
+                            & (IData)(vlSelf->top__DOT__keyboard_ins__DOT__buffer)) 
+                           | (0x3ffU & ((IData)(vlSelf->top__DOT__keyboard_ins__DOT____Vlvbound_h1a91ade8__0) 
+                                        << (IData)(vlSelf->top__DOT__keyboard_ins__DOT__count))));
+                }
+                __Vdly__top__DOT__keyboard_ins__DOT__count 
+                    = (0xfU & ((IData)(1U) + (IData)(vlSelf->top__DOT__keyboard_ins__DOT__count)));
+            }
+        }
+    } else {
+        __Vdly__top__DOT__keyboard_ins__DOT__count = 0U;
+    }
+    vlSelf->top__DOT__keyboard_ins__DOT__ps2_clk_sync 
+        = __Vdly__top__DOT__keyboard_ins__DOT__ps2_clk_sync;
+    vlSelf->top__DOT__keyboard_ins__DOT__count = __Vdly__top__DOT__keyboard_ins__DOT__count;
+}
+
 void Vtop___024root___eval_nba(Vtop___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___eval_nba\n"); );
+    // Body
+    if (vlSelf->__VnbaTriggered.at(0U)) {
+        Vtop___024root___nba_sequent__TOP__0(vlSelf);
+    }
 }
 
 void Vtop___024root___eval_triggers__act(Vtop___024root* vlSelf);
@@ -31,7 +86,7 @@ void Vtop___024root___eval(Vtop___024root* vlSelf) {
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___eval\n"); );
     // Init
-    VlTriggerVec<0> __VpreTriggered;
+    VlTriggerVec<1> __VpreTriggered;
     IData/*31:0*/ __VnbaIterCount;
     CData/*0:0*/ __VnbaContinue;
     // Body
