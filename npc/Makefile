@@ -35,7 +35,7 @@ $(NBNAME): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
 		--top-module $(NBNAME) $^ \
 		$(addprefix -CFLAGS , $(CFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
-		--exe -o $(abspath $(BIN))
+		--exe -o $(abspath $(NBNAME))
 	$(abspath $(NBNAME))
 	-@rm -rf obj_dir $(NBNAME) auto_bind.cpp
 
