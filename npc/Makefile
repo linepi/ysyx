@@ -1,7 +1,8 @@
-TOPNAME = top
+NBNAME = nb
+VERNAME = ver
 TESTNAME = testbench
-BIN = $(TOPNAME)
-NXDC_FILES = vsrc/$(TOPNAME).nxdc
+OBJ_DIR = obj_dir
+NXDC_FILES = vsrc/$(NBNAME).nxdc
 VERILATOR = verilator
 VERILATOR_CFLAGS += -MMD --build -cc --timing \
 				# -O3 --x-assign fast --x-initial fast --noassert
@@ -15,6 +16,8 @@ $(SRC_AUTO_BIND): $(NXDC_FILES)
 INC_PATH ?=
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
+NB_CSRCS = $(filter-out %ver.cpp, $(CSRCS))
+VER_CSRCS = $(filter-out %nb.cpp %$(SRC_AUTO_BIND), $(CSRCS))
 CSRCS += $(SRC_AUTO_BIND)
 
 # rules for NVBoard
@@ -24,27 +27,36 @@ include ../Makefile
 
 # rules for verilator
 INCFLAGS = $(addprefix -I, $(INC_PATH))
-CFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
+CFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(NBNAME)\""
 LDFLAGS += -lSDL2 -lSDL2_image
 
-$(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
+$(NBNAME): $(VSRCS) $(NB_CSRCS) $(NVBOARD_ARCHIVE)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
-	@rm -rf $(OBJ_DIR)
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
-		--top-module $(TOPNAME) $^ \
+		--top-module $(NBNAME) $^ \
 		$(addprefix -CFLAGS , $(CFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
-		--exe -o $(abspath $(BIN))
+		--exe -o $(abspath $(NBNAME))
+	$(abspath $(NBNAME))
+	-@rm -rf obj_dir $(NBNAME) auto_bind.cpp
 
-nb: $(BIN)
-	$(abspath $^)
-	-rm -rf obj_dir $(BIN) auto_bind.cpp
+# just for the simulator of verilator
+$(VERNAME): $(VSRCS) $(VER_CSRCS)
+	$(VERILATOR) $(VERILATOR_CFLAGS) \
+		--top-module $(VERNAME) $^ \
+		--exe -o $(abspath $(VERNAME))
+	$(abspath $(VERNAME))
+	-@rm -rf obj_dir $(VERNAME)
 
-test: 
-	$(VERILATOR) --binary --timing $(VSRCS) --top-module testbench -o $(abspath $(TESTNAME))
-	./$(TESTNAME)
+# just for testbench of verilator
+$(TESTNAME): $(VSRCS)
+	$(VERILATOR) --binary --timing \
+		--top-module $(TESTNAME) $^ \
+		-o $(abspath $(TESTNAME))
+	$(abspath $(TESTNAME))
+	-@rm -rf obj_dir $(TESTNAME)
 
 clean:
-	-rm -rf obj_dir $(BIN) auto_bind.cpp
+	-@rm -rf obj_dir auto_bind.cpp $(NBNAME) $(VERNAME) $(TESTNAME)
 
-.PHONY: clean default nb com
+.PHONY: clean $(NBNAME) $(VERNAME) $(TESTNAME) 
 
