@@ -1,4 +1,4 @@
-module ps2_keyboard(clk,resetn,ps2_clk,ps2_data);
+module keyboard(clk,resetn,ps2_clk,ps2_data);
     input clk,resetn,ps2_clk,ps2_data;
 
     reg [9:0] buffer;        // ps2_data bits
