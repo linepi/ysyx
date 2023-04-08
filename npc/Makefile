@@ -1,6 +1,7 @@
 TOPNAME = top
 VERNAME = ver
 TESTNAME = testbench
+OBJ_DIR = obj_dir
 BIN = $(TOPNAME)
 NXDC_FILES = vsrc/$(TOPNAME).nxdc
 VERILATOR = verilator
