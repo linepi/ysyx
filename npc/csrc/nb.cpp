@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <Vnb.h>  
 #include <nvboard.h>
-// #define SEQUENTIAL
+#define SEQUENTIAL
 
 Vnb *nb;
 
