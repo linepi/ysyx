@@ -5,5 +5,5 @@ module top(
   input ps2_data,
   input resetn
 );
-  ps2_keyboard ps2_keyboard_ins(clk, resetn, ps2_clk, ps2_data);
+  keyboard keyboard_ins(clk, resetn, ps2_clk, ps2_data);
 endmodule
