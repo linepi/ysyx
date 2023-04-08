@@ -1,4 +1,5 @@
 TOPNAME = top
+VERNAME = ver
 TESTNAME = testbench
 BIN = $(TOPNAME)
 NXDC_FILES = vsrc/$(TOPNAME).nxdc
@@ -35,16 +36,25 @@ $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 		$(addprefix -CFLAGS , $(CFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
 		--exe -o $(abspath $(BIN))
 
+# for nvboard
 nb: $(BIN)
 	$(abspath $^)
 	-rm -rf obj_dir $(BIN) auto_bind.cpp
 
+# just for the simulator of verilator
+ver: $(VSRCS) $(CSRCS)
+	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+	@rm -rf $(OBJ_DIR)
+	$(VERILATOR) $(VERILATOR_CFLAGS) \
+		--top-module $(VERNAME) $^ \
+		--exe -o $(abspath $(VERNAME))
+# just for testbench of verilator
 test: 
-	$(VERILATOR) --binary --timing $(VSRCS) --top-module testbench -o $(abspath $(TESTNAME))
+	$(VERILATOR) --binary --timing $(VSRCS) --top-module $(TESTNAME) -o $(abspath $(TESTNAME))
 	./$(TESTNAME)
 
 clean:
 	-rm -rf obj_dir $(BIN) auto_bind.cpp
 
-.PHONY: clean default nb com
+.PHONY: clean default nb ver
 
