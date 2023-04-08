@@ -33,7 +33,7 @@ LDFLAGS += -lSDL2 -lSDL2_image
 $(NBNAME): $(VSRCS) $(NB_CSRCS) $(NVBOARD_ARCHIVE)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
-		--top-module $(NBNAME) \
+		--top-module $(NBNAME) $^ \
 		$(addprefix -CFLAGS , $(CFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
 		--exe -o $(abspath $(NBNAME))
 	$(abspath $(NBNAME))
