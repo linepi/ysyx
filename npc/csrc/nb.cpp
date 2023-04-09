@@ -32,7 +32,7 @@ int main(int argc, char** argv, char** env) {
   nvboard_init();
  
   while (!contextp->gotFinish()) {
-    sleep(1); 
+    sleep(0.1); 
 #ifdef SEQUENTIAL
     single_cycle();
 #else
