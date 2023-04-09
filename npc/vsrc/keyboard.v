@@ -8,7 +8,6 @@ module keyboard(clk,resetn,ps2_clk,ps2_data,code);
 
     always @(posedge clk) begin
         ps2_clk_sync <=  {ps2_clk_sync[1:0],ps2_clk};
-        if(ps2_clk_sync > 0) $display("%b", ps2_clk_sync);
     end
 
     wire sampling = ps2_clk_sync[2] & ~ps2_clk_sync[1];
