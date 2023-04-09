@@ -3,14 +3,16 @@
 #include <assert.h>
 #include <Vnb.h>  
 #include <nvboard.h>
-#define SEQUENTIAL
+// #define SEQUENTIAL
 
 Vnb *nb;
 
 #ifdef SEQUENTIAL
 void single_cycle() {
-  nb->clk = 0; nb->eval();
-  nb->clk = 1; nb->eval();
+  nb->clk = 0; 
+  nb->eval();
+  nb->clk = 1; 
+  nb->eval();
 }
 // void reset(int n) {
 //   nb->rst = 1;
