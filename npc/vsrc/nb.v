@@ -29,7 +29,7 @@ module nb(
     enable = 1;
   end
 
-  keyboard keyboard_ins(clk, ~resetn, ps2_clk, ps2_data, code);
+  keyboard keyboard_ins(clk, ~resetn, ps2_clk, ps2_data, code, .ready(enable));
   ascii_map ascii_map_ins(code, ascii);
   encode_seg encode_seg_ins0(code[3:0], enable, seg0[6:0]);
   encode_seg encode_seg_ins1(code[7:4], enable, seg1[6:0]);
@@ -40,10 +40,6 @@ module nb(
   encode_seg encode_seg_ins5(cnt[7:4], 1, seg5[6:0]);
   encode_seg encode_seg_ins6(cnt[11:8], 1, seg6[6:0]);
   encode_seg encode_seg_ins7(cnt[15:12], 1, seg7[6:0]);
-  always @(posedge clk) begin
-    if(code == 8'hf0) begin
-    end
-  end
 endmodule
 
 // number's ascii(partly)
