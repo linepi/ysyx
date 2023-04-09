@@ -40,6 +40,9 @@ module nb(
   encode_seg encode_seg_ins5(cnt[7:4], 1, seg5[6:0]);
   encode_seg encode_seg_ins6(cnt[11:8], 1, seg6[6:0]);
   encode_seg encode_seg_ins7(cnt[15:12], 1, seg7[6:0]);
+  always @(posedge enable) begin
+    cnt <= cnt + 1; 
+  end
 endmodule
 
 // number's ascii(partly)
