@@ -45,17 +45,20 @@ module ascii_map (
   input [7:0] code,
   output reg [7:0] ascii
 );
-  case (code)
-    8'h16: ascii = 8'h31; 
-    8'h1e: ascii = 8'h32; 
-    8'h26: ascii = 8'h33; 
-    8'h25: ascii = 8'h34; 
-    8'h2e: ascii = 8'h35; 
-    8'h36: ascii = 8'h36; 
-    8'h3d: ascii = 8'h37; 
-    8'h3e: ascii = 8'h38; 
-    8'h46: ascii = 8'h39; 
-    8'h45: ascii = 8'h30; 
-    default: ascii = 8'hff;
-  endcase 
+  always @(code)
+  begin
+    case (code)
+      8'h16: ascii = 8'h31; 
+      8'h1e: ascii = 8'h32; 
+      8'h26: ascii = 8'h33; 
+      8'h25: ascii = 8'h34; 
+      8'h2e: ascii = 8'h35; 
+      8'h36: ascii = 8'h36; 
+      8'h3d: ascii = 8'h37; 
+      8'h3e: ascii = 8'h38; 
+      8'h46: ascii = 8'h39; 
+      8'h45: ascii = 8'h30; 
+      default: ascii = 8'hff;
+    endcase 
+  end
 endmodule
