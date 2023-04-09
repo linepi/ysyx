@@ -29,7 +29,7 @@ module nb(
     enable = 1;
   end
 
-  keyboard keyboard_ins(clk, ~resetn, ps2_clk, ps2_data, code, .ready(enable));
+  keyboard keyboard_ins(clk, ~resetn, ps2_clk, ps2_data, enable, code);
   ascii_map ascii_map_ins(code, ascii);
   encode_seg encode_seg_ins0(code[3:0], enable, seg0[6:0]);
   encode_seg encode_seg_ins1(code[7:4], enable, seg1[6:0]);
