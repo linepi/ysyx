@@ -4,12 +4,9 @@ module keyboard(clk,resetn,ps2_clk,ps2_data);
     reg [9:0] buffer;        // ps2_data bits
     reg [3:0] count;  // count ps2_data bits
     reg [2:0] ps2_clk_sync;
-    integer i = 0;
 
     always @(posedge clk) begin
         ps2_clk_sync <=  {ps2_clk_sync[1:0],ps2_clk};
-        $display("%d: ps2_clk_sync = %b", i, ps2_clk_sync);
-        i = i + 1;
     end
 
     wire sampling = ps2_clk_sync[2] & ~ps2_clk_sync[1];
