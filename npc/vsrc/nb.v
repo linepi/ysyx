@@ -2,9 +2,9 @@ module nb(
   input clk,
   input ps2_clk,
   input ps2_data,
-  input resetn
-  output reg [6:0] seg0;
-  output reg [6:0] seg1;
+  input resetn,
+  output reg [6:0] seg0,
+  output reg [6:0] seg1
   // output reg [6:0] seg2;
   // output reg [6:0] seg3;
 );
