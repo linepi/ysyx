@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <Vnb.h>  
 #include <nvboard.h>
-// #define SEQUENTIAL
+#define SEQUENTIAL
 
 Vnb *nb;
 
@@ -32,7 +32,7 @@ int main(int argc, char** argv, char** env) {
   nvboard_init();
  
   while (!contextp->gotFinish()) {
-    
+    sleep(1000); 
 #ifdef SEQUENTIAL
     single_cycle();
 #else
