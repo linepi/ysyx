@@ -4,13 +4,13 @@ module nb(
   input ps2_data,
   input resetn,
   output reg [6:0] seg0,
-  output reg [6:0] seg1
-  output reg [6:0] seg2;
-  output reg [6:0] seg3;
-  output reg [6:0] seg4;
-  output reg [6:0] seg5;
-  output reg [6:0] seg6;
-  output reg [6:0] seg7;
+  output reg [6:0] seg1,
+  output reg [6:0] seg2,
+  output reg [6:0] seg3,
+  output reg [6:0] seg4,
+  output reg [6:0] seg5,
+  output reg [6:0] seg6,
+  output reg [6:0] seg7
 );
   wire [7:0] code;
   reg enable;
