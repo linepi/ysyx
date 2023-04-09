@@ -40,10 +40,10 @@ module nb(
   encode_seg encode_seg_ins2(ascii[3:0], enable, seg2[6:0]);
   encode_seg encode_seg_ins3(ascii[7:4], enable, seg3[6:0]);
 
-  encode_seg encode_seg_ins0(cnt[3:0], enable, seg4[6:0]);
-  encode_seg encode_seg_ins1(cnt[7:4], enable, seg5[6:0]);
-  encode_seg encode_seg_ins2(cnt[11:7], enable, seg6[6:0]);
-  encode_seg encode_seg_ins3(cnt[15:12], enable, seg7[6:0]);
+  encode_seg encode_seg_ins4(cnt[3:0], enable, seg4[6:0]);
+  encode_seg encode_seg_ins5(cnt[7:4], enable, seg5[6:0]);
+  encode_seg encode_seg_ins6(cnt[11:7], enable, seg6[6:0]);
+  encode_seg encode_seg_ins7(cnt[15:12], enable, seg7[6:0]);
   always @(posedge clk) begin
     if(code == 8'hf0) begin
     end
