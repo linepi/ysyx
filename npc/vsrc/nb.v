@@ -26,31 +26,27 @@ module nb(
     seg5[7] = 1;
     seg6[7] = 1;
     seg7[7] = 1;
-    // seg4 = 8'b11000000;
-    // seg5 = 8'b11000000;
-    // seg6 = 8'b11000000;
-    // seg7 = 8'b11000000;
     enable = 1;
   end
 
-  keyboard keyboard_ins(clk, resetn, ps2_clk, ps2_data, code);
+  keyboard keyboard_ins(clk, ~resetn, ps2_clk, ps2_data, code);
   ascii_map ascii_map_ins(code, ascii);
   encode_seg encode_seg_ins0(code[3:0], enable, seg0[6:0]);
   encode_seg encode_seg_ins1(code[7:4], enable, seg1[6:0]);
   encode_seg encode_seg_ins2(ascii[3:0], enable, seg2[6:0]);
   encode_seg encode_seg_ins3(ascii[7:4], enable, seg3[6:0]);
 
-  encode_seg encode_seg_ins4(cnt[3:0], enable, seg4[6:0]);
-  encode_seg encode_seg_ins5(cnt[7:4], enable, seg5[6:0]);
-  encode_seg encode_seg_ins6(cnt[11:8], enable, seg6[6:0]);
-  encode_seg encode_seg_ins7(cnt[15:12], enable, seg7[6:0]);
+  encode_seg encode_seg_ins4(cnt[3:0], 1, seg4[6:0]);
+  encode_seg encode_seg_ins5(cnt[7:4], 1, seg5[6:0]);
+  encode_seg encode_seg_ins6(cnt[11:8], 1, seg6[6:0]);
+  encode_seg encode_seg_ins7(cnt[15:12], 1, seg7[6:0]);
   always @(posedge clk) begin
     if(code == 8'hf0) begin
     end
   end
 endmodule
 
-// number's ascii
+// number's ascii(partly)
 module ascii_map (
   input [7:0] code,
   output reg [7:0] ascii
