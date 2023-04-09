@@ -28,7 +28,7 @@ VL_INLINE_OPT void Vnb___024root___nba_sequent__TOP__0(Vnb___024root* vlSelf) {
     __Vdly__nb__DOT__keyboard_ins__DOT__ps2_clk_sync 
         = ((6U & ((IData)(vlSelf->nb__DOT__keyboard_ins__DOT__ps2_clk_sync) 
                   << 1U)) | (IData)(vlSelf->ps2_clk));
-    if (VL_UNLIKELY((0U != (IData)(vlSelf->nb__DOT__keyboard_ins__DOT__ps2_clk_sync)))) {
+    if (VL_UNLIKELY((0U < (IData)(vlSelf->nb__DOT__keyboard_ins__DOT__ps2_clk_sync)))) {
         VL_WRITEF("%b\n",3,vlSelf->nb__DOT__keyboard_ins__DOT__ps2_clk_sync);
     }
     if (vlSelf->resetn) {
