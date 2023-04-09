@@ -1,5 +1,6 @@
-module keyboard(clk,resetn,ps2_clk,ps2_data);
+module keyboard(clk,resetn,ps2_clk,ps2_data,code);
     input clk,resetn,ps2_clk,ps2_data;
+    output reg [7:0] code;
 
     reg [9:0] buffer;        // ps2_data bits
     reg [3:0] count;  // count ps2_data bits
@@ -23,6 +24,7 @@ module keyboard(clk,resetn,ps2_clk,ps2_data);
                     (ps2_data)       &&  // stop bit
                     (^buffer[9:1])) begin      // odd  parity
                     $display("receive %x", buffer[8:1]);
+                    code = buffer[8:1];
                 end
                 count <= 0;     // for next
               end else begin
