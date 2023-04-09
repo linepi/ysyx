@@ -117,8 +117,10 @@ VL_ATTR_COLD void Vnb___024root___stl_sequent__TOP__0(Vnb___024root* vlSelf) {
                               >> 3U)) | (IData)(vlSelf->nb__DOT__enable));
     nb__DOT____Vcellout__encode_seg_ins1____pinNumber3 
         = Vnb__ConstPool__TABLE_h47d0bdac_0[__Vtableidx2];
-    vlSelf->seg0 = nb__DOT____Vcellout__encode_seg_ins0____pinNumber3;
-    vlSelf->seg1 = nb__DOT____Vcellout__encode_seg_ins1____pinNumber3;
+    vlSelf->seg0 = ((0x80U & (IData)(vlSelf->seg0)) 
+                    | (IData)(nb__DOT____Vcellout__encode_seg_ins0____pinNumber3));
+    vlSelf->seg1 = ((0x80U & (IData)(vlSelf->seg1)) 
+                    | (IData)(nb__DOT____Vcellout__encode_seg_ins1____pinNumber3));
 }
 
 VL_ATTR_COLD void Vnb___024root___eval_stl(Vnb___024root* vlSelf) {
