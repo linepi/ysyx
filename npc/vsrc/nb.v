@@ -35,7 +35,6 @@ module nb(
   encode_seg encode_seg_ins3(ascii[7:4], enable, seg3[6:0]);
   always @(posedge clk) begin
     if(code == 8'hf0) begin
-      enable = 0;
     end
   end
 endmodule
