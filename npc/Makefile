@@ -1,6 +1,6 @@
 NBNAME = nb
 VERNAME = ver
-TESTNAME = testbench
+TESTNAME = ps2_keyboard_sim
 OBJ_DIR = obj_dir
 NXDC_FILES = vsrc/$(NBNAME).nxdc
 VERILATOR = verilator
@@ -37,7 +37,7 @@ $(NBNAME): $(VSRCS) $(NB_CSRCS) $(NVBOARD_ARCHIVE)
 		$(addprefix -CFLAGS , $(CFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
 		--exe -o $(abspath $(NBNAME))
 	$(abspath $(NBNAME))
-	-@rm -rf obj_dir $(NBNAME) auto_bind.cpp
+	-@rm -rf obj_dir auto_bind.cpp
 
 # just for the simulator of verilator
 $(VERNAME): $(VSRCS) $(VER_CSRCS)
@@ -45,7 +45,7 @@ $(VERNAME): $(VSRCS) $(VER_CSRCS)
 		--top-module $(VERNAME) $^ \
 		--exe -o $(abspath $(VERNAME))
 	$(abspath $(VERNAME))
-	-@rm -rf obj_dir $(VERNAME)
+	-@rm -rf obj_dir
 
 # just for testbench of verilator
 $(TESTNAME): $(VSRCS)
@@ -53,7 +53,7 @@ $(TESTNAME): $(VSRCS)
 		--top-module $(TESTNAME) $^ \
 		-o $(abspath $(TESTNAME))
 	$(abspath $(TESTNAME))
-	-@rm -rf obj_dir $(TESTNAME)
+	-@rm -rf obj_dir
 
 clean:
 	-@rm -rf obj_dir auto_bind.cpp $(NBNAME) $(VERNAME) $(TESTNAME)

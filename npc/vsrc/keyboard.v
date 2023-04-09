@@ -1,6 +1,9 @@
-module keyboard(clk,resetn,ps2_clk,ps2_data);
+module keyboard(clk,resetn,ps2_clk,ps2_data,ready,code);
     input clk,resetn,ps2_clk,ps2_data;
+    output reg ready;
+    output reg [7:0] code;
 
+    reg loose;
     reg [9:0] buffer;        // ps2_data bits
     reg [3:0] count;  // count ps2_data bits
     reg [2:0] ps2_clk_sync;
@@ -22,6 +25,15 @@ module keyboard(clk,resetn,ps2_clk,ps2_data);
                     (ps2_data)       &&  // stop bit
                     (^buffer[9:1])) begin      // odd  parity
                     $display("receive %x", buffer[8:1]);
+                    code <= buffer[8:1];
+                    // add
+                    if (buffer[8:1] == 8'hf0) begin
+                      loose <= 1'b1;
+                      ready <= 1'b0;
+                    end else begin
+                      if(loose == 1'b0) ready <= 1'b1; 
+                      loose <= 1'b0;
+                    end
                 end
                 count <= 0;     // for next
               end else begin

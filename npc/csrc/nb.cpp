@@ -9,8 +9,10 @@ Vnb *nb;
 
 #ifdef SEQUENTIAL
 void single_cycle() {
-  nb->clk = 0; nb->eval();
-  nb->clk = 1; nb->eval();
+  nb->clk = 0; 
+  nb->eval();
+  nb->clk = 1; 
+  nb->eval();
 }
 // void reset(int n) {
 //   nb->rst = 1;
@@ -30,7 +32,7 @@ int main(int argc, char** argv, char** env) {
   nvboard_init();
  
   while (!contextp->gotFinish()) {
-    
+    sleep(0.1); 
 #ifdef SEQUENTIAL
     single_cycle();
 #else
