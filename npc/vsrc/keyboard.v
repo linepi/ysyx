@@ -27,7 +27,7 @@ module keyboard(clk,resetn,ps2_clk,ps2_data,ready,code);
                     $display("receive %x", buffer[8:1]);
                     code <= buffer[8:1];
                     // add
-                    if (buffer[8:0] == 8'hf0) begin
+                    if (buffer[8:1] == 8'hf0) begin
                       loose <= 1'b1;
                       ready <= 1'b0;
                     end else begin
