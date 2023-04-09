@@ -19,6 +19,10 @@ VL_INLINE_OPT void Vnb___024root___nba_sequent__TOP__0(Vnb___024root* vlSelf) {
     Vnb__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnb___024root___nba_sequent__TOP__0\n"); );
     // Init
+    CData/*6:0*/ nb__DOT____Vcellout__encode_seg_ins0____pinNumber3;
+    nb__DOT____Vcellout__encode_seg_ins0____pinNumber3 = 0;
+    CData/*6:0*/ nb__DOT____Vcellout__encode_seg_ins1____pinNumber3;
+    nb__DOT____Vcellout__encode_seg_ins1____pinNumber3 = 0;
     CData/*4:0*/ __Vtableidx1;
     __Vtableidx1 = 0;
     CData/*4:0*/ __Vtableidx2;
@@ -75,12 +79,14 @@ VL_INLINE_OPT void Vnb___024root___nba_sequent__TOP__0(Vnb___024root* vlSelf) {
     vlSelf->nb__DOT__keyboard_ins__DOT__count = __Vdly__nb__DOT__keyboard_ins__DOT__count;
     __Vtableidx1 = ((0x1eU & ((IData)(vlSelf->nb__DOT__code) 
                               << 1U)) | (IData)(vlSelf->nb__DOT__enable));
-    vlSelf->seg0 = Vnb__ConstPool__TABLE_h47d0bdac_0
-        [__Vtableidx1];
+    nb__DOT____Vcellout__encode_seg_ins0____pinNumber3 
+        = Vnb__ConstPool__TABLE_h47d0bdac_0[__Vtableidx1];
     __Vtableidx2 = ((0x1eU & ((IData)(vlSelf->nb__DOT__code) 
                               >> 3U)) | (IData)(vlSelf->nb__DOT__enable));
-    vlSelf->seg1 = Vnb__ConstPool__TABLE_h47d0bdac_0
-        [__Vtableidx2];
+    nb__DOT____Vcellout__encode_seg_ins1____pinNumber3 
+        = Vnb__ConstPool__TABLE_h47d0bdac_0[__Vtableidx2];
+    vlSelf->seg0 = nb__DOT____Vcellout__encode_seg_ins0____pinNumber3;
+    vlSelf->seg1 = nb__DOT____Vcellout__encode_seg_ins1____pinNumber3;
 }
 
 void Vnb___024root___eval_nba(Vnb___024root* vlSelf) {

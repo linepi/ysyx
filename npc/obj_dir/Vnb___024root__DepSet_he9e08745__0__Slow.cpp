@@ -28,9 +28,14 @@ VL_ATTR_COLD void Vnb___024root___eval_initial__TOP(Vnb___024root* vlSelf) {
     Vnb__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnb___024root___eval_initial__TOP\n"); );
     // Body
-    vlSelf->seg5 = 0x7fU;
-    vlSelf->seg6 = 0x7fU;
-    vlSelf->seg7 = 0x7fU;
+    vlSelf->seg0 = (0x80U | (IData)(vlSelf->seg0));
+    vlSelf->seg1 = (0x80U | (IData)(vlSelf->seg1));
+    vlSelf->seg2 = (0x80U | (IData)(vlSelf->seg2));
+    vlSelf->seg3 = (0x80U | (IData)(vlSelf->seg3));
+    vlSelf->seg4 = (0x7fU & (IData)(vlSelf->seg4));
+    vlSelf->seg5 = 0xffU;
+    vlSelf->seg6 = 0xffU;
+    vlSelf->seg7 = 0xffU;
     vlSelf->nb__DOT__enable = 1U;
 }
 
@@ -95,6 +100,10 @@ VL_ATTR_COLD void Vnb___024root___stl_sequent__TOP__0(Vnb___024root* vlSelf) {
     Vnb__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vnb___024root___stl_sequent__TOP__0\n"); );
     // Init
+    CData/*6:0*/ nb__DOT____Vcellout__encode_seg_ins0____pinNumber3;
+    nb__DOT____Vcellout__encode_seg_ins0____pinNumber3 = 0;
+    CData/*6:0*/ nb__DOT____Vcellout__encode_seg_ins1____pinNumber3;
+    nb__DOT____Vcellout__encode_seg_ins1____pinNumber3 = 0;
     CData/*4:0*/ __Vtableidx1;
     __Vtableidx1 = 0;
     CData/*4:0*/ __Vtableidx2;
@@ -102,12 +111,14 @@ VL_ATTR_COLD void Vnb___024root___stl_sequent__TOP__0(Vnb___024root* vlSelf) {
     // Body
     __Vtableidx1 = ((0x1eU & ((IData)(vlSelf->nb__DOT__code) 
                               << 1U)) | (IData)(vlSelf->nb__DOT__enable));
-    vlSelf->seg0 = Vnb__ConstPool__TABLE_h47d0bdac_0
-        [__Vtableidx1];
+    nb__DOT____Vcellout__encode_seg_ins0____pinNumber3 
+        = Vnb__ConstPool__TABLE_h47d0bdac_0[__Vtableidx1];
     __Vtableidx2 = ((0x1eU & ((IData)(vlSelf->nb__DOT__code) 
                               >> 3U)) | (IData)(vlSelf->nb__DOT__enable));
-    vlSelf->seg1 = Vnb__ConstPool__TABLE_h47d0bdac_0
-        [__Vtableidx2];
+    nb__DOT____Vcellout__encode_seg_ins1____pinNumber3 
+        = Vnb__ConstPool__TABLE_h47d0bdac_0[__Vtableidx2];
+    vlSelf->seg0 = nb__DOT____Vcellout__encode_seg_ins0____pinNumber3;
+    vlSelf->seg1 = nb__DOT____Vcellout__encode_seg_ins1____pinNumber3;
 }
 
 VL_ATTR_COLD void Vnb___024root___eval_stl(Vnb___024root* vlSelf) {
@@ -159,14 +170,14 @@ VL_ATTR_COLD void Vnb___024root___ctor_var_reset(Vnb___024root* vlSelf) {
     vlSelf->ps2_clk = VL_RAND_RESET_I(1);
     vlSelf->ps2_data = VL_RAND_RESET_I(1);
     vlSelf->resetn = VL_RAND_RESET_I(1);
-    vlSelf->seg0 = VL_RAND_RESET_I(7);
-    vlSelf->seg1 = VL_RAND_RESET_I(7);
-    vlSelf->seg2 = VL_RAND_RESET_I(7);
-    vlSelf->seg3 = VL_RAND_RESET_I(7);
-    vlSelf->seg4 = VL_RAND_RESET_I(7);
-    vlSelf->seg5 = VL_RAND_RESET_I(7);
-    vlSelf->seg6 = VL_RAND_RESET_I(7);
-    vlSelf->seg7 = VL_RAND_RESET_I(7);
+    vlSelf->seg0 = VL_RAND_RESET_I(8);
+    vlSelf->seg1 = VL_RAND_RESET_I(8);
+    vlSelf->seg2 = VL_RAND_RESET_I(8);
+    vlSelf->seg3 = VL_RAND_RESET_I(8);
+    vlSelf->seg4 = VL_RAND_RESET_I(8);
+    vlSelf->seg5 = VL_RAND_RESET_I(8);
+    vlSelf->seg6 = VL_RAND_RESET_I(8);
+    vlSelf->seg7 = VL_RAND_RESET_I(8);
     vlSelf->nb__DOT__code = VL_RAND_RESET_I(8);
     vlSelf->nb__DOT__enable = VL_RAND_RESET_I(1);
     vlSelf->nb__DOT__keyboard_ins__DOT__buffer = VL_RAND_RESET_I(10);

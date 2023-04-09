@@ -28,14 +28,14 @@ class Vnb VL_NOT_FINAL : public VerilatedModel {
     VL_IN8(&ps2_clk,0,0);
     VL_IN8(&ps2_data,0,0);
     VL_IN8(&resetn,0,0);
-    VL_OUT8(&seg0,6,0);
-    VL_OUT8(&seg1,6,0);
-    VL_OUT8(&seg2,6,0);
-    VL_OUT8(&seg3,6,0);
-    VL_OUT8(&seg4,6,0);
-    VL_OUT8(&seg5,6,0);
-    VL_OUT8(&seg6,6,0);
-    VL_OUT8(&seg7,6,0);
+    VL_OUT8(&seg0,7,0);
+    VL_OUT8(&seg1,7,0);
+    VL_OUT8(&seg2,7,0);
+    VL_OUT8(&seg3,7,0);
+    VL_OUT8(&seg4,7,0);
+    VL_OUT8(&seg5,7,0);
+    VL_OUT8(&seg6,7,0);
+    VL_OUT8(&seg7,7,0);
 
     // CELLS
     // Public to allow access to /* verilator public */ items.

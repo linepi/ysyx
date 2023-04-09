@@ -27,8 +27,8 @@ module nb(
   end
 
   keyboard keyboard_ins(clk, resetn, ps2_clk, ps2_data, code);
-  encode_seg encode_seg_ins0(code[3:0], enable, seg0);
-  encode_seg encode_seg_ins1(code[7:4], enable, seg1);
+  encode_seg encode_seg_ins0(code[3:0], enable, seg0[6:0]);
+  encode_seg encode_seg_ins1(code[7:4], enable, seg1[6:0]);
   always @(posedge clk) begin
     if(code == 8'hf0) begin
       enable = 0;
