@@ -58,5 +58,5 @@ $(TESTNAME): $(VSRCS)
 clean:
 	-@rm -rf obj_dir auto_bind.cpp $(NBNAME) $(VERNAME) $(TESTNAME)
 
-.PHONY: clean default nb ver
+.PHONY: clean $(NBNAME) $(VERNAME) $(TESTNAME) 
 

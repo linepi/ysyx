@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <Vver.h>  
+#include <time.h>
 // #define SEQUENTIAL
 
 Vver *ver;
@@ -24,14 +25,19 @@ int main(int argc, char** argv, char** env) {
   contextp->commandArgs(argc, argv);
   ver = new Vver{contextp};
   
+  int cnt = 0;
+  srand((unsigned) time(NULL));
   while (!contextp->gotFinish()) {
-    
+    ver->a = rand() & 1;
+    ver->b = rand() & 1; 
 #ifdef SEQUENTIAL
     single_cycle();
 #else
     ver->eval();
 #endif
-
+    printf("a = %d, b = %d, c = %d\n", ver->a, ver->b, ver->c);
+    cnt++;
+    if(cnt == 10) break;
   }
   ver->final();
   delete ver;

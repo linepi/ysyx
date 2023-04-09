@@ -6,6 +6,7 @@ module keyboard(clk,resetn,ps2_clk,ps2_data);
     reg [2:0] ps2_clk_sync;
 
     always @(posedge clk) begin
+        $display("ps2_clk_sync = %b", ps2_clk_sync);
         ps2_clk_sync <=  {ps2_clk_sync[1:0],ps2_clk};
     end
 
