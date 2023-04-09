@@ -14,16 +14,22 @@ module nb(
 );
   wire [7:0] code;
   wire [7:0] ascii;
+  reg [15:0] cnt;
   reg enable;
   initial begin 
     seg0[7] = 1;
     seg1[7] = 1;
     seg2[7] = 1;
     seg3[7] = 1;
-    seg4 = 8'b11000000;
-    seg5 = 8'b11000000;
-    seg6 = 8'b11000000;
-    seg7 = 8'b11000000;
+    cnt = 0;
+    seg4[7] = 1;
+    seg5[7] = 1;
+    seg6[7] = 1;
+    seg7[7] = 1;
+    // seg4 = 8'b11000000;
+    // seg5 = 8'b11000000;
+    // seg6 = 8'b11000000;
+    // seg7 = 8'b11000000;
     enable = 1;
   end
 
@@ -33,6 +39,11 @@ module nb(
   encode_seg encode_seg_ins1(code[7:4], enable, seg1[6:0]);
   encode_seg encode_seg_ins2(ascii[3:0], enable, seg2[6:0]);
   encode_seg encode_seg_ins3(ascii[7:4], enable, seg3[6:0]);
+
+  encode_seg encode_seg_ins0(cnt[3:0], enable, seg4[6:0]);
+  encode_seg encode_seg_ins1(cnt[7:4], enable, seg5[6:0]);
+  encode_seg encode_seg_ins2(cnt[11:7], enable, seg6[6:0]);
+  encode_seg encode_seg_ins3(cnt[15:12], enable, seg7[6:0]);
   always @(posedge clk) begin
     if(code == 8'hf0) begin
     end
