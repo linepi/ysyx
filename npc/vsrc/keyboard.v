@@ -1,4 +1,4 @@
-module keyboard(clk,resetn,ps2_clk,ps2_data,code);
+module keyboard(clk,resetn,ps2_clk,ps2_data,ready,code);
     input clk,resetn,ps2_clk,ps2_data;
     output reg ready;
     output reg [7:0] code;
