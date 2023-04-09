@@ -46,7 +46,7 @@ module ascii_map (
   output [7:0] ascii
 );
   case (code)
-    8'h16: ascii = 8'h31; 
+    8'h16: assign ascii = 8'h31; 
     8'h1e: ascii = 8'h32; 
     8'h26: ascii = 8'h33; 
     8'h25: ascii = 8'h34; 
