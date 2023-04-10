@@ -134,16 +134,7 @@ void sdb_mainloop() {
   }
 }
 
-void init_sdb() {/* the first argument */
-  char *arg = strtok(NULL, " ");
-  int i;
-
-  if (arg == NULL) {
-    /* no argument given */
-    for (i = 0; i < NR_CMD; i ++) {
-      printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
-    }
-  }
+void init_sdb() {
   /* Compile the regular expressions. */
   init_regex();
 
