@@ -11,4 +11,4 @@
 !.gitignore
 !init.sh
 /nvboard
-/playground
+/playground/fceux-am
