@@ -11,5 +11,6 @@
 !.gitignore
 !init.sh
 /nvboard
-/playground/fceux-am
+/playground
 /am-kernels
+/fceux-am
