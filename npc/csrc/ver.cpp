@@ -1,44 +1,46 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <Vtop.h>  
-#include <nvboard.h>
+#include <Vver.h>  
+#include <time.h>
 // #define SEQUENTIAL
 
-Vtop *top;
+Vver *ver;
 
 #ifdef SEQUENTIAL
 void single_cycle() {
-  top->clk = 0; top->eval();
-  top->clk = 1; top->eval();
+  ver->clk = 0; ver->eval();
+  ver->clk = 1; ver->eval();
 }
 void reset(int n) {
-  top->rst = 1;
+  ver->rst = 1;
   while (n-- > 0) single_cycle();
-  top->rst = 0;
+  ver->rst = 0;
 }
 #endif
  
-void nvboard_bind_all_pins(Vtop* top);
  
 int main(int argc, char** argv, char** env) {
   VerilatedContext* contextp = new VerilatedContext;
   contextp->commandArgs(argc, argv);
-  top = new Vtop{contextp};
+  ver = new Vver{contextp};
   
-  nvboard_bind_all_pins(top);
-  nvboard_init();
- 
+  int cnt = 0;
+  srand((unsigned) time(NULL));
   while (!contextp->gotFinish()) {
+    ver->a = rand() & 1;
+    ver->b = rand() & 1; 
 #ifdef SEQUENTIAL
     single_cycle();
 #else
-    top->eval();
+    ver->eval();
 #endif
-    nvboard_update();
+    printf("a = %d, b = %d, c = %d\n", ver->a, ver->b, ver->c);
+    cnt++;
+    if(cnt == 10) break;
   }
-  delete top;
+  ver->final();
+  delete ver;
   delete contextp;
-  nvboard_quit();
   return 0;
 }
