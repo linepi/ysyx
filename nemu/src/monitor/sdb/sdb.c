@@ -55,11 +55,11 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_si(char *args) {
-  if(args == NULL) {
-    printf("Usage: si [N]. Step N instruction, default 1.\n");
-    return 0;
+  int steps = 1;
+  if(args != NULL) {
+    steps = atoi(args);
   }
-  cpu_exec(atoi(args));
+  cpu_exec(steps);
   return 0;
 }
 
