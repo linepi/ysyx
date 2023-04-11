@@ -26,7 +26,7 @@
         __FILE__, __LINE__, __func__, ## __VA_ARGS__)
 */
 #define Log(format, ...) \
-    _Log(ANSI_FMT("[%s:%d %s] ", ANSI_FG_BLUE) "\n" format, \
+    _Log(ANSI_FMT("[%s:%d %s] ", ANSI_FG_BLUE) format"\n", \
         __FILE__, __LINE__, __func__, ## __VA_ARGS__)
 
 #define Assert(cond, format, ...) \
