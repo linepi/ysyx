@@ -17,6 +17,7 @@
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <memory/paddr.h>
 #include "sdb.h"
 
 static int is_batch_mode = false;
@@ -78,6 +79,12 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
+  char* len = strtok(args, " ");
+  char* tmp = strtok(NULL, " ");
+  paddr_t paddr = strtoul(tmp, NULL, 16);
+  for(int i = 0; i < atoi(len); i++) {
+    printf("%02x ", *guest_to_host(paddr + i));
+  }
   return 0;
 }
 
