@@ -17,17 +17,20 @@
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <memory/paddr.h>
 #include "sdb.h"
 
 static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+extern void isa_reg_display();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
   static char *line_read = NULL;
 
+  // why use this?
   if (line_read) {
     free(line_read);
     line_read = NULL;
@@ -47,9 +50,43 @@ static int cmd_c(char *args) {
   return 0;
 }
 
-
 static int cmd_q(char *args) {
   return -1;
+}
+
+static int cmd_si(char *args) {
+  int steps = 1;
+  if(args != NULL) {
+    steps = atoi(args);
+  }
+  cpu_exec(steps);
+  return 0;
+}
+
+static int cmd_info(char *args) {
+  if(args == NULL) {
+    printf("Usage: info <r|w>. r --> register, w --> watch points.\n");
+    return 0;
+  }
+  switch(args[0]) {
+    case 'r':
+      isa_reg_display();
+      break;
+    case 'w':
+      break;
+  }
+  return 0;
+}
+
+static int cmd_x(char *args) {
+  char* len = strtok(args, " ");
+  char* tmp = strtok(NULL, " ");
+  paddr_t paddr = strtoul(tmp, NULL, 16);
+  for(int i = 0; i < atoi(len); i++) {
+    printf("%02x ", *guest_to_host(paddr + i));
+  }
+  printf("\n");
+  return 0;
 }
 
 static int cmd_help(char *args);
@@ -62,7 +99,9 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  { "si", "Usage: si [N]. Step N instruction, default 1. ", cmd_si },
+  { "info", "Usage: info <r|w>. r --> register, w --> watch points. ", cmd_info },
+  { "x", "Usage: x <number of bytes> <addr>. example: x 10 0x80000000 ", cmd_x },
   /* TODO: Add more commands */
 
 };
@@ -125,7 +164,10 @@ void sdb_mainloop() {
     int i;
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(cmd, cmd_table[i].name) == 0) {
-        if (cmd_table[i].handler(args) < 0) { return; }
+        if (cmd_table[i].handler(args) < 0) { 
+          nemu_state.state = NEMU_QUIT;
+          return; 
+        }
         break;
       }
     }
