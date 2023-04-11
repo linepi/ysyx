@@ -49,7 +49,6 @@ static int cmd_c(char *args) {
   return 0;
 }
 
-
 static int cmd_q(char *args) {
   return -1;
 }
@@ -78,6 +77,10 @@ static int cmd_info(char *args) {
   return 0;
 }
 
+static int cmd_x(char *args) {
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -90,6 +93,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "Usage: si [N]. Step N instruction, default 1. ", cmd_si },
   { "info", "Usage: info <r|w>. r --> register, w --> watch points. ", cmd_info },
+  { "x", "Usage: x <number of bytes> <addr>. example: x 10 0x80000000 ", cmd_x },
   /* TODO: Add more commands */
 
 };
