@@ -21,7 +21,7 @@
 #include <utils.h>
 
 #define Log(format, ...) \
-    printf(ANSI_FMT("[%s:%d %s] ", ANSI_FG_BLUE) format"\n", \
+    _Log(ANSI_FMT("[%s:%d %s] ", ANSI_FG_BLUE) format"\n", \
         __FILE__, __LINE__, __func__, ## __VA_ARGS__)
 
 #define Assert(cond, format, ...) \
