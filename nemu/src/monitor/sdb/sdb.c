@@ -28,6 +28,7 @@ void init_wp_pool();
 static char* rl_gets() {
   static char *line_read = NULL;
 
+  // why use this?
   if (line_read) {
     free(line_read);
     line_read = NULL;
@@ -52,6 +53,15 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+static int cmd_si(char *args) {
+  if(args == NULL) {
+    printf("Usage: si [N]. Step N instruction, default 1.\n");
+    return 0;
+  }
+  cpu_exec(atoi(args));
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -62,7 +72,7 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  { "si", "Usage: si [N]. Step N instruction, default 1. ", cmd_si },
   /* TODO: Add more commands */
 
 };
