@@ -24,8 +24,9 @@ const char *regs[] = {
 };
 
 void isa_reg_display() {
+  printf("reg        unsigned         signed");
   for(int i = 0; i < 32; i++) {
-    printf("%s: 0x%016lx   %ld\n", reg_name(i), gpr(i), gpr(i));
+    printf("%s:  0x%016lx   %lu   %ld\n", reg_name(i), gpr(i), gpr(i), gpr(i));
   }
 }
 
