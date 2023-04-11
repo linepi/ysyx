@@ -62,6 +62,21 @@ static int cmd_si(char *args) {
   return 0;
 }
 
+static int cmd_info(char *args) {
+  if(args == NULL) {
+    printf("Usage: info <r|w>. r --> register, w --> watch points.\n");
+    return 0;
+  }
+  switch(args[0]) {
+    case 'r':
+      isa_reg_display();
+      break;
+    case 'w':
+      break;
+  }
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -73,6 +88,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Usage: si [N]. Step N instruction, default 1. ", cmd_si },
+  { "info", "Usage: info <r|w>. r --> register, w --> watch points. ", cmd_info },
   /* TODO: Add more commands */
 
 };
