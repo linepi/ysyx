@@ -97,7 +97,7 @@ typedef struct token {
   char str[TOKEN_STR_LEN];
 } Token;
 
-static Token tokens[1000] __attribute__((used)) = {};
+static Token tokens[10000] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 static bool make_token(char *e) {
@@ -210,7 +210,6 @@ static int get_main_operator(int p, int q) {
   return idx;
 }
 
-char *debug_1;
 static expr_t eval(int p, int q, bool *status) {
   if (*status == false) return 0;
 
@@ -279,7 +278,6 @@ static expr_t eval(int p, int q, bool *status) {
 
 expr_t expr(char *e, bool *success) {
   *success = true;
-  debug_1 = e;
   if (!make_token(e)) {
     *success = false;
     return 0;
