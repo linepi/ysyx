@@ -124,15 +124,13 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
           case TK_NOTYPE: 
             break;
-          case '+': case '-': case '*': case '/': case '(': case ')': case TK_EQ:
-          case TK_NE: case TK_GE: case TK_GT: case TK_LE: case TK_LT:
-            tokens[nr_token++].type = rules[i].token_type;
-            break;
           case TK_DEC: TK_HEX: TK_REG:
             tokens[nr_token++].type = rules[i].token_type;
             memcpy(tokens[nr_token].str, e + position, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
             break;
+          default:
+            tokens[nr_token++].type = rules[i].token_type;
         }
 
         break;
@@ -168,14 +166,16 @@ static bool check_parentheses(int p, int q, bool *status) {
   return false;
 }
 
-static bool get_priority(char *op) {
-  if (strcmp("||", op) == 0 || strcmp("&&", op) == 0) return 1;
-  if (strcmp("|", op) == 0 || strcmp("&", op) == 0 || strcmp("^", op) == 0) return 2;
-  if (strcmp("==", op) == 0 || strcmp("!=", op) == 0) return 3;
-  if (strcmp("<<", op) == 0 || strcmp(">>", op) == 0) return 4;
-  if (strcmp("+", op) == 0 || strcmp("-", op) == 0) return 5;
-  if (strcmp("*", op) == 0 || strcmp("/", op) == 0 || strcmp("%", op) == 0) return 6;
-  if (strcmp("~", op) == 0 || strcmp("!", op) == 0 || strcmp("-", op) == 0) return 7;
+static bool get_priority(int type) {
+  switch (type) {
+    case TK_AND: case TK_OR: return 1;
+    case TK_BAND: case TK_BOR: case TK_BXOR: return 2;
+    case TK_EQ: case TK_NE: case TK_GE: case TK_GT: case TK_LE: case TK_LT: return 3;
+    case TK_RIGHT: case TK_LEFT: return 4;
+    case '+': case '-': return 5;
+    case '*': case '/': case '%': return 6;
+    case TK_BNOT: case TK_NOT: case TK_NEG: return 7;
+  }
 }
 
 static int get_main_operator(int p, int q) {
@@ -186,7 +186,7 @@ static int get_main_operator(int p, int q) {
     if (tokens[p].type == '(') leftn++;
     if (tokens[p].type == ')') leftn--;
     if (tokens[p].type <= TK_RIGHT && tokens[p].type >= TK_EQ) {
-      int tmp = get_priority(tokens[p].str); 
+      int tmp = get_priority(tokens[p].type); 
       if (tmp <= priority && leftn == 0) idx = p;
     }
   }
