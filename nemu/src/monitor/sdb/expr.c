@@ -125,9 +125,10 @@ static bool make_token(char *e) {
           case TK_NOTYPE: 
             break;
           case TK_DEC: case TK_HEX: case TK_REG:
-            tokens[nr_token++].type = rules[i].token_type;
+            tokens[nr_token].type = rules[i].token_type;
             memcpy(tokens[nr_token].str, e + position - substr_len, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
+            nr_token++;
             break;
           default:
             tokens[nr_token++].type = rules[i].token_type;
