@@ -210,6 +210,7 @@ static int get_main_operator(int p, int q) {
   return idx;
 }
 
+char *debug_1;
 static expr_t eval(int p, int q, bool *status) {
   if (*status == false) return 0;
 
@@ -278,6 +279,7 @@ static expr_t eval(int p, int q, bool *status) {
 
 expr_t expr(char *e, bool *success) {
   *success = true;
+  debug_1 = e;
   if (!make_token(e)) {
     *success = false;
     return 0;
