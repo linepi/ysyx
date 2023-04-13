@@ -164,6 +164,7 @@ static bool check_parentheses(int p, int q, bool *status) {
       }
     }
   }
+  free((void*)stack);
   return false;
 }
 
@@ -186,7 +187,7 @@ static int get_main_operator(int p, int q) {
   for (; p <= q; p++) {
     if (tokens[p].type == '(') leftn++;
     if (tokens[p].type == ')') leftn--;
-    if (tokens[p].type <= TK_RIGHT && tokens[p].type >= TK_EQ) {
+    if ((tokens[p].type <= TK_RIGHT && tokens[p].type >= TK_EQ) || tokens[p].type < 256) {
       int tmp = get_priority(tokens[p].type); 
       if (tmp <= priority && leftn == 0) idx = p;
     }
