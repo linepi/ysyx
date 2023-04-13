@@ -1,6 +1,7 @@
 #include <common.h>
 #include <debug.h>
 #include "sdb.h"
+#include <debug.h>
 // 121+((216-818)*819*298)*302
 
 void test_expr() {
@@ -19,7 +20,7 @@ void test_expr() {
             continue;
         }
         if (res != expect) {
-            printf("unsame for %s\nexpect: %lu, res: %lu\n", e, expect, res);
+            printf(ANSI_FMT("unsame for %s", ANSI_FG_RED)"\nexpect: %lu, res: %lu\n", e, expect, res);
             continue;
         }
         win++;
