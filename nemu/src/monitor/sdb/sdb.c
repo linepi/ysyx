@@ -117,7 +117,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "Usage: si [N]. Step N instruction, default 1. ", cmd_si },
   { "info", "Usage: info <r|w>. r --> register, w --> watch points. ", cmd_info },
-  { "x", "Usage: x <number of bytes> <addr>. example: x 10 0x80000000 ", cmd_x },
+  { "x", "Usage: x <number of bytes> <expression>. example: x 10 0x80000000 ", cmd_x },
   { "p", "Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
 
 };

@@ -52,6 +52,7 @@ static struct rule {
 };
 
 #define NR_REGEX ARRLEN(rules)
+#define TOKEN_STR_LEN 32
 
 static regex_t re[NR_REGEX] = {};
 
@@ -74,7 +75,7 @@ void init_regex() {
 
 typedef struct token {
   int type;
-  char str[32];
+  char str[TOKEN_STR_LEN];
 } Token;
 
 static Token tokens[32] __attribute__((used)) = {};
@@ -93,6 +94,9 @@ static bool make_token(char *e) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
+        if (substr_len >= TOKEN_STR_LEN) {
+          return false;
+        }
 
         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
