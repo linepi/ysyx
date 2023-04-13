@@ -51,6 +51,7 @@ static struct rule {
   {"==", TK_EQ},        // equal
   {"!=", TK_NE},        
   {">=", TK_GE},        
+  {"(?<!&)&(?!&)", TK_BAND},        
   {"(?<!>)>(?!>)", TK_GT},        
   {"(?<!<)<(?!<)", TK_LT},        
   {"<=", TK_LE},        
@@ -58,7 +59,7 @@ static struct rule {
   {"\\|\\|", TK_OR},        
   {"!", TK_NOT},        
   {"\\|", TK_BOR},        
-  {"(?<!&)&(?!&)", TK_BAND},        
+  // {"(?<!&)&(?!&)", TK_BAND},        
   {"\\^", TK_BXOR},        
   {"~", TK_BNOT},        
   {"<<", TK_LEFT},        
