@@ -159,8 +159,16 @@ static bool make_token(char *e) {
 
 static bool check_parentheses(int p, int q, bool *status) {
   int stacktop = -1;
-  int store_p = p;
+  int flag = 1;
   char *stack = (char*) malloc(q - p + 1);
+
+  if (tokens[p].type == '(') {
+    stack[++stacktop] = '(';
+    p = p + 1;
+  } else {
+    flag = 0;
+  }
+
   for (; p <= q; p++) {
     if (tokens[p].type == '(') stack[++stacktop] = '(';
     if (tokens[p].type == ')') {
@@ -170,8 +178,9 @@ static bool check_parentheses(int p, int q, bool *status) {
       }
       // match
       if (stack[stacktop] == '(') {
-        if (p == q && tokens[store_p].type == '(') return true;
+        if (p == q && flag) return true;
         stacktop--;
+        if (stacktop == -1) flag = 0; 
       }
     }
   }
