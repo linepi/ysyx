@@ -137,6 +137,6 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-
+  *success = true;
   return 0;
 }
