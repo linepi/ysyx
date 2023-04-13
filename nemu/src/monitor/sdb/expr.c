@@ -169,7 +169,7 @@ static bool check_parentheses(int p, int q, bool *status) {
   return false;
 }
 
-static bool get_priority(int type) {
+static int get_priority(int type) {
   switch (type) {
     case TK_AND: case TK_OR: return 1;
     case TK_BAND: case TK_BOR: case TK_BXOR: return 2;
