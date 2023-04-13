@@ -1,4 +1,6 @@
+#include <common.h>
+sword_t expr(char *e, bool *success);
 
 void test_expr() {
-    printf("Hello\n");
+    expr(NULL, NULL);
 }
