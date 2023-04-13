@@ -19,6 +19,7 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
+#include "sdb.h"
 
 enum {
   TK_NOTYPE = 256, 
@@ -209,13 +210,13 @@ static int get_main_operator(int p, int q) {
   return idx;
 }
 
-static sword_t eval(int p, int q, bool *status) {
+static expr_t eval(int p, int q, bool *status) {
   if (*status == false) return 0;
 
   if (p > q) {
     *status = false;
   } else if (p == q) {
-    sword_t val = 0;
+    expr_t val = 0;
     if (tokens[p].type == TK_DEC) {
       val = strtol(tokens[p].str, NULL, 10);
     } else if (tokens[p].type == TK_HEX) {
@@ -232,7 +233,7 @@ static sword_t eval(int p, int q, bool *status) {
     // get the main operator
     int op_idx = get_main_operator(p, q);
     int type = tokens[op_idx].type;
-    sword_t val2 = eval(op_idx + 1, q, status);
+    expr_t val2 = eval(op_idx + 1, q, status);
     if (type == TK_NOT) {
       return !val2;
     } else if (type == TK_BNOT) {
@@ -240,7 +241,7 @@ static sword_t eval(int p, int q, bool *status) {
     } else if (type == TK_NEG) {
       return -val2; 
     } else {
-      sword_t val1 = eval(p, op_idx - 1, status);
+      expr_t val1 = eval(p, op_idx - 1, status);
       switch (tokens[op_idx].type) {
         case '+': return val1 + val2;
         case '-': return val1 - val2;
@@ -275,7 +276,7 @@ static sword_t eval(int p, int q, bool *status) {
   }
 }
 
-sword_t expr(char *e, bool *success) {
+expr_t expr(char *e, bool *success) {
   *success = true;
   if (!make_token(e)) {
     *success = false;
@@ -283,7 +284,7 @@ sword_t expr(char *e, bool *success) {
   }
 
   bool status = true;
-  sword_t res = eval(0, nr_token - 1, &status); 
+  expr_t res = eval(0, nr_token - 1, &status); 
   if (!status) {
     *success = false; 
   }

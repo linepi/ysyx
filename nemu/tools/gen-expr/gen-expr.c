@@ -20,6 +20,8 @@
 #include <assert.h>
 #include <string.h>
 
+#define NUM_FMT "%lu"
+
 // this should be enough
 static char buf[65536] = {};
 static int idx = 0;
@@ -27,8 +29,8 @@ static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format =
 "#include <stdio.h>\n"
 "int main() { "
-"  long result = %s; "
-"  printf(\"%%ld\", result); "
+"  unsigned long result = %s; "
+"  printf(\"%%lu\", result); "
 "  return 0; "
 "}";
 
@@ -39,7 +41,7 @@ static int choose(int n) {
 static void gen_num() {
   // long random_l = ((long int)rand() << 32) | rand();
   long random_l = rand() % 1000;
-  sprintf(buf + idx, "%ld", random_l);
+  sprintf(buf + idx, NUM_FMT, random_l);
   idx = strlen(buf);
 }
 
@@ -94,10 +96,10 @@ int main(int argc, char *argv[]) {
     assert(fp != NULL);
 
     long result;
-    fscanf(fp, "%ld", &result);
+    fscanf(fp, NUM_FMT, &result);
     pclose(fp);
 
-    printf("%ld %s\n", result, buf);
+    printf(NUM_FMT " %s\n", result, buf);
   }
   return 0;
 }

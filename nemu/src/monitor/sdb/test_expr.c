@@ -1,24 +1,25 @@
 #include <common.h>
 #include <debug.h>
-sword_t expr(char *e, bool *success);
+#include "sdb.h"
+// 121+((216-818)*819*298)*302
 
 void test_expr() {
     FILE* fp = fopen("/home/w/dev/ysyx-workbench/nemu/tools/gen-expr/build/test1", "r");
     assert(fp != NULL);
-    long expect;
+    expr_t expect;
     char e[20000];
     int cnt = 0;
     int win = 0;
-    while (fscanf(fp, "%ld", &expect) != EOF && fscanf(fp, "%s", e) != EOF) {
+    while (fscanf(fp, "%lu", &expect) != EOF && fscanf(fp, "%s", e) != EOF) {
         cnt++;
         bool success;
-        sword_t res = expr(e, &success);
+        expr_t res = expr(e, &success);
         if (!success) {
             printf("expr fail for %s\n", e);
             continue;
         }
         if (res != expect) {
-            printf("unsame for %s\nexpect: %ld, res: %ld\n", e, expect, res);
+            printf("unsame for %s\nexpect: %lu, res: %lu\n", e, expect, res);
             continue;
         }
         win++;

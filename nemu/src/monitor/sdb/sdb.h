@@ -18,6 +18,7 @@
 
 #include <common.h>
 
-sword_t expr(char *e, bool *success);
+typedef word_t expr_t;
+expr_t expr(char *e, bool *success);
 
 #endif

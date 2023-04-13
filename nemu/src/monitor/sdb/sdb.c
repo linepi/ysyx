@@ -96,12 +96,12 @@ static int cmd_x(char *args) {
 
 static int cmd_p(char *args) {
   bool success;
-  sword_t val = expr(args, &success);
+  expr_t val = expr(args, &success);
   if (!success) {
     Error("Invalid Expression\n");
     return 0;
   }
-  printf("%ld\n", val);
+  printf("%lu\n", val);
   return 0;
 }
 
