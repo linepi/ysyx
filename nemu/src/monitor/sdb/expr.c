@@ -215,7 +215,7 @@ static sword_t eval(int p, int q, bool *status) {
   if (p > q) {
     *status = false;
   } else if (p == q) {
-    long val = 0;
+    sword_t val = 0;
     if (tokens[p].type == TK_DEC) {
       val = strtol(tokens[p].str, NULL, 10);
     } else if (tokens[p].type == TK_HEX) {
@@ -245,14 +245,16 @@ static sword_t eval(int p, int q, bool *status) {
         case '+': return val1 + val2;
         case '-': return val1 - val2;
         case '*': return val1 * val2;
-        case '/': 
+        case '/': case '%':
           if (val2 == 0) {
-            Error("division by zero exception\n");
+            Error("Division by zero exception\n");
             *status = false;
             return 0;
           }
-          return val1 / val2;
-        case '%': return val1 % val2;
+          if (tokens[op_idx].type == '/')
+            return val1 / val2;
+          else 
+            return val1 % val2;
         case TK_EQ: return val1 == val2;
         case TK_NE: return val1 != val2;
         case TK_GT: return val1 > val2;

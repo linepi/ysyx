@@ -38,7 +38,7 @@ static int choose(int n) {
 
 static void gen_num() {
   // long random_l = ((long int)rand() << 32) | rand();
-  long random_l = rand();
+  long random_l = rand() % 1000;
   sprintf(buf + idx, "%ld", random_l);
   idx = strlen(buf);
 }
