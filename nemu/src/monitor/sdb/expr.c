@@ -64,7 +64,7 @@ static struct rule {
   {"\\^", TK_BXOR},        
   {"~", TK_BNOT},        
   {"-", TK_NEG},        
-  {"[1-9][0-9]*", TK_DEC},    // digital number
+  {"[0-9]+", TK_DEC},    // digital number
   {"0[x,X][0-9]+", TK_HEX},    // digital number
   {"\\$\\w{2,3}", TK_REG},    // digital number
 };
@@ -128,6 +128,14 @@ static bool make_token(char *e) {
             tokens[nr_token].type = rules[i].token_type;
             memcpy(tokens[nr_token].str, e + position - substr_len, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
+            nr_token++;
+            break;
+          case TK_NEG: case '-':
+            if (nr_token == 0 || tokens[nr_token - 1].type == '(') tokens[nr_token].type = TK_NEG;
+            else if (tokens[nr_token - 1].type == TK_DEC || 
+                     tokens[nr_token - 1].type == TK_HEX || 
+                     tokens[nr_token - 1].type == TK_REG ) tokens[nr_token].type = '-';
+            else tokens[nr_token].type = TK_NEG;
             nr_token++;
             break;
           default:
