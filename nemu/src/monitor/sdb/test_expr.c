@@ -6,7 +6,7 @@ void test_expr() {
     FILE* fp = fopen("/home/w/dev/ysyx-workbench/nemu/tools/gen-expr/build/test0", "r");
     assert(fp != NULL);
     long expect;
-    char e[200000];
+    char e[2000000];
     int cnt = 0;
     int win = 0;
     while (fscanf(fp, "%ld", &expect) != EOF && fscanf(fp, "%s", e) != EOF) {
