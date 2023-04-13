@@ -190,7 +190,10 @@ static int get_main_operator(int p, int q) {
     if (tokens[p].type == ')') leftn--;
     if ((tokens[p].type <= TK_RIGHT && tokens[p].type >= TK_EQ) || tokens[p].type < 256) {
       int tmp = get_priority(tokens[p].type); 
-      if (tmp <= priority && leftn == 0) idx = p;
+      if (tmp <= priority && leftn == 0) {
+        priority = tmp;
+        idx = p;
+      }
     }
   }
   return idx;
