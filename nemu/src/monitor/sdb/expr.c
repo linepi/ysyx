@@ -22,7 +22,9 @@
 
 enum {
   TK_NOTYPE = 256, TK_EQ,
-
+  TK_NUMBER,
+  TK_REG,
+  TK_HEX
   /* TODO: Add more token types */
 
 };
@@ -38,7 +40,15 @@ static struct rule {
 
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
+  {"\\(", '('},         
+  {"\\)", ')'},         
+  {"-", '-'},         
+  {"\\*", '*'},         
+  {"/", '/'},         
   {"==", TK_EQ},        // equal
+  {"-?[1-9][0-9]*", TK_NUMBER},    // digital number
+  {"\\$\\w{2,3}", TK_REG},    // digital number
+  {"0[x,X][0-9]+", TK_HEX}
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -89,13 +99,17 @@ static bool make_token(char *e) {
 
         position += substr_len;
 
-        /* TODO: Now a new token is recognized with rules[i]. Add codes
-         * to record the token in the array `tokens'. For certain types
-         * of tokens, some extra actions should be performed.
-         */
-
         switch (rules[i].token_type) {
-          default: TODO();
+          case TK_NOTYPE: 
+            break;
+          case '+': case '-': case '*': case '/': case '(': case ')': case TK_EQ:
+            tokens[nr_token++].type = rules[i].token_type;
+            break;
+          case TK_NUMBER: TK_HEX: TK_REG:
+            tokens[nr_token++].type = rules[i].token_type;
+            memcpy(tokens[nr_token].str, e + position, substr_len);
+            tokens[nr_token].str[substr_len] = '\0';
+            break;
         }
 
         break;

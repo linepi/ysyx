@@ -81,10 +81,25 @@ static int cmd_info(char *args) {
 static int cmd_x(char *args) {
   char* len = strtok(args, " ");
   char* tmp = strtok(NULL, " ");
-  paddr_t paddr = strtoul(tmp, NULL, 16);
+  bool success;
+  paddr_t paddr = expr(tmp, &success);
+  if (!success) {
+    Error("Invalid Expression!\n");
+  }
   for(int i = 0; i < atoi(len); i++) {
     printf("%02x ", *guest_to_host(paddr + i));
   }
+  printf("\n");
+  return 0;
+}
+
+static int cmd_p(char *args) {
+  bool success;
+  int val = expr(args, &success);
+  if (!success) {
+    Error("Invalid Expression\n");
+  }
+  printf("%d\n", val);
   return 0;
 }
 
@@ -101,7 +116,7 @@ static struct {
   { "si", "Usage: si [N]. Step N instruction, default 1. ", cmd_si },
   { "info", "Usage: info <r|w>. r --> register, w --> watch points. ", cmd_info },
   { "x", "Usage: x <number of bytes> <addr>. example: x 10 0x80000000 ", cmd_x },
-  /* TODO: Add more commands */
+  { "p", "Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
 
 };
 
