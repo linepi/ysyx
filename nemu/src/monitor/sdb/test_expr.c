@@ -1,6 +1,6 @@
 #include <common.h>
 #include <debug.h>
-#include "sdb.h"
+sword_t expr(char *e, bool *success);
 
 void test_expr() {
     FILE* fp = fopen("/home/w/dev/ysyx-workbench/nemu/tools/gen-expr/build/test0", "r");
