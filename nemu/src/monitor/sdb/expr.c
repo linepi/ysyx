@@ -57,7 +57,7 @@ static struct rule {
   {"&&", TK_AND},        
   {"\\|\\|", TK_OR},        
   {"!", TK_NOT},        
-  {"|", TK_BOR},        
+  {"\\|", TK_BOR},        
   {"&", TK_BAND},        
   {"^", TK_BXOR},        
   {"~", TK_BNOT},        
