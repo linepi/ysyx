@@ -55,7 +55,7 @@ static struct rule {
   {"<", TK_LT},        
   {"<=", TK_LE},        
   {"&&", TK_AND},        
-  {"||", TK_OR},        
+  {"\\|\\|", TK_OR},        
   {"!", TK_NOT},        
   {"|", TK_BOR},        
   {"&", TK_BAND},        
@@ -199,7 +199,7 @@ static sword_t eval(int p, int q, bool *status) {
   if (p > q) {
     *status = false;
   } else if (p == q) {
-    long val;
+    long val = 0;
     if (tokens[p].type == TK_DEC) {
       val = strtol(tokens[p].str, NULL, 10);
     } else if (tokens[p].type == TK_HEX) {
