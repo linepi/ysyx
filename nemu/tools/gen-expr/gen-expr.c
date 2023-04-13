@@ -40,7 +40,7 @@ static int choose(int n) {
 
 static void gen_num() {
   // long random_l = ((long int)rand() << 32) | rand();
-  long random_l = rand() % 100 + 1;
+  long random_l = rand() % 1000 + 1;
   sprintf(buf + idx, NUM_FMT, random_l);
   idx = strlen(buf);
 }
@@ -62,7 +62,7 @@ static void gen_rand_op() {
 
 static void gen_rand_expr() {
   int cs = choose(8);
-  if (idx >= 8) cs = 0;
+  if (idx >= 100) cs = 0;
   switch (cs) {
     case 0: gen_num(); break;
     case 1: gen('('); gen_rand_expr(); gen(')'); break;
