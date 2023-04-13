@@ -134,7 +134,8 @@ static bool make_token(char *e) {
             if (nr_token == 0 || tokens[nr_token - 1].type == '(') tokens[nr_token].type = TK_NEG;
             else if (tokens[nr_token - 1].type == TK_DEC || 
                      tokens[nr_token - 1].type == TK_HEX || 
-                     tokens[nr_token - 1].type == TK_REG ) tokens[nr_token].type = '-';
+                     tokens[nr_token - 1].type == TK_REG || 
+                     tokens[nr_token].type == ')') tokens[nr_token].type = '-';
             else tokens[nr_token].type = TK_NEG;
             nr_token++;
             break;
