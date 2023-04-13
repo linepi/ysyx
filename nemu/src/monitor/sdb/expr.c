@@ -231,7 +231,7 @@ static expr_t eval(int p, int q, bool *status) {
     } else if (tokens[p].type == TK_HEX) {
       val = strtol(tokens[p].str, NULL, 16);
     } else if (tokens[p].type == TK_REG) {
-      bool success;
+      bool success = true;
       val = isa_reg_str2val(tokens[p].str + 1, &success);
       if (!success) 
         *status = false;
