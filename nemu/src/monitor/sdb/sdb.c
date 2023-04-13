@@ -85,6 +85,7 @@ static int cmd_x(char *args) {
   paddr_t paddr = expr(tmp, &success);
   if (!success) {
     Error("Invalid Expression!\n");
+    return 0;
   }
   for(int i = 0; i < atoi(len); i++) {
     printf("%02x ", *guest_to_host(paddr + i));
@@ -98,6 +99,7 @@ static int cmd_p(char *args) {
   int val = expr(args, &success);
   if (!success) {
     Error("Invalid Expression\n");
+    return 0;
   }
   printf("%d\n", val);
   return 0;
