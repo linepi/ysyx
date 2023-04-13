@@ -60,7 +60,7 @@ static void gen_rand_op() {
 
 static void gen_rand_expr() {
   int cs = choose(8);
-  if (idx >= 1000) cs = 0;
+  if (idx >= 100) cs = 0;
   switch (cs) {
     case 0: gen_num(); break;
     case 1: gen('('); gen_rand_expr(); gen(')'); break;
