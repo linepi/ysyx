@@ -21,12 +21,14 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,
-  TK_NUMBER,
+  TK_NOTYPE = 256, 
+  TK_DEC,
   TK_REG,
-  TK_HEX
+  TK_HEX,
+  TK_EQ, TK_NE, TK_GE, TK_GT, TK_LT, TK_LE,
+  TK_AND, TK_OR, TK_NOT, TK_BOR, TK_BAND, TK_BXOR, TK_BNOT, 
+  TK_LEFT, TK_RIGHT, TK_NEG,
   /* TODO: Add more token types */
-
 };
 
 static struct rule {
@@ -43,12 +45,28 @@ static struct rule {
   {"\\(", '('},         
   {"\\)", ')'},         
   {"-", '-'},         
+  {"%", '%'},
   {"\\*", '*'},         
   {"/", '/'},         
   {"==", TK_EQ},        // equal
-  {"-?[1-9][0-9]*", TK_NUMBER},    // digital number
+  {"!=", TK_NE},        
+  {">=", TK_GE},        
+  {">", TK_GT},        
+  {"<", TK_LT},        
+  {"<=", TK_LE},        
+  {"&&", TK_AND},        
+  {"||", TK_OR},        
+  {"!", TK_NOT},        
+  {"|", TK_BOR},        
+  {"&", TK_BAND},        
+  {"^", TK_BXOR},        
+  {"~", TK_BNOT},        
+  {"<<", TK_LEFT},        
+  {">>", TK_RIGHT},        
+  {"-", TK_NEG},        
+  {"-?[1-9][0-9]*", TK_DEC},    // digital number
+  {"0[x,X][0-9]+", TK_HEX},    // digital number
   {"\\$\\w{2,3}", TK_REG},    // digital number
-  {"0[x,X][0-9]+", TK_HEX}
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -107,9 +125,10 @@ static bool make_token(char *e) {
           case TK_NOTYPE: 
             break;
           case '+': case '-': case '*': case '/': case '(': case ')': case TK_EQ:
+          case TK_NE: case TK_GE: case TK_GT: case TK_LE: case TK_LT:
             tokens[nr_token++].type = rules[i].token_type;
             break;
-          case TK_NUMBER: TK_HEX: TK_REG:
+          case TK_DEC: TK_HEX: TK_REG:
             tokens[nr_token++].type = rules[i].token_type;
             memcpy(tokens[nr_token].str, e + position, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
@@ -129,14 +148,121 @@ static bool make_token(char *e) {
   return true;
 }
 
+static bool check_parentheses(int p, int q, bool *status) {
+  int stacktop = -1;
+  char *stack = (char*) malloc(q - p + 1);
+  for (; p <= q; p++) {
+    if (tokens[p].type == '(') stack[++stacktop] = '(';
+    if (tokens[p].type == ')') {
+      if (stacktop < 0 || stack[stacktop] == ')') {
+        *status = false; // invalid expression
+        return false;
+      }
+      // match
+      if (stack[stacktop] == '(') {
+        if (p == q) return true;
+        stacktop--;
+      }
+    }
+  }
+  return false;
+}
 
-word_t expr(char *e, bool *success) {
+static bool get_priority(char *op) {
+  if (strcmp("||", op) == 0 || strcmp("&&", op) == 0) return 1;
+  if (strcmp("|", op) == 0 || strcmp("&", op) == 0 || strcmp("^", op) == 0) return 2;
+  if (strcmp("==", op) == 0 || strcmp("!=", op) == 0) return 3;
+  if (strcmp("<<", op) == 0 || strcmp(">>", op) == 0) return 4;
+  if (strcmp("+", op) == 0 || strcmp("-", op) == 0) return 5;
+  if (strcmp("*", op) == 0 || strcmp("/", op) == 0 || strcmp("%", op) == 0) return 6;
+  if (strcmp("~", op) == 0 || strcmp("!", op) == 0 || strcmp("-", op) == 0) return 7;
+}
+
+static int get_main_operator(int p, int q) {
+  int idx = 0;
+  int priority = 100;
+  int leftn = 0;
+  for (; p <= q; p++) {
+    if (tokens[p].type == '(') leftn++;
+    if (tokens[p].type == ')') leftn--;
+    if (tokens[p].type <= TK_RIGHT && tokens[p].type >= TK_EQ) {
+      int tmp = get_priority(tokens[p].str); 
+      if (tmp <= priority && leftn == 0) idx = p;
+    }
+  }
+  return idx;
+}
+
+static sword_t eval(int p, int q, bool *status) {
+  if (*status == false) return 0;
+
+  if (p > q) {
+    *status = false;
+  } else if (p == q) {
+    long val;
+    if (tokens[p].type == TK_DEC) {
+      val = strtol(tokens[p].str, NULL, 10);
+    } else if (tokens[p].type == TK_HEX) {
+      val = strtol(tokens[p].str, NULL, 16);
+    } else if (tokens[p].type == TK_REG) {
+      val = 0;
+    } else {
+      *status = false;
+    }
+    return val;
+  } else if (check_parentheses(p, q, status) == true) {
+    return eval(p + 1, q - 1, status); 
+  } else {
+    // get the main operator
+    int op_idx = get_main_operator(p, q);
+    int type = tokens[op_idx].type;
+    sword_t val2 = eval(op_idx + 1, q, status);
+    if (type == TK_NOT) {
+      return !val2;
+    } else if (type == TK_BNOT) {
+      return ~val2;
+    } else if (type == TK_NEG) {
+      return -val2; 
+    } else {
+      sword_t val1 = eval(p, op_idx - 1, status);
+      switch (tokens[op_idx].type) {
+        case '+': return val1 + val2;
+        case '-': return val1 - val2;
+        case '*': return val1 * val2;
+        case '/': return val2 / val2;
+        case '%': return val2 % val2;
+        case TK_EQ: return val1 == val2;
+        case TK_NE: return val1 != val2;
+        case TK_GT: return val1 > val2;
+        case TK_GE: return val1 >= val2;
+        case TK_LT: return val1 < val2;
+        case TK_LE: return val1 <= val2;
+        case TK_AND: return val1 && val2;
+        case TK_OR: return val1 || val2;
+        case TK_BAND: return val1 & val2;
+        case TK_BOR: return val1 | val2;
+        case TK_BXOR: return val1 ^ val2;
+        case TK_RIGHT: return val1 >> val2;
+        case TK_LEFT: return val1 << val2;
+        default: 
+          Error("");
+          assert(0);
+      }
+    }
+  }
+}
+
+sword_t expr(char *e, bool *success) {
+  *success = true;
   if (!make_token(e)) {
     *success = false;
     return 0;
   }
 
-  /* TODO: Insert codes to evaluate the expression. */
-  *success = true;
-  return 0;
+  bool status = true;
+  sword_t res = eval(0, nr_token - 1, &status); 
+  if (!status) {
+    *success = false; 
+  }
+  return res;
 }

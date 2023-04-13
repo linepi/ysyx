@@ -39,7 +39,8 @@
 #define panic(format, ...) Assert(0, format, ## __VA_ARGS__)
 
 #define Error(format, ...) \
-    printf(ANSI_FMT(format, ANSI_FG_RED), ##__VA_ARGS__);
+    printf(ANSI_FMT("[%s:%d %s] ", ANSI_FG_RED) format"\n", \
+        __FILE__, __LINE__, __func__, ## __VA_ARGS__)
 
 #define TODO() panic("please implement me")
 
