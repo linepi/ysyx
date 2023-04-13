@@ -149,6 +149,7 @@ static bool make_token(char *e) {
 
 static bool check_parentheses(int p, int q, bool *status) {
   int stacktop = -1;
+  int store_p = p;
   char *stack = (char*) malloc(q - p + 1);
   for (; p <= q; p++) {
     if (tokens[p].type == '(') stack[++stacktop] = '(';
@@ -159,7 +160,7 @@ static bool check_parentheses(int p, int q, bool *status) {
       }
       // match
       if (stack[stacktop] == '(') {
-        if (p == q) return true;
+        if (p == q && tokens[p].type == '(') return true;
         stacktop--;
       }
     }
