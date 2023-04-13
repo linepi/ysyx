@@ -160,7 +160,7 @@ static bool check_parentheses(int p, int q, bool *status) {
       }
       // match
       if (stack[stacktop] == '(') {
-        if (p == q && tokens[p].type == '(') return true;
+        if (p == q && tokens[store_p].type == '(') return true;
         stacktop--;
       }
     }
@@ -189,7 +189,7 @@ static int get_main_operator(int p, int q) {
     if (tokens[p].type == '(') leftn++;
     if (tokens[p].type == ')') leftn--;
     if ((tokens[p].type <= TK_RIGHT && tokens[p].type >= TK_EQ) || 
-        (tokens[p].type < 256 && (tokens[p].type != '(' && tokens[p].type != ')'))) {
+        (tokens[p].type < 256 && tokens[p].type != '(' && tokens[p].type != ')')) {
       int tmp = get_priority(tokens[p].type); 
       if (tmp <= priority && leftn == 0) {
         priority = tmp;
