@@ -64,7 +64,7 @@ static struct rule {
   {"\\^", TK_BXOR},        
   {"~", TK_BNOT},        
   {"-", TK_NEG},        
-  {"-?[1-9][0-9]*", TK_DEC},    // digital number
+  {"?[1-9][0-9]*", TK_DEC},    // digital number
   {"0[x,X][0-9]+", TK_HEX},    // digital number
   {"\\$\\w{2,3}", TK_REG},    // digital number
 };
