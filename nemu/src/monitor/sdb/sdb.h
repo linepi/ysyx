@@ -18,7 +18,8 @@
 
 #include <common.h>
 
-typedef word_t expr_t;
+typedef sword_t expr_t;
+#define EXPR_NUM_FMT "%lu"
 expr_t expr(char *e, bool *success);
 
 #endif

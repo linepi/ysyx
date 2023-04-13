@@ -101,7 +101,7 @@ static int cmd_p(char *args) {
     Error("Invalid Expression\n");
     return 0;
   }
-  printf("%lu\n", val);
+  printf(EXPR_NUM_FMT"\n", val);
   return 0;
 }
 
