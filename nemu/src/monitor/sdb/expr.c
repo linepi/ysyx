@@ -266,7 +266,6 @@ static sword_t eval(int p, int q, bool *status) {
         case TK_RIGHT: return val1 >> val2;
         case TK_LEFT: return val1 << val2;
         default: 
-          Error("");
           assert(0);
       }
     }
