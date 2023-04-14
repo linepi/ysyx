@@ -20,7 +20,7 @@
  */
 #include <regex.h>
 #include <memory/paddr.h>
-#include "sdb.h"
+#include <sdb.h>
 
 enum {
   TK_NOTYPE = 256, 

@@ -48,8 +48,8 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       continue;
     }
     if (val != i->val) {
-      printf("old val: "EXPR_NUM_FMT, i->val);
-      printf("new val: "EXPR_NUM_FMT, val);
+      printf("old val: "EXPR_NUM_FMT"\n", i->val);
+      printf("new val: "EXPR_NUM_FMT"\n", val);
       i->val = val;
       nemu_state.state = NEMU_STOP;
     }
