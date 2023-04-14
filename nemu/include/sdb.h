@@ -35,5 +35,6 @@ typedef struct watchpoint {
 expr_t expr(char *e, bool *success);
 WP* new_wp();
 void free_wp(WP *wp);
+WP* get_wp_head();
 
 #endif

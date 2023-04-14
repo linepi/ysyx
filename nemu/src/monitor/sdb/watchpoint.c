@@ -13,7 +13,7 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-#include "sdb.h"
+#include <sdb.h>
 
 
 static WP wp_pool[NR_WP] = {};
@@ -31,7 +31,10 @@ void init_wp_pool() {
   free_ = wp_pool;
 }
 
-/* TODO: Implement the functionality of watchpoint */
+WP* get_wp_head() {
+  return head;
+}
+
 WP* new_wp() {
   if (free_ == NULL) {
     Error("No more freed wp\n");
