@@ -117,7 +117,18 @@ static int cmd_px(char *args) {
   return 0;
 }
 static int cmd_w(char *args) {
+  bool success;int cmd_w(char *args) {
   bool success;
+  expr_t val = expr(args, &success);
+  if (!success) {
+    Error("Invalid Expression\n");
+    return 0;
+  }
+  WP *new = new_wp();
+  memcpy(new->e, args, strlen(args) + 1);  // copy args and its end '\0'
+  new->val = val;
+  return 0;
+}
   expr_t val = expr(args, &success);
   if (!success) {
     Error("Invalid Expression\n");
