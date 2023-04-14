@@ -63,12 +63,24 @@ static void gen(char c) {
 }
 
 static void gen_rand_op() {
-  switch (choose(4)) {
+  switch (choose(11)) {
     case 0: gen('+'); break;
     case 1: gen('-'); break;
     case 2: gen('*'); break;
     case 3: gen('/'); break;
+    case 4: gen('%'); break;
+    case 5: gen('^'); break;
+    case 6: gen('|'); break;
+    case 7: gen('&'); break;
+    case 8: gen('<'); gen('<'); break;
+    case 9: gen('>'); gen('>'); break;
     default: gen('+'); break;
+  }
+}
+
+static void gen_rand_1op() {
+  switch (choose(1)) {
+    case 0: gen('~'); break;
   }
 }
 
@@ -80,6 +92,7 @@ static void gen_rand_expr() {
   switch (cs) {
     case 0: gen_num(); break;
     case 1: gen('('); gen_rand_expr(); gen(')'); break;
+    case 2: gen_rand_1op(); gen_rand_expr(); break;
     default: 
       gen_rand_expr(); 
       gen_rand_op(); 
