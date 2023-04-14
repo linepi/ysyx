@@ -92,7 +92,7 @@ static void gen_rand_expr() {
   switch (cs) {
     case 0: gen_num(); break;
     case 1: gen('('); gen_rand_expr(); gen(')'); break;
-    case 2: gen_rand_1op(); gen_rand_expr(); break;
+    // case 2: gen_rand_1op(); gen_rand_expr(); break;
     default: 
       gen_rand_expr(); 
       gen_rand_op(); 

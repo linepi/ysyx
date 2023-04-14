@@ -168,7 +168,7 @@ static bool make_token(char *e) {
   return true;
 }
 
-static bool check_parentheses(int p, int q, bool *status) {
+static bool check_parentheses1(int p, int q, bool *status) {
   int stacktop = -1;
   int flag = 1;
   char *stack = (char*) malloc(q - p + 1);
@@ -201,6 +201,26 @@ static bool check_parentheses(int p, int q, bool *status) {
   }
   free((void*)stack);
   return false;
+}
+
+bool check_parentheses(int p, int q, bool *status) {
+    if (tokens[p].type != '(') {
+        return false;
+    }
+
+    int open_parentheses = 1;
+    p++;
+    for (; p <= q; ++p) {
+        if (tokens[p].type == '(') {
+            open_parentheses++;
+        } else if (tokens[p].type == ')') {
+            open_parentheses--;
+            if (open_parentheses == 0 && p != q) {
+                return false;
+            }
+        }
+    }
+    return open_parentheses == 0;
 }
 
 static int get_priority(int type) {
