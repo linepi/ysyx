@@ -19,7 +19,7 @@
 #include <common.h>
 
 typedef sword_t expr_t;
-#define EXPR_NUM_FMT "%lu"
+#define EXPR_NUM_FMT "%ld"
 expr_t expr(char *e, bool *success);
 
 #endif
