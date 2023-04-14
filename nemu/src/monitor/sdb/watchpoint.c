@@ -22,11 +22,12 @@ typedef struct watchpoint {
   struct watchpoint *next;
 
   /* TODO: Add more members if necessary */
-
+  uint32_t *addr;
 } WP;
 
 static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
+static int number = 0;
 
 void init_wp_pool() {
   int i;
@@ -40,4 +41,31 @@ void init_wp_pool() {
 }
 
 /* TODO: Implement the functionality of watchpoint */
+WP* new_wp() {
+  if (free_ == NULL) {
+    Error("No more freed wp\n");
+    assert(0);
+  }
+  WP *t = free_->next;
+  free_->next = head;
+  head = free_;
+  free_ = t;
+
+  head->NO = ++number;
+  return head;
+};
+
+void free_wp(WP *wp) {
+  if (wp == NULL) return;
+  WP *t = head;
+  while (t->next) {
+    if (t->next == wp) {
+      t->next = wp->next;
+      wp->next = free_;
+      free_ = wp;
+      break;
+    }
+    t = t->next;
+  }
+};
 
