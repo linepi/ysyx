@@ -52,6 +52,14 @@ WP* new_wp() {
 void free_wp(WP *wp) {
   if (wp == NULL) return;
   WP *t = head;
+
+  if (t == wp) {
+    head = head->next;
+    wp->next = free_;
+    free_ = wp;
+    return;
+  }
+
   while (t->next) {
     if (t->next == wp) {
       t->next = wp->next;
