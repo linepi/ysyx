@@ -114,7 +114,6 @@ static bool make_token(char *e) {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i ++) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
-        char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
         if (substr_len >= TOKEN_STR_LEN) {
           return false;
@@ -210,6 +209,7 @@ static int get_priority(int type) {
     case '+': case '-': return 5;
     case '*': case '/': case '%': return 6;
     case TK_BNOT: case TK_NOT: case TK_NEG: case TK_DEREFERENCE: return 7;
+    default: return 0;
   }
 }
 
@@ -237,6 +237,7 @@ static expr_t eval(int p, int q, bool *status) {
 
   if (p > q) {
     *status = false;
+    return 0;
   } else if (p == q) {
     expr_t val = 0;
     if (tokens[p].type == TK_DEC) {
