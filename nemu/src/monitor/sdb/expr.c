@@ -159,10 +159,10 @@ static bool make_token(char *e) {
       }
     }
 
-    if (i == NR_REGEX) {
-      printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
-      return false;
-    }
+    // if (i == NR_REGEX) {
+    //   printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
+    //   return false;
+    // }
   }
 
   return true;
@@ -297,7 +297,8 @@ static expr_t eval(int p, int q, bool *status) {
         case TK_RIGHT: return val1 >> val2;
         case TK_LEFT: return val1 << val2;
         default: 
-          assert(0);
+          *status = false;
+          return 0;
       }
     }
   }
