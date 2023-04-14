@@ -129,8 +129,8 @@ static struct {
   { "si", "Usage: si [N]. Step N instruction, default 1. ", cmd_si },
   { "info", "Usage: info <r|w>. r --> register, w --> watch points. ", cmd_info },
   { "x", "Usage: x <number of bytes> <expression>. example: x 10 0x80000000 ", cmd_x },
-  { "p", "Usage: p[/x] <expression>. example: p $s0 + 5 ", cmd_p },
-  { "p/x", "Usage: p/x <expression>. example: p $s0 + 5 ", cmd_px },
+  { "p", "Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
+  { "p/x", "Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
   { "w", "Usage: w <expression>. example: w $s0 + 5 ", cmd_px },
 
 };
@@ -144,7 +144,7 @@ static int cmd_help(char *args) {
 
   if (arg == NULL) {
     /* no argument given */
-    for (i = 0; i < NR_CMD - 1; i ++) {
+    for (i = 0; i < NR_CMD; i ++) {
       printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
     }
   }
