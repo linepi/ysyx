@@ -265,7 +265,7 @@ static expr_t eval(int p, int q, bool *status) {
     } else if (type == TK_NEG) {
       return -val2; 
     } else if (type == TK_DEREFERENCE){
-      assert(PMEM_VALID(val2));
+      assert(PADDR_VALID(val2));
       return *(uint32_t*)guest_to_host(val2);
     } else {
       expr_t val1 = eval(p, op_idx - 1, status);
