@@ -80,7 +80,7 @@ static int cmd_info(char *args) {
 
 static int cmd_x(char *args) {
   char* length = strtok(args, " ");
-  args = length + len(length) + 1;
+  args = length + strlen(length) + 1;
   bool success;
   paddr_t paddr = expr(args, &success);
   if (!success) {
