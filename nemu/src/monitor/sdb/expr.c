@@ -149,6 +149,8 @@ static bool make_token(char *e) {
                      tokens[nr_token - 1].type == TK_REG || 
                      tokens[nr_token - 1].type == ')') tokens[nr_token].type = '*';
             else tokens[nr_token].type = TK_DEREFERENCE;
+            nr_token++;
+            break;
           default:
             tokens[nr_token++].type = rules[i].token_type;
         }
