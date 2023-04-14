@@ -73,7 +73,7 @@ static void gen_rand_op() {
 }
 
 static void gen_rand_expr() {
-  if (choose(3)) gen(' ');
+  // if (choose(3)) gen(' ');
 
   int cs = choose(8);
   if (idx >= 100) cs = 0;
@@ -94,6 +94,7 @@ int main(int argc, char *argv[]) {
   int i;
   for (i = 0; i < loop; i ++) {
     idx = 0;
+    outidx = 0;
     gen_rand_expr();
 
     sprintf(code_buf, code_format, buf);
