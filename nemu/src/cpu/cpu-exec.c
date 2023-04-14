@@ -49,8 +49,10 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       continue;
     }
     if (val != i->val) {
+      printf("watchpoint %d: %s\n", i->NO, i->e);
       printf("old val: "EXPR_NUM_FMT"\n", i->val);
       printf("new val: "EXPR_NUM_FMT"\n", val);
+      if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
       i->val = val;
       nemu_state.state = NEMU_STOP;
     }
