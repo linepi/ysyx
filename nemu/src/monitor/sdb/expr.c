@@ -28,7 +28,7 @@ enum {
   TK_HEX,
   TK_EQ, TK_NE, TK_GE, TK_GT, TK_LT, TK_LE,
   TK_AND, TK_OR, TK_NOT, TK_BOR, TK_BAND, TK_BXOR, TK_BNOT, 
-  TK_LEFT, TK_RIGHT, TK_NEG,
+  TK_LEFT, TK_RIGHT, TK_NEG, TK_DEREFERENCE
   /* TODO: Add more token types */
 };
 
@@ -65,6 +65,7 @@ static struct rule {
   {"\\^", TK_BXOR},        
   {"~", TK_BNOT},        
   {"-", TK_NEG},        
+  {"*", TK_DEREFERENCE},        
   {"0[xX][0-9]+", TK_HEX},    
   {"[0-9]+", TK_DEC},    // digital number
   {"\\$\\w{2,3}", TK_REG},    
@@ -131,7 +132,7 @@ static bool make_token(char *e) {
             tokens[nr_token].str[substr_len] = '\0';
             nr_token++;
             break;
-          case TK_NEG: case '-':
+          case '-':
             if (nr_token == 0 || tokens[nr_token - 1].type == '(') tokens[nr_token].type = TK_NEG;
             else if (tokens[nr_token - 1].type == TK_DEC || 
                      tokens[nr_token - 1].type == TK_HEX || 
@@ -140,6 +141,13 @@ static bool make_token(char *e) {
             else tokens[nr_token].type = TK_NEG;
             nr_token++;
             break;
+          case '*':
+            if (nr_token == 0 || tokens[nr_token - 1].type == '(') tokens[nr_token].type = TK_DEREFERENCE;
+            else if (tokens[nr_token - 1].type == TK_DEC || 
+                     tokens[nr_token - 1].type == TK_HEX || 
+                     tokens[nr_token - 1].type == TK_REG || 
+                     tokens[nr_token - 1].type == ')') tokens[nr_token].type = '*';
+            else tokens[nr_token].type = TK_DEREFERENCE;
           default:
             tokens[nr_token++].type = rules[i].token_type;
         }
@@ -189,6 +197,7 @@ static bool check_parentheses(int p, int q, bool *status) {
 }
 
 static int get_priority(int type) {
+  // 简化的版本
   switch (type) {
     case TK_AND: case TK_OR: return 1;
     case TK_BAND: case TK_BOR: case TK_BXOR: return 2;
@@ -196,7 +205,7 @@ static int get_priority(int type) {
     case TK_RIGHT: case TK_LEFT: return 4;
     case '+': case '-': return 5;
     case '*': case '/': case '%': return 6;
-    case TK_BNOT: case TK_NOT: case TK_NEG: return 7;
+    case TK_BNOT: case TK_NOT: case TK_NEG: case TK_DEREFERENCE: return 7;
   }
 }
 
@@ -207,7 +216,7 @@ static int get_main_operator(int p, int q) {
   for (; p <= q; p++) {
     if (tokens[p].type == '(') leftn++;
     if (tokens[p].type == ')') leftn--;
-    if ((tokens[p].type <= TK_NEG && tokens[p].type >= TK_EQ) || 
+    if ((tokens[p].type <= TK_DEREFERENCE && tokens[p].type >= TK_EQ) || 
         (tokens[p].type < 256 && tokens[p].type != '(' && tokens[p].type != ')')) {
       int tmp = get_priority(tokens[p].type); 
       if (tmp <= priority && leftn == 0) {
@@ -252,6 +261,8 @@ static expr_t eval(int p, int q, bool *status) {
       return ~val2;
     } else if (type == TK_NEG) {
       return -val2; 
+    } else if (type == TK_DEREFERENCE){
+      
     } else {
       expr_t val1 = eval(p, op_idx - 1, status);
       switch (tokens[op_idx].type) {
@@ -295,10 +306,5 @@ expr_t expr(char *e, bool *success) {
     return 0;
   }
 
-  bool status = true;
-  expr_t res = eval(0, nr_token - 1, &status); 
-  if (!status) {
-    *success = false; 
-  }
-  return res;
+  return eval(0, nr_token - 1, &success); 
 }
