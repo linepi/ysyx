@@ -95,30 +95,13 @@ static int cmd_x(char *args) {
 }
 
 static int cmd_p(char *args) {
-  char *first = strtok(args, " ");
-  char *second = strtok(NULL, " ");
-  char *e = first;
-  if (second != NULL) {
-    if (strcmp(first, "hex") != 0) {
-      Error("Invalid command.");
-      printf("Usage: p [hex] <expression>. example: p $s0 + 5 \n");
-      return 0;
-    }
-    e = second;
-  }
-
   bool success;
-  expr_t val = expr(e, &success);
+  expr_t val = expr(args, &success);
   if (!success) {
     Error("Invalid Expression\n");
     return 0;
   }
-
-  if (second == NULL) {
-    printf(EXPR_NUM_FMT"\n", val);
-  } else {
-    printf("%lx\n", val);
-  }
+  printf(EXPR_NUM_FMT"\n", val);
   return 0;
 }
 
