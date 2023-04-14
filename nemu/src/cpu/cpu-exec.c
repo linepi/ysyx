@@ -49,7 +49,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       continue;
     }
     if (val != i->val) {
-      printf("watchpoint %d: %s\n", i->NO, i->e);
+      printf("hit watchpoint %d: %s\n", i->NO, i->e);
       printf("old val: "EXPR_NUM_FMT"\n", i->val);
       printf("new val: "EXPR_NUM_FMT"\n", val);
       IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
