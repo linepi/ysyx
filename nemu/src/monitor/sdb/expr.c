@@ -185,11 +185,15 @@ static bool check_parentheses(int p, int q, bool *status) {
     if (tokens[p].type == ')') {
       if (stacktop < 0 || stack[stacktop] == ')') {
         *status = false; // invalid expression
+        free((void*)stack);
         return false;
       }
       // match
       if (stack[stacktop] == '(') {
-        if (p == q && flag) return true;
+        if (p == q && flag) {
+          return true;
+          free((void*)stack);
+        }
         stacktop--;
         if (stacktop == -1) flag = 0; 
       }
