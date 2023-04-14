@@ -104,6 +104,16 @@ static int cmd_p(char *args) {
   printf(EXPR_NUM_FMT"\n", val);
   return 0;
 }
+static int cmd_px(char *args) {
+  bool success;
+  expr_t val = expr(args, &success);
+  if (!success) {
+    Error("Invalid Expression\n");
+    return 0;
+  }
+  printf("%lx\n", val);
+  return 0;
+}
 
 static int cmd_help(char *args);
 
@@ -118,7 +128,8 @@ static struct {
   { "si", "Usage: si [N]. Step N instruction, default 1. ", cmd_si },
   { "info", "Usage: info <r|w>. r --> register, w --> watch points. ", cmd_info },
   { "x", "Usage: x <number of bytes> <expression>. example: x 10 0x80000000 ", cmd_x },
-  { "p", "Usage: p [hex] <expression>. example: p $s0 + 5 ", cmd_p },
+  { "p", "Usage: p[/x]  <expression>. example: p $s0 + 5 ", cmd_p },
+  { "p/x", "Usage: p[/x]  <expression>. example: p $s0 + 5 ", cmd_p },
 
 };
 
