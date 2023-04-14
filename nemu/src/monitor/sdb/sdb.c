@@ -100,7 +100,7 @@ static int cmd_p(char *args) {
   char *e = first;
   if (second != NULL) {
     if (strcmp(first, "hex") != 0) {
-      Error("Invalid command.\n");
+      Error("Invalid command.");
       printf("Usage: p [hex] <expression>. example: p $s0 + 5 \n");
       return 0;
     }
