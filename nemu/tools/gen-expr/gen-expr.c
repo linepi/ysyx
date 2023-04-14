@@ -20,19 +20,85 @@
 #include <assert.h>
 #include <string.h>
 
+#define NUM_FMT "%ld"
+
 // this should be enough
 static char buf[65536] = {};
+static int idx = 0;
+static char outbuf[65536] = {};
+static int outidx = 0;
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format =
 "#include <stdio.h>\n"
 "int main() { "
-"  unsigned result = %s; "
-"  printf(\"%%u\", result); "
+"  long result = %s; "
+"  printf(\"%%ld\", result); "
 "  return 0; "
 "}";
 
+static int choose(int n) {
+  return rand() % n;
+}
+
+static void gen_num() {
+  // long random_l = ((long int)rand() << 32) | rand();
+  sprintf(buf + idx, "(long)");
+  idx = strlen(buf);
+
+  long random_l = rand() % 10000 + 1;
+
+  sprintf(buf + idx, NUM_FMT, random_l);
+  idx = strlen(buf);
+
+  sprintf(outbuf + outidx, NUM_FMT, random_l);
+  outidx = strlen(outbuf);
+}
+
+static void gen(char c) {
+  sprintf(buf + idx, "%c", c);
+  idx = strlen(buf);
+
+  sprintf(outbuf + outidx, "%c", c);
+  outidx = strlen(outbuf);
+}
+
+static void gen_rand_op() {
+  switch (choose(11)) {
+    case 0: gen('+'); break;
+    case 1: gen('-'); break;
+    case 2: gen('*'); break;
+    case 3: gen('/'); break;
+    case 4: gen('%'); break;
+    case 5: gen('^'); break;
+    case 6: gen('|'); break;
+    case 7: gen('&'); break;
+    case 8: gen('<'); gen('<'); break;
+    case 9: gen('>'); gen('>'); break;
+    default: gen('+'); break;
+  }
+}
+
+static void gen_rand_1op() {
+  switch (choose(1)) {
+    case 0: gen('~'); break;
+  }
+}
+
 static void gen_rand_expr() {
-  buf[0] = '\0';
+  if (choose(3)) gen(' ');
+
+  int cs = choose(8);
+  if (idx >= 100) cs = 0;
+  switch (cs) {
+    case 0: gen_num(); break;
+    case 1: gen('('); gen_rand_expr(); gen(')'); break;
+    case 2: gen_rand_1op(); gen_rand_expr(); break;
+    default: 
+      gen_rand_expr(); 
+      gen_rand_op(); 
+      gen_rand_expr(); 
+      break;
+  }
 }
 
 int main(int argc, char *argv[]) {
@@ -44,6 +110,8 @@ int main(int argc, char *argv[]) {
   }
   int i;
   for (i = 0; i < loop; i ++) {
+    idx = 0;
+    outidx = 0;
     gen_rand_expr();
 
     sprintf(code_buf, code_format, buf);
@@ -53,17 +121,18 @@ int main(int argc, char *argv[]) {
     fputs(code_buf, fp);
     fclose(fp);
 
-    int ret = system("gcc /tmp/.code.c -o /tmp/.expr");
+    int ret = system("gcc -w /tmp/.code.c -o /tmp/.expr");
     if (ret != 0) continue;
 
     fp = popen("/tmp/.expr", "r");
     assert(fp != NULL);
 
-    int result;
-    fscanf(fp, "%d", &result);
+    long result;
+    fscanf(fp, NUM_FMT, &result);
     pclose(fp);
 
-    printf("%u %s\n", result, buf);
+    // printf(NUM_FMT " %s\n", result, buf);
+    printf(NUM_FMT " %s\n", result, outbuf);
   }
   return 0;
 }

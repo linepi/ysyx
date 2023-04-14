@@ -19,6 +19,7 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
+#include "sdb.h"
 
 enum {
   TK_NOTYPE = 256, 
@@ -64,9 +65,9 @@ static struct rule {
   {"\\^", TK_BXOR},        
   {"~", TK_BNOT},        
   {"-", TK_NEG},        
+  {"0[xX][0-9]+", TK_HEX},    
   {"[0-9]+", TK_DEC},    // digital number
-  {"0[x,X][0-9]+", TK_HEX},    // digital number
-  {"\\$\\w{2,3}", TK_REG},    // digital number
+  {"\\$\\w{2,3}", TK_REG},    
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -96,7 +97,7 @@ typedef struct token {
   char str[TOKEN_STR_LEN];
 } Token;
 
-static Token tokens[32] __attribute__((used)) = {};
+static Token tokens[10000] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 static bool make_token(char *e) {
@@ -116,8 +117,8 @@ static bool make_token(char *e) {
           return false;
         }
 
-        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        // Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+        //     i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
         position += substr_len;
 
@@ -134,7 +135,8 @@ static bool make_token(char *e) {
             if (nr_token == 0 || tokens[nr_token - 1].type == '(') tokens[nr_token].type = TK_NEG;
             else if (tokens[nr_token - 1].type == TK_DEC || 
                      tokens[nr_token - 1].type == TK_HEX || 
-                     tokens[nr_token - 1].type == TK_REG ) tokens[nr_token].type = '-';
+                     tokens[nr_token - 1].type == TK_REG || 
+                     tokens[nr_token - 1].type == ')') tokens[nr_token].type = '-';
             else tokens[nr_token].type = TK_NEG;
             nr_token++;
             break;
@@ -157,8 +159,16 @@ static bool make_token(char *e) {
 
 static bool check_parentheses(int p, int q, bool *status) {
   int stacktop = -1;
-  int store_p = p;
+  int flag = 1;
   char *stack = (char*) malloc(q - p + 1);
+
+  if (tokens[p].type == '(') {
+    stack[++stacktop] = '(';
+    p = p + 1;
+  } else {
+    flag = 0;
+  }
+
   for (; p <= q; p++) {
     if (tokens[p].type == '(') stack[++stacktop] = '(';
     if (tokens[p].type == ')') {
@@ -168,8 +178,9 @@ static bool check_parentheses(int p, int q, bool *status) {
       }
       // match
       if (stack[stacktop] == '(') {
-        if (p == q && tokens[store_p].type == '(') return true;
+        if (p == q && flag) return true;
         stacktop--;
+        if (stacktop == -1) flag = 0; 
       }
     }
   }
@@ -178,6 +189,7 @@ static bool check_parentheses(int p, int q, bool *status) {
 }
 
 static int get_priority(int type) {
+  // 简化的版本
   switch (type) {
     case TK_AND: case TK_OR: return 1;
     case TK_BAND: case TK_BOR: case TK_BXOR: return 2;
@@ -208,19 +220,22 @@ static int get_main_operator(int p, int q) {
   return idx;
 }
 
-static sword_t eval(int p, int q, bool *status) {
+static expr_t eval(int p, int q, bool *status) {
   if (*status == false) return 0;
 
   if (p > q) {
     *status = false;
   } else if (p == q) {
-    long val = 0;
+    expr_t val = 0;
     if (tokens[p].type == TK_DEC) {
       val = strtol(tokens[p].str, NULL, 10);
     } else if (tokens[p].type == TK_HEX) {
       val = strtol(tokens[p].str, NULL, 16);
     } else if (tokens[p].type == TK_REG) {
-      val = 0;
+      bool success = true;
+      val = isa_reg_str2val(tokens[p].str + 1, &success);
+      if (!success) 
+        *status = false;
     } else {
       *status = false;
     }
@@ -231,7 +246,7 @@ static sword_t eval(int p, int q, bool *status) {
     // get the main operator
     int op_idx = get_main_operator(p, q);
     int type = tokens[op_idx].type;
-    sword_t val2 = eval(op_idx + 1, q, status);
+    expr_t val2 = eval(op_idx + 1, q, status);
     if (type == TK_NOT) {
       return !val2;
     } else if (type == TK_BNOT) {
@@ -239,13 +254,21 @@ static sword_t eval(int p, int q, bool *status) {
     } else if (type == TK_NEG) {
       return -val2; 
     } else {
-      sword_t val1 = eval(p, op_idx - 1, status);
+      expr_t val1 = eval(p, op_idx - 1, status);
       switch (tokens[op_idx].type) {
         case '+': return val1 + val2;
         case '-': return val1 - val2;
         case '*': return val1 * val2;
-        case '/': return val1 / val2;
-        case '%': return val1 % val2;
+        case '/': case '%':
+          if (val2 == 0) {
+            Error("Division by zero exception\n");
+            *status = false;
+            return 0;
+          }
+          if (tokens[op_idx].type == '/')
+            return val1 / val2;
+          else 
+            return val1 % val2;
         case TK_EQ: return val1 == val2;
         case TK_NE: return val1 != val2;
         case TK_GT: return val1 > val2;
@@ -260,24 +283,18 @@ static sword_t eval(int p, int q, bool *status) {
         case TK_RIGHT: return val1 >> val2;
         case TK_LEFT: return val1 << val2;
         default: 
-          Error("");
           assert(0);
       }
     }
   }
 }
 
-sword_t expr(char *e, bool *success) {
+expr_t expr(char *e, bool *success) {
   *success = true;
   if (!make_token(e)) {
     *success = false;
     return 0;
   }
 
-  bool status = true;
-  sword_t res = eval(0, nr_token - 1, &status); 
-  if (!status) {
-    *success = false; 
-  }
-  return res;
+  return eval(0, nr_token - 1, &success); 
 }
