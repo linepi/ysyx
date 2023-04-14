@@ -66,8 +66,8 @@ static struct rule {
   {"~", TK_BNOT},        
   {"-", TK_NEG},        
   {"[0-9]+", TK_DEC},    // digital number
-  {"0[x,X][0-9]+", TK_HEX},    // digital number
-  {"\\$\\w{2,3}", TK_REG},    // digital number
+  {"0[x,X][0-9]+", TK_HEX},    
+  {"\\$\\w{2,3}", TK_REG},    
 };
 
 #define NR_REGEX ARRLEN(rules)
