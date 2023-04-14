@@ -111,7 +111,7 @@ static int cmd_px(char *args) {
     Error("Invalid Expression\n");
     return 0;
   }
-  printf("%lx\n", val);
+  printf("0x%lx\n", val);
   return 0;
 }
 
