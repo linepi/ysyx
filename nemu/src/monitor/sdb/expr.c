@@ -168,49 +168,12 @@ static bool make_token(char *e) {
   return true;
 }
 
-static bool check_parentheses1(int p, int q, bool *status) {
-  int stacktop = -1;
-  int flag = 1;
-  char *stack = (char*) malloc(q - p + 1);
-
-  if (tokens[p].type == '(') {
-    stack[++stacktop] = '(';
-    p = p + 1;
-  } else {
-    flag = 0;
-  }
-
-  for (; p <= q; p++) {
-    if (tokens[p].type == '(') stack[++stacktop] = '(';
-    if (tokens[p].type == ')') {
-      if (stacktop < 0 || stack[stacktop] == ')') {
-        *status = false; // invalid expression
-        free((void*)stack);
-        return false;
-      }
-      // match
-      if (stack[stacktop] == '(') {
-        if (p == q && flag) {
-          free((void*)stack);
-          return true;
-        }
-        stacktop--;
-        if (stacktop == -1) flag = 0; 
-      }
-    }
-  }
-  free((void*)stack);
-  return false;
-}
-
 bool check_parentheses(int p, int q, bool *status) {
     if (tokens[p].type != '(') {
         return false;
     }
-
     int open_parentheses = 1;
-    p++;
-    for (; p <= q; ++p) {
+    for (p = p + 1; p <= q; ++p) {
         if (tokens[p].type == '(') {
             open_parentheses++;
         } else if (tokens[p].type == ')') {
