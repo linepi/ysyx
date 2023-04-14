@@ -115,6 +115,18 @@ static int cmd_px(char *args) {
   printf("0x%lx\n", val);
   return 0;
 }
+static int cmd_w(char *args) {
+  bool success;
+  expr_t val = expr(args, &success);
+  if (!success) {
+    Error("Invalid Expression\n");
+    return 0;
+  }
+  WP *new = new_wp();
+  memcpy(new->e, args, strlen(args) + 1);  // copy args and its end '\0'
+  new->val = val;
+  return 0;
+}
 
 static int cmd_help(char *args);
 
@@ -131,7 +143,7 @@ static struct {
   { "x", "Usage: x <number of bytes> <expression>. example: x 10 0x80000000 ", cmd_x },
   { "p", "Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
   { "p/x", "Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
-  { "w", "Usage: w <expression>. example: w $s0 + 5 ", cmd_px },
+  { "w", "Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
 
 };
 
