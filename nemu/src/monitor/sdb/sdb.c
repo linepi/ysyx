@@ -73,6 +73,7 @@ static int cmd_info(char *args) {
       isa_reg_display();
       break;
     case 'w':
+      wp_display();
       break;
   }
   return 0;
@@ -127,6 +128,21 @@ static int cmd_w(char *args) {
   new->val = val;
   return 0;
 }
+static int cmd_d(char *args) {
+  int NO = atoi(args);
+  assert(NO > 0 && NO <= 32);
+  WP *i;
+  for (i = get_wp_head(); i; i = i->next) {
+    if (NO == i->NO) {
+      free_wp(i);
+      break;
+    }
+  }
+  if (!i) {
+    Error("Watchpoint %d does not exist.\n", NO);
+  }
+  return 0;
+}
 
 static int cmd_help(char *args);
 
@@ -144,6 +160,7 @@ static struct {
   { "p", "Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
   { "p/x", "Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
   { "w", "Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
+  { "d", "Usage: d <watchpoint NO>. example: d 2", cmd_d },
 
 };
 

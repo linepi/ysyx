@@ -63,3 +63,9 @@ void free_wp(WP *wp) {
   }
 };
 
+void wp_display() {
+  printf("NUM      EXPRESSION     VAL\n");
+  for (WP *i = get_wp_head(); i; i = i->next) {
+    printf("%d            %s          "EXPR_NUM_FMT"\n", i->NO, i->e, i->val);
+  }
+}
