@@ -88,7 +88,7 @@ static int cmd_x(char *args) {
     return 0;
   }
   for(int i = 0; i < atoi(length); i++) {
-    assert(paddr + i >= (paddr_t)CONFIG_MBASE && paddr + i < 2 * (paddr_t)CONFIG_MBASE);
+    assert(PMEM_VALID(paddr + i));
     printf("%02x ", *guest_to_host(paddr + i));
   }
   printf("\n");
