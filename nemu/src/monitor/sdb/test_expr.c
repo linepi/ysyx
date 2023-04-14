@@ -5,13 +5,13 @@
 // 121+((216-818)*819*298)*302
 
 void test_expr() {
-    FILE* fp = fopen("/home/w/dev/ysyx-workbench/nemu/tools/gen-expr/build/test0", "r");
+    FILE* fp = fopen("/home/w/dev/ysyx-workbench/nemu/tools/gen-expr/build/test3", "r");
     assert(fp != NULL);
     expr_t expect;
     char e[200000];
     int cnt = 0;
     int win = 0;
-    while (fscanf(fp, "%lu", &expect) != EOF && fscanf(fp, "%s", e) != EOF) {
+    while (fscanf(fp, "%lu", &expect) != EOF && fscanf(fp, "%[^\n]", e) != EOF) {
         cnt++;
         bool success;
         expr_t res = expr(e, &success);

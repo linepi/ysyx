@@ -25,6 +25,8 @@
 // this should be enough
 static char buf[65536] = {};
 static int idx = 0;
+static char outbuf[65536] = {};
+static int outidx = 0;
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format =
 "#include <stdio.h>\n"
@@ -40,14 +42,24 @@ static int choose(int n) {
 
 static void gen_num() {
   // long random_l = ((long int)rand() << 32) | rand();
+  sprintf(buf + idx, "(long)");
+  idx = strlen(buf);
+
   long random_l = rand() % 1000 + 1;
+
   sprintf(buf + idx, NUM_FMT, random_l);
   idx = strlen(buf);
+
+  sprintf(outbuf + outidx, NUM_FMT, random_l);
+  outidx = strlen(outbuf);
 }
 
 static void gen(char c) {
   sprintf(buf + idx, "%c", c);
   idx = strlen(buf);
+
+  sprintf(outbuf + outidx, "%c", c);
+  outidx = strlen(outbuf);
 }
 
 static void gen_rand_op() {
@@ -61,6 +73,8 @@ static void gen_rand_op() {
 }
 
 static void gen_rand_expr() {
+  if (choose(3)) gen(' ');
+
   int cs = choose(8);
   if (idx >= 100) cs = 0;
   switch (cs) {
@@ -99,7 +113,8 @@ int main(int argc, char *argv[]) {
     fscanf(fp, NUM_FMT, &result);
     pclose(fp);
 
-    printf(NUM_FMT " %s\n", result, buf);
+    // printf(NUM_FMT " %s\n", result, buf);
+    printf(NUM_FMT " %s\n", result, outbuf);
   }
   return 0;
 }
