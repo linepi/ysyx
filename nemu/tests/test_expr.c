@@ -2,7 +2,6 @@
 #include <debug.h>
 #include <sdb.h>
 #include <debug.h>
-// 121+((216-818)*819*298)*302
 
 void test_expr() {
     FILE* fp = fopen("/home/w/dev/ysyx-workbench/nemu/tools/gen-expr/build/test2", "r");
