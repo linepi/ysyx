@@ -191,8 +191,8 @@ static bool check_parentheses(int p, int q, bool *status) {
       // match
       if (stack[stacktop] == '(') {
         if (p == q && flag) {
-          return true;
           free((void*)stack);
+          return true;
         }
         stacktop--;
         if (stacktop == -1) flag = 0; 
