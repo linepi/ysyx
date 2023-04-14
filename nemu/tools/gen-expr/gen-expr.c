@@ -45,7 +45,7 @@ static void gen_num() {
   sprintf(buf + idx, "(long)");
   idx = strlen(buf);
 
-  long random_l = rand() % 1000 + 1;
+  long random_l = rand() % 10000 + 1;
 
   sprintf(buf + idx, NUM_FMT, random_l);
   idx = strlen(buf);
@@ -73,14 +73,18 @@ static void gen_rand_op() {
 }
 
 static void gen_rand_expr() {
-  // if (choose(3)) gen(' ');
+  if (choose(3)) gen(' ');
 
   int cs = choose(8);
   if (idx >= 100) cs = 0;
   switch (cs) {
     case 0: gen_num(); break;
     case 1: gen('('); gen_rand_expr(); gen(')'); break;
-    default: gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;
+    default: 
+      gen_rand_expr(); 
+      gen_rand_op(); 
+      gen_rand_expr(); 
+      break;
   }
 }
 
