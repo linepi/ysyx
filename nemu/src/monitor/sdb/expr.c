@@ -19,6 +19,7 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
+#include <memory/paddr.h>
 #include "sdb.h"
 
 enum {
@@ -262,7 +263,7 @@ static expr_t eval(int p, int q, bool *status) {
     } else if (type == TK_NEG) {
       return -val2; 
     } else if (type == TK_DEREFERENCE){
-      
+      return *guest_to_host(val2);
     } else {
       expr_t val1 = eval(p, op_idx - 1, status);
       switch (tokens[op_idx].type) {
