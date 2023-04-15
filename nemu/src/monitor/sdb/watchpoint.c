@@ -13,20 +13,12 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-#include "sdb.h"
+#include <sdb.h>
 
-#define NR_WP 32
-
-typedef struct watchpoint {
-  int NO;
-  struct watchpoint *next;
-
-  /* TODO: Add more members if necessary */
-
-} WP;
 
 static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
+static int number = 0;
 
 void init_wp_pool() {
   int i;
@@ -39,5 +31,50 @@ void init_wp_pool() {
   free_ = wp_pool;
 }
 
-/* TODO: Implement the functionality of watchpoint */
+WP* get_wp_head() {
+  return head;
+}
 
+WP* new_wp() {
+  if (free_ == NULL) {
+    Error("No more freed wp\n");
+    assert(0);
+  }
+  WP *t = free_->next;
+  free_->next = head;
+  head = free_;
+  free_ = t;
+
+  head->NO = ++number;
+  return head;
+};
+
+void free_wp(WP *wp) {
+  if (wp == NULL) return;
+  WP *t = head;
+
+  if (t == wp) {
+    head = head->next;
+    wp->next = free_;
+    free_ = wp;
+    return;
+  }
+
+  while (t->next) {
+    if (t->next == wp) {
+      t->next = wp->next;
+      wp->next = free_;
+      free_ = wp;
+      break;
+    }
+    t = t->next;
+  }
+};
+
+void wp_display() {
+  if (get_wp_head() == NULL) return;
+  printf("NUM      EXPRESSION     VAL\n");
+  for (WP *i = get_wp_head(); i; i = i->next) {
+    printf("%d        %s            "EXPR_NUM_FMT"\n", i->NO, i->e, i->val);
+  }
+}

@@ -18,7 +18,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <memory/paddr.h>
-#include "sdb.h"
+#include <sdb.h>
 
 static int is_batch_mode = false;
 
@@ -73,21 +73,23 @@ static int cmd_info(char *args) {
       isa_reg_display();
       break;
     case 'w':
+      wp_display();
       break;
   }
   return 0;
 }
 
 static int cmd_x(char *args) {
-  char* len = strtok(args, " ");
-  char* tmp = strtok(NULL, " ");
+  char* length = strtok(args, " ");
+  args = length + strlen(length) + 1;
   bool success;
-  paddr_t paddr = expr(tmp, &success);
+  paddr_t paddr = expr(args, &success);
   if (!success) {
     Error("Invalid Expression!\n");
     return 0;
   }
-  for(int i = 0; i < atoi(len); i++) {
+  for(int i = 0; i < atoi(length); i++) {
+    assert(PADDR_VALID(paddr + i));
     printf("%02x ", *guest_to_host(paddr + i));
   }
   printf("\n");
@@ -102,6 +104,43 @@ static int cmd_p(char *args) {
     return 0;
   }
   printf(EXPR_NUM_FMT"\n", val);
+  return 0;
+}
+static int cmd_px(char *args) {
+  bool success;
+  expr_t val = expr(args, &success);
+  if (!success) {
+    Error("Invalid Expression\n");
+    return 0;
+  }
+  printf("0x%lx\n", val);
+  return 0;
+}
+static int cmd_w(char *args) {
+  bool success;
+  expr_t val = expr(args, &success);
+  if (!success) {
+    Error("Invalid Expression\n");
+    return 0;
+  }
+  WP *new = new_wp();
+  memcpy(new->e, args, strlen(args) + 1);  // copy args and its end '\0'
+  new->val = val;
+  return 0;
+}
+static int cmd_d(char *args) {
+  int NO = atoi(args);
+  assert(NO > 0 && NO <= 32);
+  WP *i;
+  for (i = get_wp_head(); i; i = i->next) {
+    if (NO == i->NO) {
+      free_wp(i);
+      break;
+    }
+  }
+  if (!i) {
+    Error("Watchpoint %d does not exist.\n", NO);
+  }
   return 0;
 }
 
@@ -119,6 +158,9 @@ static struct {
   { "info", "Usage: info <r|w>. r --> register, w --> watch points. ", cmd_info },
   { "x", "Usage: x <number of bytes> <expression>. example: x 10 0x80000000 ", cmd_x },
   { "p", "Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
+  { "p/x", "Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
+  { "w", "Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
+  { "d", "Usage: d <watchpoint NO>. example: d 2", cmd_d },
 
 };
 

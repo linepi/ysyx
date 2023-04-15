@@ -1,11 +1,10 @@
 #include <common.h>
 #include <debug.h>
-#include "sdb.h"
+#include <sdb.h>
 #include <debug.h>
-// 121+((216-818)*819*298)*302
 
 void test_expr() {
-    FILE* fp = fopen("/home/w/dev/ysyx-workbench/nemu/tools/gen-expr/build/test2", "r");
+    FILE* fp = fopen("/home/w/dev/ysyx-workbench/nemu/tools/gen-expr/build/test0", "r");
     assert(fp != NULL);
     expr_t expect;
     char e[200000];

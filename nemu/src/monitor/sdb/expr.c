@@ -19,7 +19,8 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
-#include "sdb.h"
+#include <memory/paddr.h>
+#include <sdb.h>
 
 enum {
   TK_NOTYPE = 256, 
@@ -28,7 +29,7 @@ enum {
   TK_HEX,
   TK_EQ, TK_NE, TK_GE, TK_GT, TK_LT, TK_LE,
   TK_AND, TK_OR, TK_NOT, TK_BOR, TK_BAND, TK_BXOR, TK_BNOT, 
-  TK_LEFT, TK_RIGHT, TK_NEG,
+  TK_LEFT, TK_RIGHT, TK_NEG, TK_DEREFERENCE
   /* TODO: Add more token types */
 };
 
@@ -65,6 +66,7 @@ static struct rule {
   {"\\^", TK_BXOR},        
   {"~", TK_BNOT},        
   {"-", TK_NEG},        
+  {"\\*", TK_DEREFERENCE},        
   {"0[xX][0-9]+", TK_HEX},    
   {"[0-9]+", TK_DEC},    // digital number
   {"\\$\\w{2,3}", TK_REG},    
@@ -101,6 +103,7 @@ static Token tokens[10000] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 static bool make_token(char *e) {
+  if (!e) return false;
   int position = 0;
   int i;
   regmatch_t pmatch;
@@ -111,7 +114,6 @@ static bool make_token(char *e) {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i ++) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
-        char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
         if (substr_len >= TOKEN_STR_LEN) {
           return false;
@@ -131,13 +133,22 @@ static bool make_token(char *e) {
             tokens[nr_token].str[substr_len] = '\0';
             nr_token++;
             break;
-          case TK_NEG: case '-':
+          case '-':
             if (nr_token == 0 || tokens[nr_token - 1].type == '(') tokens[nr_token].type = TK_NEG;
             else if (tokens[nr_token - 1].type == TK_DEC || 
                      tokens[nr_token - 1].type == TK_HEX || 
                      tokens[nr_token - 1].type == TK_REG || 
                      tokens[nr_token - 1].type == ')') tokens[nr_token].type = '-';
             else tokens[nr_token].type = TK_NEG;
+            nr_token++;
+            break;
+          case '*':
+            if (nr_token == 0 || tokens[nr_token - 1].type == '(') tokens[nr_token].type = TK_DEREFERENCE;
+            else if (tokens[nr_token - 1].type == TK_DEC || 
+                     tokens[nr_token - 1].type == TK_HEX || 
+                     tokens[nr_token - 1].type == TK_REG || 
+                     tokens[nr_token - 1].type == ')') tokens[nr_token].type = '*';
+            else tokens[nr_token].type = TK_DEREFERENCE;
             nr_token++;
             break;
           default:
@@ -149,7 +160,7 @@ static bool make_token(char *e) {
     }
 
     if (i == NR_REGEX) {
-      printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
+      // printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
       return false;
     }
   }
@@ -157,35 +168,22 @@ static bool make_token(char *e) {
   return true;
 }
 
-static bool check_parentheses(int p, int q, bool *status) {
-  int stacktop = -1;
-  int flag = 1;
-  char *stack = (char*) malloc(q - p + 1);
-
-  if (tokens[p].type == '(') {
-    stack[++stacktop] = '(';
-    p = p + 1;
-  } else {
-    flag = 0;
-  }
-
-  for (; p <= q; p++) {
-    if (tokens[p].type == '(') stack[++stacktop] = '(';
-    if (tokens[p].type == ')') {
-      if (stacktop < 0 || stack[stacktop] == ')') {
-        *status = false; // invalid expression
+bool check_parentheses(int p, int q, bool *status) {
+    if (tokens[p].type != '(') {
         return false;
-      }
-      // match
-      if (stack[stacktop] == '(') {
-        if (p == q && flag) return true;
-        stacktop--;
-        if (stacktop == -1) flag = 0; 
-      }
     }
-  }
-  free((void*)stack);
-  return false;
+    int open_parentheses = 1;
+    for (p = p + 1; p <= q; ++p) {
+        if (tokens[p].type == '(') {
+            open_parentheses++;
+        } else if (tokens[p].type == ')') {
+            open_parentheses--;
+            if (open_parentheses == 0 && p != q) {
+                return false;
+            }
+        }
+    }
+    return open_parentheses == 0;
 }
 
 static int get_priority(int type) {
@@ -197,7 +195,8 @@ static int get_priority(int type) {
     case TK_RIGHT: case TK_LEFT: return 4;
     case '+': case '-': return 5;
     case '*': case '/': case '%': return 6;
-    case TK_BNOT: case TK_NOT: case TK_NEG: return 7;
+    case TK_BNOT: case TK_NOT: case TK_NEG: case TK_DEREFERENCE: return 7;
+    default: return 0;
   }
 }
 
@@ -208,7 +207,7 @@ static int get_main_operator(int p, int q) {
   for (; p <= q; p++) {
     if (tokens[p].type == '(') leftn++;
     if (tokens[p].type == ')') leftn--;
-    if ((tokens[p].type <= TK_NEG && tokens[p].type >= TK_EQ) || 
+    if ((tokens[p].type <= TK_DEREFERENCE && tokens[p].type >= TK_EQ) || 
         (tokens[p].type < 256 && tokens[p].type != '(' && tokens[p].type != ')')) {
       int tmp = get_priority(tokens[p].type); 
       if (tmp <= priority && leftn == 0) {
@@ -225,6 +224,7 @@ static expr_t eval(int p, int q, bool *status) {
 
   if (p > q) {
     *status = false;
+    return 0;
   } else if (p == q) {
     expr_t val = 0;
     if (tokens[p].type == TK_DEC) {
@@ -253,6 +253,9 @@ static expr_t eval(int p, int q, bool *status) {
       return ~val2;
     } else if (type == TK_NEG) {
       return -val2; 
+    } else if (type == TK_DEREFERENCE){
+      assert(PADDR_VALID(val2));
+      return *(uint32_t*)guest_to_host(val2);
     } else {
       expr_t val1 = eval(p, op_idx - 1, status);
       switch (tokens[op_idx].type) {
@@ -283,7 +286,8 @@ static expr_t eval(int p, int q, bool *status) {
         case TK_RIGHT: return val1 >> val2;
         case TK_LEFT: return val1 << val2;
         default: 
-          assert(0);
+          *status = false;
+          return 0;
       }
     }
   }
@@ -296,5 +300,5 @@ expr_t expr(char *e, bool *success) {
     return 0;
   }
 
-  return eval(0, nr_token - 1, &success); 
+  return eval(0, nr_token - 1, success); 
 }

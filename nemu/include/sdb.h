@@ -18,8 +18,24 @@
 
 #include <common.h>
 
+#define NR_WP 32
 typedef sword_t expr_t;
-#define EXPR_NUM_FMT "%lu"
+#define EXPR_NUM_FMT "%ld"
+
+typedef struct watchpoint {
+  int NO;
+  struct watchpoint *next;
+
+  /* TODO: Add more members if necessary */
+  char e[256];
+  expr_t val;
+} WP;
+
+
 expr_t expr(char *e, bool *success);
+WP* new_wp();
+void free_wp(WP *wp);
+WP* get_wp_head();
+void wp_display();
 
 #endif
