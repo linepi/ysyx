@@ -1,6 +1,6 @@
 NBNAME = nb
 VERNAME = ver
-TESTNAME = ps2_keyboard_sim
+TESTNAME = testbench
 OBJ_DIR = obj_dir
 NXDC_FILES = vsrc/$(NBNAME).nxdc
 VERILATOR = verilator
