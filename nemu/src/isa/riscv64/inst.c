@@ -36,7 +36,8 @@ enum {
 // UJ imm format: [20|10:1|11|19:12]
 #define immUJ() do { \
   uint32_t ct = BITS(i, 31, 12); \
-  *imm = (BITS(ct, 7, 0) << 12) | (BITS(ct, 8, 8) << 11) | (BITS(ct, 18, 9) << 1) | (BITS(ct, 19, 19) << 20); \
+  uint32_t ut = (BITS(ct, 7, 0) << 12) | (BITS(ct, 8, 8) << 11) | (BITS(ct, 18, 9) << 1) | (BITS(ct, 19, 19) << 20); \
+  *imm = SEXT(ut, 20); \
 } while(0)
 
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
