@@ -1,3 +1,5 @@
+.DEFAULT_GOAL = app
+
 # Add necessary options if the target is a shared library
 ifeq ($(SHARE),1)
 SO = -so
@@ -25,8 +27,6 @@ LDFLAGS := -O2 $(LDFLAGS)
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
 
--include $(NEMU_HOME)/scripts/precompile.mk
-
 # Compilation patterns
 $(OBJ_DIR)/%.o: %.c
 	@echo + CC $<
@@ -42,6 +42,9 @@ $(OBJ_DIR)/%.o: %.cc
 
 # Depencies
 -include $(OBJS:.o=.d)
+
+# precompile
+-include $(NEMU_HOME)/scripts/precompile.mk
 
 # Some convenient rules
 
