@@ -1,4 +1,3 @@
-.DEFAULT_GOAL = app
 
 # Add necessary options if the target is a shared library
 ifeq ($(SHARE),1)
@@ -12,7 +11,6 @@ BUILD_DIR = $(WORK_DIR)/build
 
 INC_PATH := $(WORK_DIR)/include $(INC_PATH)
 OBJ_DIR  = $(BUILD_DIR)/obj-$(NAME)$(SO)
-PRE_FILE_DIR = $(BUILD_DIR)/i-$(NAME)$(SO)
 BINARY   = $(BUILD_DIR)/$(NAME)$(SO)
 
 # Compilation flags
@@ -25,16 +23,10 @@ LD := $(CXX)
 INCLUDES = $(addprefix -I, $(INC_PATH))
 CFLAGS  := -O2 -MMD -Wall $(INCLUDES) $(CFLAGS)
 LDFLAGS := -O2 $(LDFLAGS)
-PRE_COMPILE_FLAGS = $(INCLUDES)
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
 
-precompile: $(OBJS:.o=.i)
-# Precompilation patterns
-$(OBJ_DIR)/%.i: %.c
-	@echo + CC_PRE $<
-	@mkdir -p $(dir $@)
-	$(CC) -E $(PRE_COMPILE_FLAGS) $< | grep -v '^#' | clang-format --style=Google > $@
+-include $(NEMU_HOME)/scripts/precompile.mk
 
 # Compilation patterns
 $(OBJ_DIR)/%.o: %.c
