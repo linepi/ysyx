@@ -61,8 +61,8 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 }
 
-void fill_logbuf(char *buf, uint64_t pc) {
-
+void fill_logbuf(char *p, uint64_t pc) {
+  TODO();
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {

@@ -15,6 +15,7 @@
 
 #include <isa.h>
 #include <cpu/cpu.h>
+#include <cpu/decode.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <memory/paddr.h>
@@ -25,6 +26,7 @@ static int is_batch_mode = false;
 void init_regex();
 void init_wp_pool();
 extern void isa_reg_display();
+extern void fill_logbuf();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -147,6 +149,16 @@ static int cmd_del(char *args) {
   return 0;
 }
 
+static int cmd_list(char *args) {
+  int n = 1;
+  if(args != NULL) {
+    n = atoi(args);
+  }
+  char logbuf[LOGBUF_SIZE];
+  // fill_logbuf();
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -164,7 +176,7 @@ static struct {
   { "p/x", "Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
   { "w", "Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
   { "del", "Usage: del <watchpoint NO>. example: d 2", cmd_del },
-
+  { "list", "Usage list [N]. Show N instruction, default 1", cmd_list},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
