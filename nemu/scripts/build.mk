@@ -29,11 +29,12 @@ PRE_COMPILE_FLAGS = $(INCLUDES)
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
 
+precompile: $(OBJS:.o=.i)
 # Precompilation patterns
 $(OBJ_DIR)/%.i: %.c
 	@echo + CC_PRE $<
 	@mkdir -p $(dir $@)
-	$(CC) $(PRE_COMPILE_FLAGS) $< | grep -v '^#' | clang-format --stype=Google > $@
+	$(CC) -E $(PRE_COMPILE_FLAGS) $< | grep -v '^#' | clang-format --style=Google > $@
 
 # Compilation patterns
 $(OBJ_DIR)/%.o: %.c
