@@ -17,3 +17,5 @@ $(PRE_FILE_DIR)/%.h: %.h
 	@echo + CC_PRE $<
 	@mkdir -p $(dir $@)
 	@$(CC) -E $(PRE_COMPILE_FLAGS) $< | grep -v '^#' | clang-format --style=Google > $@
+
+.PHONY: precompile
