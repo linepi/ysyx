@@ -25,21 +25,15 @@ LD := $(CXX)
 INCLUDES = $(addprefix -I, $(INC_PATH))
 CFLAGS  := -O2 -MMD -Wall $(INCLUDES) $(CFLAGS)
 LDFLAGS := -O2 $(LDFLAGS)
+PRE_COMPILE_FLAGS = $(INCLUDES)
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
 
 # Precompilation patterns
-# $(OBJ_DIR)/%.i: %.c
-# 	@echo + CC_PRE $<
-# 	@mkdir -p $(dir $@)
-# 	$(CC) $(CFLAGS) $< -c > $@ $<
-# 	$(call call_fixdep, $(@:.o=.d), $@)
-
-# $(OBJ_DIR)/%.i: %.cc
-# 	@echo + CXX $<
-# 	@mkdir -p $(dir $@)
-# 	$(CXX) $(CFLAGS) $(CXXFLAGS) -c -o $@ $<
-# 	$(call call_fixdep, $(@:.o=.d), $@)
+$(OBJ_DIR)/%.i: %.c
+	@echo + CC_PRE $<
+	@mkdir -p $(dir $@)
+	$(CC) $(PRE_COMPILE_FLAGS) $< | grep -v '^#' | clang-format --stype=Google > $@
 
 # Compilation patterns
 $(OBJ_DIR)/%.o: %.c
