@@ -106,6 +106,7 @@ static int cmd_p(char *args) {
   printf(EXPR_NUM_FMT"\n", val);
   return 0;
 }
+
 static int cmd_px(char *args) {
   bool success;
   expr_t val = expr(args, &success);
@@ -116,6 +117,7 @@ static int cmd_px(char *args) {
   printf("0x%lx\n", val);
   return 0;
 }
+
 static int cmd_w(char *args) {
   bool success;
   expr_t val = expr(args, &success);
@@ -128,7 +130,8 @@ static int cmd_w(char *args) {
   new->val = val;
   return 0;
 }
-static int cmd_d(char *args) {
+
+static int cmd_del(char *args) {
   int NO = atoi(args);
   assert(NO > 0 && NO <= 32);
   WP *i;
@@ -160,7 +163,7 @@ static struct {
   { "p", "Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
   { "p/x", "Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
   { "w", "Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
-  { "d", "Usage: d <watchpoint NO>. example: d 2", cmd_d },
+  { "del", "Usage: del <watchpoint NO>. example: d 2", cmd_del },
 
 };
 
