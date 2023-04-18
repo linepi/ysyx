@@ -43,7 +43,7 @@ enum {
 #define immSB() do { \
   uint32_t cht = BITS(i, 31, 25); \
   uint32_t clt = BITS(i, 11, 7); \
-  uint32_t ut = (BITS(cht, 6, 6) << 12) | (BITS(cht, 5, 0) << 5) | (BITS(clt, 0, 0) << 11) | (BITS(clt, 4, 1) << 1); \ 
+  uint32_t ut = (BITS(cht, 6, 6) << 12) | (BITS(cht, 5, 0) << 5) | (BITS(clt, 0, 0) << 11) | (BITS(clt, 4, 1) << 1); \
   *imm = SEXT(ut, 12); \
 } while(0)
 
