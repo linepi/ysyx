@@ -229,10 +229,7 @@ void sdb_mainloop() {
 
       if (cmd == NULL) continue;
       str_end = command_cache + strlen(command_cache);
-    } else {
-      /* command cache */
-      strcpy(command_cache, str_cache);
-    }
+    } 
 
 
     /* treat the remaining string as the arguments,
@@ -261,6 +258,8 @@ void sdb_mainloop() {
     }
 
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
+    /* command cache */
+    strcpy(command_cache, str_cache);
   }
 }
 
