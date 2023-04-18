@@ -210,6 +210,7 @@ void sdb_set_batch_mode() {
 
 void sdb_mainloop() {
   char command_cache[512]; command_cache[0] = '\0';
+  char str_cache[512]; str_cache[0] = '\0';
 
   if (is_batch_mode) {
     cmd_c(NULL);
@@ -217,18 +218,20 @@ void sdb_mainloop() {
   }
 
   for (char *str; (str = rl_gets()) != NULL; ) {
-    char *str_end;
+    char *str_end = str + strlen(str);
+    strcpy(str_cache, str);
 
     /* extract the first token as the command */
     char *cmd = strtok(str, " ");
     if (cmd == NULL) { 
+      strcpy(str_cache, command_cache);
       cmd = strtok(command_cache, " ");
+
       if (cmd == NULL) continue;
       str_end = command_cache + strlen(command_cache);
     } else {
       /* command cache */
-      strcpy(command_cache, str);
-      str_end = str + strlen(str);
+      strcpy(command_cache, str_cache);
     }
 
 
