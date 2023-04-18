@@ -225,10 +225,10 @@ void sdb_mainloop() {
     char *cmd = strtok(str, " ");
     if (cmd == NULL) { 
       strcpy(str_cache, command_cache);
-      cmd = strtok(command_cache, " ");
+      cmd = strtok(str_cache, " ");
 
       if (cmd == NULL) continue;
-      str_end = command_cache + strlen(command_cache);
+      str_end = str_cache + strlen(str_cache);
     } 
 
 
