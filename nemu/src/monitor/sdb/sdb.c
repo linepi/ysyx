@@ -217,16 +217,18 @@ void sdb_mainloop() {
   }
 
   for (char *str; (str = rl_gets()) != NULL; ) {
-    char *str_end = str + strlen(str);
+    char *str_end;
 
     /* extract the first token as the command */
     char *cmd = strtok(str, " ");
     if (cmd == NULL) { 
       cmd = strtok(command_cache, " ");
       if (cmd == NULL) continue;
+      str_end = command_cache + strlen(command_cache);
     } else {
       /* command cache */
       strcpy(command_cache, str);
+      str_end = str + strlen(str);
     }
 
 
