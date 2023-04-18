@@ -28,7 +28,7 @@ void init_log(const char *log_file) {
   if (log_fp)
     Log("Log is written to %s", log_file ? log_file : "stdout");
   else 
-    Log("No log initialised\n");
+    Log("No log file specified");
 }
 
 bool log_enable() {
