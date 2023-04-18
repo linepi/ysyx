@@ -223,7 +223,6 @@ void sdb_mainloop() {
     char *cmd = strtok(str, " ");
     if (cmd == NULL) { 
       cmd = strtok(command_cache, " ");
-      continue; 
     }
 
     /* command cache */
