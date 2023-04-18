@@ -223,10 +223,11 @@ void sdb_mainloop() {
     char *cmd = strtok(str, " ");
     if (cmd == NULL) { 
       cmd = strtok(command_cache, " ");
+    } else {
+      /* command cache */
+      strcpy(command_cache, str);
     }
 
-    /* command cache */
-    strcpy(command_cache, str);
 
     /* treat the remaining string as the arguments,
      * which may need further parsing
