@@ -211,6 +211,7 @@ void sdb_set_batch_mode() {
 void sdb_mainloop() {
   char command_cache[512]; command_cache[0] = '\0';
   char str_cache[512]; str_cache[0] = '\0';
+  int nullcmd;
 
   if (is_batch_mode) {
     cmd_c(NULL);
@@ -224,12 +225,13 @@ void sdb_mainloop() {
     /* extract the first token as the command */
     char *cmd = strtok(str, " ");
     if (cmd == NULL) { 
+      nullcmd = 1;
       strcpy(str_cache, command_cache);
       str_end = str_cache + strlen(str_cache);
-
       cmd = strtok(str_cache, " ");
-      if (cmd == NULL) continue;
-    } 
+    } else {
+      nullcmd = 0;
+    }
 
 
     /* treat the remaining string as the arguments,
@@ -259,7 +261,8 @@ void sdb_mainloop() {
 
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
     /* command cache */
-    strcpy(command_cache, str_cache);
+    if (nullcmd == 0)
+      strcpy(command_cache, str_cache);
   }
 }
 
