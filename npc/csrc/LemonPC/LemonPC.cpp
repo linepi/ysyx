@@ -30,7 +30,7 @@ int main(int argc, char** argv, char** env) {
   int cnt = 0;
   srand((unsigned) time(NULL));
   while (!contextp->gotFinish()) {
-    PC->inst = pmem_read(PC->pc, 4);
+    // PC->inst = pmem_read(PC->pc, 4);
 #ifdef SEQUENTIAL
     single_cycle();
 #else
