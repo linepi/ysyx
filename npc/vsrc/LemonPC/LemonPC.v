@@ -5,4 +5,5 @@ module PC (
     initial begin
         assign pc = {32'd0, 32'h80000000};
     end
+    assign pc = {32'd0, 32'h80000001};
 endmodule

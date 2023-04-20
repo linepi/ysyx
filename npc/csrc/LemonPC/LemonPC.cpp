@@ -36,6 +36,7 @@ int main(int argc, char** argv, char** env) {
     PC->eval();
 #endif
     PC->inst = pmem_read(PC->pc, 4);
+    printf("%016lx\n", PC->pc);
   }
   PC->final();
   delete PC;
