@@ -37,6 +37,7 @@ int main(int argc, char** argv, char** env) {
 #endif
     PC->inst = pmem_read(PC->pc, 4);
     printf("%016lx\n", PC->pc);
+    if (cnt++ > 10) break;
   }
   PC->final();
   delete PC;

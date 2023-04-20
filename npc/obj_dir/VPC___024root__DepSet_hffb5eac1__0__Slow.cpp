@@ -28,6 +28,7 @@ VL_ATTR_COLD void VPC___024root___eval_initial__TOP(VPC___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    VPC___024root___eval_initial__TOP\n"); );
     // Body
     vlSelf->pc = 0x80000000ULL;
+    vlSelf->pc = 0x80000001ULL;
 }
 
 VL_ATTR_COLD void VPC___024root___eval_final(VPC___024root* vlSelf) {
