@@ -55,8 +55,8 @@ $(PCNAME): $(VSRCS) $(PC_CSRCS)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
 		--top-module PC $^ \
-		--exe -o $(abspath $(PCNAME))
-	$(abspath $(PCNAME))
+		--exe -o $(abspath '$(PCNAME)')
+	$(abspath "$(PCNAME)")
 	-@rm -rf obj_dir
 
 # just for testbench of verilator
