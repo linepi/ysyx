@@ -27,7 +27,7 @@ VL_ATTR_COLD void VPC___024root___eval_initial__TOP(VPC___024root* vlSelf) {
     VPC__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    VPC___024root___eval_initial__TOP\n"); );
     // Body
-    vlSelf->pc = 0ULL;
+    vlSelf->pc = 0x80000000ULL;
 }
 
 VL_ATTR_COLD void VPC___024root___eval_final(VPC___024root* vlSelf) {
