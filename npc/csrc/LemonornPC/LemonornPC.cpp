@@ -1,23 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <Vver.h>  
+#include <VPC.h>  
 #include <time.h>
 #include "common.h"
 #include "defs.h"
 // #define SEQUENTIAL
 
-Vver *ver;
+VPC *PC;
 
 #ifdef SEQUENTIAL
 void single_cycle() {
-  ver->clk = 0; ver->eval();
-  ver->clk = 1; ver->eval();
+  PC->clk = 0; PC->eval();
+  PC->clk = 1; PC->eval();
 }
 void reset(int n) {
-  ver->rst = 1;
+  PC->rst = 1;
   while (n-- > 0) single_cycle();
-  ver->rst = 0;
+  PC->rst = 0;
 }
 #endif
  
@@ -25,21 +25,21 @@ void reset(int n) {
 int main(int argc, char** argv, char** env) {
   VerilatedContext* contextp = new VerilatedContext;
   contextp->commandArgs(argc, argv);
-  ver = new Vver{contextp};
+  PC = new VPC{contextp};
   
   int cnt = 0;
   srand((unsigned) time(NULL));
   while (!contextp->gotFinish()) {
-    ver->inst = pmem_read(ver->pc, 4);
+    PC->inst = pmem_read(PC->pc, 4);
 #ifdef SEQUENTIAL
     single_cycle();
 #else
-    ver->eval();
+    PC->eval();
 #endif
 
   }
-  ver->final();
-  delete ver;
+  PC->final();
+  delete PC;
   delete contextp;
   return 0;
 }

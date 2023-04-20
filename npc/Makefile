@@ -1,6 +1,8 @@
 NBNAME = nb
 VERNAME = ver
 TESTNAME = testbench
+PCNAME = LemonornPC
+
 OBJ_DIR = obj_dir
 NXDC_FILES = vsrc/$(NBNAME).nxdc
 VERILATOR = verilator
@@ -18,6 +20,7 @@ VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
 NB_CSRCS = $(filter-out %ver.cpp, $(CSRCS))
 VER_CSRCS = $(filter-out %nb.cpp %$(SRC_AUTO_BIND), $(CSRCS))
+PC_CSRCS = $(filter-out %nb.cpp %$(SRC_AUTO_BIND) %ver.cpp, $(CSRCS))
 CSRCS += $(SRC_AUTO_BIND)
 
 # rules for NVBoard
@@ -41,14 +44,24 @@ $(NBNAME): $(VSRCS) $(NB_CSRCS) $(NVBOARD_ARCHIVE)
 
 # just for the simulator of verilator
 $(VERNAME): $(VSRCS) $(VER_CSRCS)
+	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
 		--top-module $(VERNAME) $^ \
 		--exe -o $(abspath $(VERNAME))
 	$(abspath $(VERNAME))
 	-@rm -rf obj_dir
 
+$(PCNAME): $(VSRCS) $(PC_CSRCS)
+	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+	$(VERILATOR) $(VERILATOR_CFLAGS) \
+		--top-module PC $^ \
+		--exe -o $(abspath $(PCNAME))
+	$(abspath $(PCNAME))
+	-@rm -rf obj_dir
+
 # just for testbench of verilator
 $(TESTNAME): $(VSRCS)
+	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) --binary --timing \
 		--top-module $(TESTNAME) $^ \
 		-o $(abspath $(TESTNAME))
