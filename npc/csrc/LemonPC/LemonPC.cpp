@@ -30,13 +30,13 @@ int main(int argc, char** argv, char** env) {
   int cnt = 0;
   srand((unsigned) time(NULL));
   while (!contextp->gotFinish()) {
-    printf("%016lx\n", PC->pc);
-    PC->inst = pmem_read(PC->pc, 4);
 #ifdef SEQUENTIAL
     single_cycle();
 #else
     PC->eval();
 #endif
+    PC->inst = pmem_read(PC->pc, 4);
+    printf("%016lx\n", PC->pc);
     if (cnt++ > 10) break;
   }
   PC->final();
