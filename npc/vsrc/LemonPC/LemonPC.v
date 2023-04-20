@@ -1,6 +1,6 @@
 module PC (
     input [31:0] inst,
-    output [63:0] pc
+    output reg [63:0] pc
 );
     initial begin
         assign pc = {32'd0, 32'h80000000};
