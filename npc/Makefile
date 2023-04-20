@@ -1,7 +1,7 @@
 NBNAME = nb
 VERNAME = ver
 TESTNAME = testbench
-PCNAME = LemonornPC
+PCNAME = LemonPC
 
 OBJ_DIR = obj_dir
 NXDC_FILES = vsrc/$(NBNAME).nxdc
