@@ -21,8 +21,7 @@ char *strcat(char *dst, const char *src) {
 }
 
 int strcmp(const char *s1, const char *s2) {
-  return 0;
-  // panic("Not implemented");
+  panic("Not implemented");
 }
 
 int strncmp(const char *s1, const char *s2, size_t n) {
@@ -30,8 +29,7 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 }
 
 void *memset(void *s, int c, size_t n) {
-  return 0;
-  // panic("Not implemented");
+  panic("Not implemented");
 }
 
 void *memmove(void *dst, const void *src, size_t n) {
