@@ -18,12 +18,14 @@
 
 #include <isa.h>
 
+#define LOGBUF_SIZE 128
+
 typedef struct Decode {
   vaddr_t pc;
   vaddr_t snpc; // static next pc
   vaddr_t dnpc; // dynamic next pc
   ISADecodeInfo isa;
-  IFDEF(CONFIG_ITRACE, char logbuf[128]);
+  IFDEF(CONFIG_ITRACE, char logbuf[LOGBUF_SIZE]);
 } Decode;
 
 // --- pattern matching mechanism ---

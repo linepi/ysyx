@@ -15,6 +15,7 @@
 
 #include <isa.h>
 #include <cpu/cpu.h>
+#include <cpu/decode.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <memory/paddr.h>
@@ -25,6 +26,7 @@ static int is_batch_mode = false;
 void init_regex();
 void init_wp_pool();
 extern void isa_reg_display();
+extern void fill_logbuf();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -106,6 +108,7 @@ static int cmd_p(char *args) {
   printf(EXPR_NUM_FMT"\n", val);
   return 0;
 }
+
 static int cmd_px(char *args) {
   bool success;
   expr_t val = expr(args, &success);
@@ -116,6 +119,7 @@ static int cmd_px(char *args) {
   printf("0x%lx\n", val);
   return 0;
 }
+
 static int cmd_w(char *args) {
   bool success;
   expr_t val = expr(args, &success);
@@ -128,7 +132,8 @@ static int cmd_w(char *args) {
   new->val = val;
   return 0;
 }
-static int cmd_d(char *args) {
+
+static int cmd_del(char *args) {
   int NO = atoi(args);
   assert(NO > 0 && NO <= 32);
   WP *i;
@@ -141,6 +146,16 @@ static int cmd_d(char *args) {
   if (!i) {
     Error("Watchpoint %d does not exist.\n", NO);
   }
+  return 0;
+}
+
+static int cmd_list(char *args) {
+  int n = 1;
+  if(args != NULL) {
+    n = atoi(args);
+  }
+  char logbuf[LOGBUF_SIZE];
+  // fill_logbuf();
   return 0;
 }
 
@@ -160,8 +175,8 @@ static struct {
   { "p", "Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
   { "p/x", "Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
   { "w", "Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
-  { "d", "Usage: d <watchpoint NO>. example: d 2", cmd_d },
-
+  { "del", "Usage: del <watchpoint NO>. example: d 2", cmd_del },
+  { "list", "Usage list [N]. Show N instruction, default 1", cmd_list},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -194,6 +209,10 @@ void sdb_set_batch_mode() {
 }
 
 void sdb_mainloop() {
+  char command_cache[512]; command_cache[0] = '\0';
+  char str_cache[512]; str_cache[0] = '\0';
+  int nullcmd;
+
   if (is_batch_mode) {
     cmd_c(NULL);
     return;
@@ -201,10 +220,19 @@ void sdb_mainloop() {
 
   for (char *str; (str = rl_gets()) != NULL; ) {
     char *str_end = str + strlen(str);
+    strcpy(str_cache, str);
 
     /* extract the first token as the command */
     char *cmd = strtok(str, " ");
-    if (cmd == NULL) { continue; }
+    if (cmd == NULL) { 
+      nullcmd = 1;
+      strcpy(str_cache, command_cache);
+      str_end = str_cache + strlen(str_cache);
+      cmd = strtok(str_cache, " ");
+    } else {
+      nullcmd = 0;
+    }
+
 
     /* treat the remaining string as the arguments,
      * which may need further parsing
@@ -222,6 +250,7 @@ void sdb_mainloop() {
     int i;
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(cmd, cmd_table[i].name) == 0) {
+
         if (cmd_table[i].handler(args) < 0) { 
           nemu_state.state = NEMU_QUIT;
           return; 
@@ -231,6 +260,9 @@ void sdb_mainloop() {
     }
 
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
+    /* command cache */
+    if (nullcmd == 0)
+      strcpy(command_cache, str_cache);
   }
 }
 

@@ -43,6 +43,9 @@ $(OBJ_DIR)/%.o: %.cc
 # Depencies
 -include $(OBJS:.o=.d)
 
+# precompile
+-include $(NEMU_HOME)/scripts/precompile.mk
+
 # Some convenient rules
 
 .PHONY: app clean

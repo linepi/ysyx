@@ -1,7 +1,5 @@
 module ver (
-    input a,
-    input b,
-    output c
+    input [31:0] inst,
+    output [63:0] pc
 );
-    assign c = a & b; 
 endmodule

@@ -11,7 +11,7 @@
 * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 *
 * See the Mulan PSL v2 for more details.
-***************************************************************************************/
+***************************************************************#include <cpu/cpu.h>************************/
 
 #include <cpu/cpu.h>
 #include <cpu/decode.h>
@@ -59,6 +59,10 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     }
   }
 #endif
+}
+
+void fill_logbuf(char *p, uint64_t pc) {
+  TODO();
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {

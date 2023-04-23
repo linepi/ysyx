@@ -38,10 +38,6 @@ static struct rule {
   int token_type;
 } rules[] = {
 
-  /* TODO: Add more rules.
-   * Pay attention to the precedence level of different rules.
-   */
-
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"\\(", '('},         
@@ -67,7 +63,7 @@ static struct rule {
   {"~", TK_BNOT},        
   {"-", TK_NEG},        
   {"\\*", TK_DEREFERENCE},        
-  {"0[xX][0-9]+", TK_HEX},    
+  {"0[xX]([0-9]|[a-f]|[A-F])+", TK_HEX},    
   {"[0-9]+", TK_DEC},    // digital number
   {"\\$\\w{2,3}", TK_REG},    
 };
