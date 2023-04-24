@@ -51,6 +51,7 @@ int sprintf(char *out, const char *fmt, ...) {
         break;
       default: panic("Not implemented");
       }
+      fmt += 2;
     }
   }
   *out = '\0';
