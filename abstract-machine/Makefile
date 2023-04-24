@@ -143,7 +143,7 @@ image: image-dep
 archive: $(ARCHIVE)
 image-dep: $(OBJS) am $(LIBS)
 	@echo \# Creating image [$(ARCH)]
-.PHONY: image image-dep archive run $(LIBS)
+.PHONY: image image-dep archive run execute gdb $(LIBS)
 
 ### Clean a single project (remove `build/`)
 clean:
