@@ -72,6 +72,7 @@ static int cmd_si(char *args) {
       printf("    ");
     else 
       printf(ANSI_FMT("=>  ", ANSI_FG_GREEN));
+    // 这里保存pc的原因是，inst_fetch_add会使pc增加，以至于反汇编得不到所执行指令的正确相对地址
     vaddr_t saved_pc = pc;
     uint32_t inst = inst_fetch_add(&pc, 4);
     disassemble(disa, 128, saved_pc, (uint8_t *)&inst, 4);
