@@ -156,10 +156,6 @@ static int cmd_del(char *args) {
 }
 
 static int cmd_list(char *args) {
-  int n = 1;
-  if(args != NULL) {
-    n = atoi(args);
-  }
   return 0;
 }
 
