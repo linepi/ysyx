@@ -16,6 +16,7 @@
 #include <isa.h>
 #include <cpu/cpu.h>
 #include <cpu/decode.h>
+#include <cpu/ifetch.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <memory/paddr.h>
@@ -26,7 +27,7 @@ static int is_batch_mode = false;
 void init_regex();
 void init_wp_pool();
 extern void isa_reg_display();
-extern void fill_logbuf();
+void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -62,7 +63,11 @@ static int cmd_si(char *args) {
     steps = atoi(args);
   }
   cpu_exec(steps);
-  printf("pc is %lx\n", cpu.pc);
+  char inst[128];
+  vaddr_t pc;
+  inst_fetch(&pc, 4);
+  disassemble(inst, 128, cpu.pc, pc, 4);
+  puts(inst);
   return 0;
 }
 
