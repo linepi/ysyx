@@ -65,7 +65,7 @@ static int cmd_si(char *args) {
   cpu_exec(steps);
 
   char disa[128];
-  vaddr_t pc = cpu.pc - 8;
+  vaddr_t pc = cpu.pc - 8 >= CONFIG_MBASE ? cpu.pc - 8 : cpu.pc - 4;
   for (int i = 0; i < 5; i++) {
     uint32_t inst = inst_fetch_add(&pc, 4);
     disassemble(disa, 128, pc, (uint8_t *)&inst, 4);
