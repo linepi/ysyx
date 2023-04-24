@@ -34,32 +34,21 @@ char *strcat(char *dst, const char *src) {
   return dst;
 }
 
-int strcmp(const char *s1, const char *s2) {
-  while (*s1 && *s2 && *s1 == *s2) {
+int strcmp(const char *s1, const char *s2)
+{
+  while (*s1){
+    if (*s1 != *s2) break;
     s1++; s2++;
-  }  
-  if (*s1) {
-    if (*s2) return *s1 > *s2;
-    else return 1;
-  } else {
-    if (*s2) return -1;
   }
-  return 0;
+  return *(const unsigned char*)s1 - *(const unsigned char*)s2;
 }
 
 int strncmp(const char *s1, const char *s2, size_t n) {
-  while (*s1 && *s2 && *s1 == *s2 && n--) {
+  while (*s1 && n--){
+    if (*s1 != *s2) break;
     s1++; s2++;
-  }  
-  if (*s1) {
-    if (*s2) return *s1 > *s2;
-    else return 1;
   }
-  if (*s2) {
-    if (*s1) return *s2 > *s1;
-    else return -1;
-  }
-  return 0;
+  return *(const unsigned char*)s1 - *(const unsigned char*)s2;
 }
 
 void *memset(void *s, int c, size_t n) {
