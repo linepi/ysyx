@@ -58,19 +58,23 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_si(char *args) {
-  int steps = 1;
-  if(args != NULL) {
-    steps = atoi(args);
-  }
-  cpu_exec(steps);
-
   char disa[128];
   vaddr_t pc = cpu.pc - 8 >= CONFIG_MBASE ? cpu.pc - 8 : cpu.pc - 4;
   for (int i = 0; i < 5; i++) {
     uint32_t inst = inst_fetch_add(&pc, 4);
     disassemble(disa, 128, pc, (uint8_t *)&inst, 4);
+    if (pc != cpu.pc)
+      puts("    ");
+    else 
+      puts(ANSI_FMT("=>  \n", ANSI_FG_GREEN));
     puts(disa);
   }
+
+  int steps = 1;
+  if(args != NULL) {
+    steps = atoi(args);
+  }
+  cpu_exec(steps);
   return 0;
 }
 
