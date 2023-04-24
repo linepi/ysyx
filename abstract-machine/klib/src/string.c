@@ -41,10 +41,8 @@ int strcmp(const char *s1, const char *s2) {
   if (*s1) {
     if (*s2) return *s1 > *s2;
     else return 1;
-  }
-  if (*s2) {
-    if (*s1) return *s2 > *s1;
-    else return -1;
+  } else {
+    if (*s2) return -1;
   }
   return 0;
 }
