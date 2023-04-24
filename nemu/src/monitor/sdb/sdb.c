@@ -29,10 +29,12 @@ void init_wp_pool();
 extern void isa_reg_display();
 void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 
+// just for riscv64
 void frame_bump(int n) {
   printf(ANSI_FMT("Frame with pc = 0x%016lx:\n", ANSI_FG_GREEN), cpu.pc);
   char disa[128];
-  vaddr_t pc = cpu.pc >= CONFIG_MBASE + 8 ? cpu.pc - 8 : cpu.pc;
+  // vaddr_t pc = cpu.pc >= CONFIG_MBASE + 8 ? cpu.pc - 8 : cpu.pc;
+  vaddr_t pc = MAX(cpu.pc - 4 * (n/2), CONFIG_MBASE);
   for (int i = 0; i < n; i++) {
     if (pc != cpu.pc)
       printf("    ");
