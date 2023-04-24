@@ -64,9 +64,9 @@ static int cmd_si(char *args) {
     uint32_t inst = inst_fetch_add(&pc, 4);
     disassemble(disa, 128, pc, (uint8_t *)&inst, 4);
     if (pc != cpu.pc)
-      puts("    ");
+      printf("    ");
     else 
-      puts(ANSI_FMT("=>  ", ANSI_FG_GREEN));
+      printf(ANSI_FMT("=>  ", ANSI_FG_GREEN));
     puts(disa);
   }
 
