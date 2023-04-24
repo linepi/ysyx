@@ -72,8 +72,9 @@ static int cmd_si(char *args) {
       printf("    ");
     else 
       printf(ANSI_FMT("=>  ", ANSI_FG_GREEN));
+    vaddr_t saved_pc = pc;
     uint32_t inst = inst_fetch_add(&pc, 4);
-    disassemble(disa, 128, pc, (uint8_t *)&inst, 4);
+    disassemble(disa, 128, saved_pc, (uint8_t *)&inst, 4);
     puts(disa);
   }
   return 0;
