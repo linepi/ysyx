@@ -66,7 +66,7 @@ static int cmd_si(char *args) {
     if (pc != cpu.pc)
       puts("    ");
     else 
-      puts(ANSI_FMT("=>  \n", ANSI_FG_GREEN));
+      puts(ANSI_FMT("=>  ", ANSI_FG_GREEN));
     puts(disa);
   }
 
