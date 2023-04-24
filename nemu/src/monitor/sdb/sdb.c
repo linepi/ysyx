@@ -64,7 +64,7 @@ static int cmd_si(char *args) {
   }
   cpu_exec(steps);
 
-  puts(ANSI_FMT("Frame:", ANSI_FG_GREEN));
+  printf(ANSI_FMT("Frame with pc = 0x%016x:", ANSI_FG_GREEN), cpu.pc);
   char disa[128];
   vaddr_t pc = cpu.pc >= CONFIG_MBASE + 8 ? cpu.pc - 8 : cpu.pc;
   for (int i = 0; i < 5; i++) {
