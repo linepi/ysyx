@@ -94,7 +94,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 
 static void execute(uint64_t n) {
   Decode s;
-  if (g_print_step)
+  if (g_print_step && n)
     printf(ANSI_FMT("Lines executed:\n", ANSI_FG_GREEN));
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
