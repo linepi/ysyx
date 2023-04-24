@@ -33,7 +33,6 @@ void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 void frame_bump(int n) {
   printf(ANSI_FMT("Frame with pc = 0x%016lx:\n", ANSI_FG_GREEN), cpu.pc);
   char disa[128];
-  // vaddr_t pc = cpu.pc >= CONFIG_MBASE + 8 ? cpu.pc - 8 : cpu.pc;
   vaddr_t pc = MAX(cpu.pc - 4 * (n/2), CONFIG_MBASE);
   for (int i = 0; i < n; i++) {
     if (pc != cpu.pc)
@@ -44,7 +43,14 @@ void frame_bump(int n) {
     vaddr_t saved_pc = pc;
     uint32_t inst = inst_fetch_add(&pc, 4);
     disassemble(disa, 128, saved_pc, (uint8_t *)&inst, 4);
+
+    printf("0x%08lx", saved_pc); 
     puts(disa);
+    puts("    ");
+    uint8_t *p_inst = (uint8_t *)&inst;
+    for (int i = 3; i >= 0; i --) {
+      printf(" %02x", p_inst[i]);
+    }
   }
 }
 
