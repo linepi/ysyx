@@ -133,7 +133,7 @@ void cpu_exec(uint64_t n) {
 
   uint64_t timer_start = get_time();
 
-  printf(ANSI_FMT("Lines executed\b", ANSI_FG_CYAN));
+  printf(ANSI_FMT("Lines executed\n", ANSI_FG_GREEN));
   execute(n);
 
   uint64_t timer_end = get_time();
