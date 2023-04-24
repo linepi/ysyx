@@ -64,15 +64,16 @@ static int cmd_si(char *args) {
   }
   cpu_exec(steps);
 
+  puts(ANSI_FMT("Frame:", ANSI_FG_GREEN));
   char disa[128];
   vaddr_t pc = cpu.pc >= CONFIG_MBASE + 8 ? cpu.pc - 8 : cpu.pc;
   for (int i = 0; i < 5; i++) {
-    uint32_t inst = inst_fetch_add(&pc, 4);
-    disassemble(disa, 128, pc, (uint8_t *)&inst, 4);
     if (pc != cpu.pc)
       printf("    ");
     else 
       printf(ANSI_FMT("=>  ", ANSI_FG_GREEN));
+    uint32_t inst = inst_fetch_add(&pc, 4);
+    disassemble(disa, 128, pc, (uint8_t *)&inst, 4);
     puts(disa);
   }
   return 0;
