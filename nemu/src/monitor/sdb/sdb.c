@@ -62,6 +62,7 @@ static int cmd_si(char *args) {
     steps = atoi(args);
   }
   cpu_exec(steps);
+  printf("pc is %lx\n", cpu.pc);
   return 0;
 }
 

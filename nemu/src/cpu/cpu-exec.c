@@ -98,6 +98,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 
 static void execute(uint64_t n) {
   Decode s;
+  printf(ANSI_FMT("Lines executed:\n", ANSI_FG_GREEN));
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
@@ -133,7 +134,6 @@ void cpu_exec(uint64_t n) {
 
   uint64_t timer_start = get_time();
 
-  printf(ANSI_FMT("Lines executed\n", ANSI_FG_GREEN));
   execute(n);
 
   uint64_t timer_end = get_time();
