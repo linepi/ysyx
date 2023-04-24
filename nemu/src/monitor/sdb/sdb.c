@@ -29,6 +29,23 @@ void init_wp_pool();
 extern void isa_reg_display();
 void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 
+void frame_bump(int n) {
+  printf(ANSI_FMT("Frame with pc = 0x%016lx:\n", ANSI_FG_GREEN), cpu.pc);
+  char disa[128];
+  vaddr_t pc = cpu.pc >= CONFIG_MBASE + 8 ? cpu.pc - 8 : cpu.pc;
+  for (int i = 0; i < n; i++) {
+    if (pc != cpu.pc)
+      printf("    ");
+    else 
+      printf(ANSI_FMT("=>  ", ANSI_FG_GREEN));
+    // 这里保存pc的原因是，inst_fetch_add会使pc增加，以至于反汇编得不到所执行指令的正确相对地址
+    vaddr_t saved_pc = pc;
+    uint32_t inst = inst_fetch_add(&pc, 4);
+    disassemble(disa, 128, saved_pc, (uint8_t *)&inst, 4);
+    puts(disa);
+  }
+}
+
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
   static char *line_read = NULL;
@@ -63,21 +80,7 @@ static int cmd_si(char *args) {
     steps = atoi(args);
   }
   cpu_exec(steps);
-
-  printf(ANSI_FMT("Frame with pc = 0x%016lx:\n", ANSI_FG_GREEN), cpu.pc);
-  char disa[128];
-  vaddr_t pc = cpu.pc >= CONFIG_MBASE + 8 ? cpu.pc - 8 : cpu.pc;
-  for (int i = 0; i < 5; i++) {
-    if (pc != cpu.pc)
-      printf("    ");
-    else 
-      printf(ANSI_FMT("=>  ", ANSI_FG_GREEN));
-    // 这里保存pc的原因是，inst_fetch_add会使pc增加，以至于反汇编得不到所执行指令的正确相对地址
-    vaddr_t saved_pc = pc;
-    uint32_t inst = inst_fetch_add(&pc, 4);
-    disassemble(disa, 128, saved_pc, (uint8_t *)&inst, 4);
-    puts(disa);
-  }
+  frame_bump(5);
   return 0;
 }
 
