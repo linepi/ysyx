@@ -27,7 +27,7 @@ void isa_reg_display() {
   for(int i = 0; i < 32; i++) {
     printf("%s: ", reg_name(i));
     if (strlen(reg_name(i)) != 3) putchar(' ');
-    printf("0x%2016lx   %10lu   %10ld\n", gpr(i), gpr(i), gpr(i));
+    printf("0x%016lx   %10lu   %10ld\n", gpr(i), gpr(i), gpr(i));
   }
 }
 
