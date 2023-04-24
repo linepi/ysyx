@@ -29,6 +29,48 @@ int atoi(const char* nptr) {
   return x;
 }
 
+int itoa(int num, char *str, int base) {
+  if (base != 10 && base != 16) return -1;
+  if (num == 0) {
+    str[0] = '0';
+    str[1] = '\0';
+    return 1;
+  }
+  int digit;
+  int i;
+  for (i = 0; num; num /= base, i++) {
+    digit = num % base;
+		if (digit < 0xA)
+			str[i] = '0' + digit;
+		else
+			str[i] = 'A' + digit - 0xA;
+  }
+  str[i] = '\0';
+  strrev(str);
+  return i;
+}
+
+int ltoa(long num, char *str, int base) {
+  if (base != 10 && base != 16) return -1;
+  if (num == 0) {
+    str[0] = '0';
+    str[1] = '\0';
+    return 1;
+  }
+  int digit;
+  int i;
+  for (i = 0; num; num /= base, i++) {
+    digit = num % base;
+		if (digit < 0xA)
+			str[i] = '0' + digit;
+		else
+			str[i] = 'A' + digit - 0xA;
+  }
+  str[i] = '\0';
+  strrev(str);
+  return i;
+}
+
 void *malloc(size_t size) {
   // On native, malloc() will be called during initializaion of C runtime.
   // Therefore do not call panic() here, else it will yield a dead recursion:

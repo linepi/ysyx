@@ -22,6 +22,7 @@ char  *strcpy    (char *dst, const char *src);
 char  *strncpy   (char *dst, const char *src, size_t n);
 int    strcmp    (const char *s1, const char *s2);
 int    strncmp   (const char *s1, const char *s2, size_t n);
+void   strrev    (char *str);
 
 // stdlib.h
 void   srand     (unsigned int seed);
@@ -30,6 +31,8 @@ void  *malloc    (size_t size);
 void   free      (void *ptr);
 int    abs       (int x);
 int    atoi      (const char *nptr);
+int    itoa      (int, char*, int);
+int    ltoa      (long int, char*, int);
 
 // stdio.h
 int    printf    (const char *format, ...);
