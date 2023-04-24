@@ -46,11 +46,12 @@ void frame_bump(int n) {
 
     printf("0x%08lx", saved_pc); 
     puts(disa);
-    puts("    ");
+    printf("    ");
     uint8_t *p_inst = (uint8_t *)&inst;
     for (int i = 3; i >= 0; i --) {
       printf(" %02x", p_inst[i]);
     }
+    printf("\n");
   }
 }
 
