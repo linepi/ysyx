@@ -64,7 +64,7 @@ static int cmd_si(char *args) {
   }
   cpu_exec(steps);
   char inst[128];
-  vaddr_t pc;
+  vaddr_t pc = 0;
   inst_fetch(&pc, 4);
   disassemble(inst, 128, cpu.pc, pc, 4);
   puts(inst);
@@ -160,8 +160,6 @@ static int cmd_list(char *args) {
   if(args != NULL) {
     n = atoi(args);
   }
-  char logbuf[LOGBUF_SIZE];
-  // fill_logbuf();
   return 0;
 }
 
