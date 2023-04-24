@@ -63,11 +63,11 @@ static int cmd_si(char *args) {
     steps = atoi(args);
   }
   cpu_exec(steps);
-  char disa[128];
-  vaddr_t pc = 0;
-  uint32_t inst = inst_fetch(&pc, 4);
-  disassemble(disa, 128, cpu.pc, (uint8_t *)&inst, 4);
-  puts(disa);
+  // char disa[128];
+  // vaddr_t pc = 0;
+  // uint32_t inst = inst_fetch(&pc, 4);
+  // disassemble(disa, 128, cpu.pc, (uint8_t *)&inst, 4);
+  // puts(disa);
   return 0;
 }
 
