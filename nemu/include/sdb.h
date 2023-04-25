@@ -17,11 +17,13 @@
 #define __SDB_H__
 
 #include <common.h>
+#include <elf.h>
 
 #define NR_WP 32
 typedef sword_t expr_t;
 #define EXPR_NUM_FMT "%ld"
 
+// watchpoint.h
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
@@ -37,5 +39,14 @@ WP* new_wp();
 void free_wp(WP *wp);
 WP* get_wp_head();
 void wp_display();
+
+// elf related declaration
+typedef struct {
+  Elf64_Sym *sym;
+  char (*name)[64];
+} symtab;
+
+void init_elf(const char* elf_file);
+bool is_elf(FILE *e);
 
 #endif
