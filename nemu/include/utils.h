@@ -73,12 +73,15 @@ uint64_t get_time();
     log_write(__VA_ARGS__); \
   } while (0)
 
+extern FILE *log_fp;
 
+// math macro
 #define MIN(a, b) (a < b ? a : b);
 #define MAX(a, b) (a > b ? a : b);
 
 // garbage.h
-void *malloc(size_t);
-void free(void *);
+void *wmalloc(size_t);
+void wfree(void *);
+
 
 #endif

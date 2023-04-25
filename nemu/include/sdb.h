@@ -58,6 +58,7 @@ struct functbl_t {
   char (*name)[FUNC_LEN];
 };
 
+extern FILE *elf_fp;
 void init_elf(const char* elf_file);
 bool is_elf(FILE *e);
 

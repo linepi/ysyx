@@ -33,6 +33,6 @@ int main(int argc, char *argv[]) {
   // test_expr();
   /* Start engine. */
   engine_start();
-  // garbage_collect();
+  garbage_collect();
   return is_exit_status_bad();
 }
