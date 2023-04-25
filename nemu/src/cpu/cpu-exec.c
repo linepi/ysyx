@@ -116,7 +116,7 @@ static void statistic() {
 }
 
 void assert_fail_msg() {
-  frame_bump(20);
+  frame_dump(20);
   isa_reg_display();
   statistic();
 }
