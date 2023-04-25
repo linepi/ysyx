@@ -9,6 +9,7 @@ void *wmalloc(size_t sz) {
   // add addr into list
   struct heap_node *new = (struct heap_node*)malloc(sizeof(struct heap_node));
   new->next = head.next;
+  new->addr = ret;
   head.next = new;
 
   return ret;
