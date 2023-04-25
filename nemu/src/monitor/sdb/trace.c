@@ -39,13 +39,13 @@ void ftrace(vaddr_t pc) {
   // jal
   if ((i & 0b1111111) == 0b1101111) {
     immUJ();
-    printf("jump to 0x%08x\n", *imm);
+    printf("jump to 0x%08lx\n", *imm);
   }
   // jalr
   if ((i & 0b111000001111111) == 0b000000001100111) {
     int src1 = gpr(BITS(i, 19, 15));
     immI();
-    printf("jump to 0x%08x\n", *imm + src1);
+    printf("jump to 0x%08lx\n", *imm + src1);
   }
 }
 
