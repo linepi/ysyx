@@ -25,6 +25,7 @@ void init_elf(const char *elf_file) {
   FILE *elf_fp = fopen(elf_file, "rb");;
   if (elf_fp && is_elf(elf_fp)) {
     Log("Elf is specified with %s", elf_file); 
+    functbl.addr = NULL;
   } else { 
     Log("No elf file specified");
   }
