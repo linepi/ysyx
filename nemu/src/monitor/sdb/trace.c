@@ -39,7 +39,7 @@ void ftrace(vaddr_t pc) {
   // jal
   if ((i & 0b1111111) == 0b1101111) {
     immUJ();
-    printf("jump to 0x%08lx\n", *imm + pc);
+    printf("jump to 0x%08lx\n", *imm + save_pc);
   }
   // jalr
   if ((i & 0b111000001111111) == 0b000000001100111) {
