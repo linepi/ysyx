@@ -44,7 +44,7 @@ void ftrace(vaddr_t pc) {
   }
   // jalr
   if ((i & 0b111000001111111) == 0b000000001100111) {
-    int src1 = gpr(BITS(i, 19, 15));
+    word_t src1 = gpr(BITS(i, 19, 15));
     immI();
     jump_to = *imm + src1;
   }
