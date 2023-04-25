@@ -16,12 +16,21 @@
 #ifndef __SDB_H__
 #define __SDB_H__
 
+#include <isa.h>
+#include <cpu/cpu.h>
+#include <cpu/decode.h>
+#include <cpu/ifetch.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <memory/paddr.h>
 #include <common.h>
+#include <elf.h>
 
 #define NR_WP 32
 typedef sword_t expr_t;
 #define EXPR_NUM_FMT "%ld"
 
+// watchpoint.h
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
@@ -37,5 +46,36 @@ WP* new_wp();
 void free_wp(WP *wp);
 WP* get_wp_head();
 void wp_display();
+
+// elf related declaration
+#define FUNC_LEN 64
+
+extern FILE *elf_fp;
+struct elfinfo_t {
+  Elf64_Ehdr Ehdr;
+  Elf64_Shdr *Shdr;
+  Elf64_Shdr *Shdr_symtab;
+  Elf64_Shdr *Shdr_strtab;
+  Elf64_Shdr *Shdr_shstrtab;
+
+  size_t nr_sym;
+  Elf64_Sym *Sym;
+};
+
+void init_elf(const char* elf_file);
+bool is_elf(FILE *e);
+extern struct elfinfo_t elfinfo;
+
+// trace.h
+struct func_t {
+  bool end;
+  word_t addr;
+  char name[FUNC_LEN];
+};
+
+void frame_dump(int n);
+void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+void make_functbl();
+extern struct func_t *functbl;
 
 #endif

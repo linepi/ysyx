@@ -32,6 +32,7 @@ static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
 void device_update();
+void frame_bump(int n);
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -59,10 +60,6 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     }
   }
 #endif
-}
-
-void fill_logbuf(char *p, uint64_t pc) {
-  TODO();
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
@@ -98,6 +95,8 @@ static void exec_once(Decode *s, vaddr_t pc) {
 
 static void execute(uint64_t n) {
   Decode s;
+  if (g_print_step && n)
+    printf(ANSI_FMT("Lines executed:\n", ANSI_FG_GREEN));
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
@@ -117,6 +116,7 @@ static void statistic() {
 }
 
 void assert_fail_msg() {
+  frame_dump(20);
   isa_reg_display();
   statistic();
 }

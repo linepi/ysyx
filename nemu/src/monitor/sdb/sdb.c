@@ -13,12 +13,6 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-#include <isa.h>
-#include <cpu/cpu.h>
-#include <cpu/decode.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <memory/paddr.h>
 #include <sdb.h>
 
 static int is_batch_mode = false;
@@ -26,7 +20,6 @@ static int is_batch_mode = false;
 void init_regex();
 void init_wp_pool();
 extern void isa_reg_display();
-extern void fill_logbuf();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -62,6 +55,7 @@ static int cmd_si(char *args) {
     steps = atoi(args);
   }
   cpu_exec(steps);
+  frame_dump(5);
   return 0;
 }
 
@@ -150,12 +144,6 @@ static int cmd_del(char *args) {
 }
 
 static int cmd_list(char *args) {
-  int n = 1;
-  if(args != NULL) {
-    n = atoi(args);
-  }
-  char logbuf[LOGBUF_SIZE];
-  // fill_logbuf();
   return 0;
 }
 
