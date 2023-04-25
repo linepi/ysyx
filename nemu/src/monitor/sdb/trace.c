@@ -3,6 +3,7 @@
 
 struct func_t *functbl = NULL;
 
+
 void make_functbl() {
   int func_cnt = 0;
   int idx = 0;
@@ -32,9 +33,15 @@ void make_functbl() {
 }
 
 void ftrace(vaddr_t pc) {
+  static char lastfunc[FUNC_LEN];
   vaddr_t save_pc = pc;
-  vaddr_t jump_to = 0;
   uint32_t i = inst_fetch_add(&pc, 4);
+  if (i == 0x00008067) {
+    printf("ret from %s\n", lastfunc);
+    return;
+  }
+
+  vaddr_t jump_to = 0;
   word_t _imm = 0;
   word_t *imm = &_imm;
   // jal
@@ -51,9 +58,9 @@ void ftrace(vaddr_t pc) {
 
   for (int i = 0; !functbl[i].end; i++) {
     if (functbl[i].addr == jump_to) {
-      if (i == 0x00008067) printf("ret to ");
-      else printf("call");
+      printf("call ");
       printf("%s\n", functbl[i].name);
+      strcpy(lastfunc, functbl[i].name);
       break;
     }
   }
