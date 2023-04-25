@@ -26,9 +26,9 @@ void make_functbl() {
     }
   }
   functbl[idx].end = true;
-  // for (int i = 0; !functbl[i].end; i++) {
-  //   printf("func addr 0x%016lx, func name %s\n", functbl[i].addr, functbl[i].name);
-  // }
+  for (int i = 0; !functbl[i].end; i++) {
+    printf("func addr 0x%016lx, func name %s\n", functbl[i].addr, functbl[i].name);
+  }
 }
 
 void ftrace(vaddr_t pc) {
