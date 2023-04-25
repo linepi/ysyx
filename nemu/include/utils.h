@@ -87,5 +87,6 @@ struct heap_node {
 
 void *wmalloc(size_t);
 void garbage_collect();
+void close_file();
 
 #endif
