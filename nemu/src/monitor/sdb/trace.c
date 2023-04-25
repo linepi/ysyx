@@ -30,6 +30,10 @@ void make_functbl() {
   // }
 }
 
+void ftrace(vaddr_t pc) {
+  
+}
+
 // just for riscv64
 void frame_dump(int n) {
   printf(ANSI_FMT("Frame with pc = 0x%016lx:\n", ANSI_FG_GREEN), cpu.pc);
