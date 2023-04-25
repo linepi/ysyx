@@ -31,7 +31,11 @@ void make_functbl() {
 }
 
 void ftrace(vaddr_t pc) {
-  
+  vaddr_t save_pc = pc;
+  uint32_t inst = inst_fetch_add(&pc, 4);
+  if (inst == 0x00008067) {
+    printf("0x%08x: ret []");
+  }
 }
 
 // just for riscv64
