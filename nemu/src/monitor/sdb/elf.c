@@ -60,6 +60,7 @@ void init_elf(const char *elf_file) {
         break;
       }
     }
+    assert(elfinfo.Shdr_symtab && elfinfo.Shdr_shstrtab && elfinfo.Shdr_strtab);
     elfinfo.nr_sym = elfinfo.Shdr_symtab->sh_size / elfinfo.Shdr_symtab->sh_entsize;
     fseek(elf_fp, elfinfo.Shdr_symtab->sh_offset, SEEK_SET);
     // malloc space for sym
