@@ -83,6 +83,28 @@ void init_elf(const char *elf_file) {
     Log("No elf file specified");
   }
 }
+/*
+21: st_info = 0
+21: st_shndx = 1
+21: st_size = 0
+21: st_name = 9
+22: st_info = 0
+22: st_shndx = 1
+22: st_size = 0
+22: st_name = 9
+23: st_info = 0
+23: st_shndx = 1
+23: st_size = 0
+23: st_name = 9
+24: st_info = 18
+24: st_shndx = 1
+24: st_size = 40
+24: st_name = 36
+25: st_info = 18
+25: st_shndx = 1
+25: st_size = 32
+25: st_name = 43
+*/
 
 void make_functbl() {
   int func_cnt = 0;
