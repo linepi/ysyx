@@ -36,6 +36,7 @@ uint64_t get_time();
 
 // ----------- log -----------
 
+extern FILE* log_fp;
 #define ANSI_FG_BLACK   "\33[1;30m"
 #define ANSI_FG_RED     "\33[1;31m"
 #define ANSI_FG_GREEN   "\33[1;32m"
@@ -73,15 +74,18 @@ uint64_t get_time();
     log_write(__VA_ARGS__); \
   } while (0)
 
-extern FILE *log_fp;
 
 // math macro
 #define MIN(a, b) (a < b ? a : b);
 #define MAX(a, b) (a > b ? a : b);
 
 // garbage.h
-void *wmalloc(size_t);
-void wfree(void *);
+struct heap_node {
+  struct heap_node *next;
+  void *addr;
+};
 
+void *wmalloc(size_t);
+void garbage_collect();
 
 #endif

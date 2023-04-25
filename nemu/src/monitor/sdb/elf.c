@@ -37,7 +37,7 @@ void init_elf(const char *elf_file) {
     }
     fseek(elf_fp, elfinfo.Ehdr.e_shoff, SEEK_SET);
     // malloc space for Shdr
-    elfinfo.Shdr = (Elf64_Shdr *)malloc(sizeof(Elf64_Shdr) * elfinfo.Ehdr.e_shnum);
+    elfinfo.Shdr = (Elf64_Shdr *)wmalloc(sizeof(Elf64_Shdr) * elfinfo.Ehdr.e_shnum);
     if (!elfinfo.Shdr) {
       Error("Error malloc shdr");
       return;
@@ -65,7 +65,7 @@ void init_elf(const char *elf_file) {
     elfinfo.nr_sym = elfinfo.Shdr_symtab->sh_size / elfinfo.Shdr_symtab->sh_entsize;
     fseek(elf_fp, elfinfo.Shdr_symtab->sh_offset, SEEK_SET);
     // malloc space for sym
-    elfinfo.Sym = (Elf64_Sym *)malloc(sizeof(Elf64_Sym) * elfinfo.nr_sym);
+    elfinfo.Sym = (Elf64_Sym *)wmalloc(sizeof(Elf64_Sym) * elfinfo.nr_sym);
     if (!elfinfo.Sym) {
       Error("Error malloc sym");
       return;

@@ -15,7 +15,6 @@
 
 #include <common.h>
 
-
 void init_monitor(int, char *[]);
 void am_init_monitor();
 void engine_start();
@@ -33,6 +32,8 @@ int main(int argc, char *argv[]) {
   // test_expr();
   /* Start engine. */
   engine_start();
+  // clear out
   garbage_collect();
+  close_file();
   return is_exit_status_bad();
 }

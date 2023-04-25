@@ -42,6 +42,8 @@ void wp_display();
 
 // elf related declaration
 #define FUNC_LEN 64
+
+extern FILE *elf_fp;
 struct elfinfo_t {
   Elf64_Ehdr Ehdr;
   Elf64_Shdr *Shdr;
@@ -58,7 +60,6 @@ struct functbl_t {
   char (*name)[FUNC_LEN];
 };
 
-extern FILE *elf_fp;
 void init_elf(const char* elf_file);
 bool is_elf(FILE *e);
 
