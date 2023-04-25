@@ -74,10 +74,11 @@ void init_elf(const char *elf_file) {
       Error("Error read sym");
       return;
     }
+    /* end of elfinfo making */
     IFDEF(CONFIG_FTRACE, make_functbl());
-    for (int i = 0; !functbl[i].end; i++) {
-      printf("func addr 0x%016lx, func name %s\n", functbl[i].addr, functbl[i].name);
-    }
+    // for (int i = 0; !functbl[i].end; i++) {
+    //   printf("func addr 0x%016lx, func name %s\n", functbl[i].addr, functbl[i].name);
+    // }
   }
   else { 
     Log("No elf file specified");
