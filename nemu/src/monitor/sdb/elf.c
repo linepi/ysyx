@@ -1,6 +1,5 @@
 #include <elf.h>
-#include <stdio.h>
-#include <stdbool.h>
+#include <common.h>
 
 FILE *elf_fp = NULL;
 
