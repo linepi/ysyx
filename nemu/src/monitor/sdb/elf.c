@@ -1,5 +1,3 @@
-#include <elf.h>
-#include <common.h>
 #include <sdb.h>
 
 FILE *elf_fp = NULL;

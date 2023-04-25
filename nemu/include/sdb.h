@@ -66,12 +66,15 @@ void init_elf(const char* elf_file);
 bool is_elf(FILE *e);
 extern struct elfinfo_t elfinfo;
 
-// ftrace.h
+// trace.h
 struct func_t {
   bool end;
   word_t addr;
   char name[FUNC_LEN];
 };
+
+void frame_dump(int n);
+void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 void make_functbl();
 extern struct func_t *functbl;
 
