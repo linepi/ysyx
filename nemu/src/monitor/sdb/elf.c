@@ -30,6 +30,7 @@ void init_elf(const char *elf_file) {
   if (elf_fp && is_elf(elf_fp)) {
     Log("Elf is specified with %s", elf_file); 
     /* make elfinfo */
+    fseek(elf_fp, 0, SEEK_SET);
     if (fread(&elfinfo.Ehdr, sizeof(Elf64_Ehdr), 1, elf_fp) != 1) {
       Error("Error read Ehdr");
       return;
