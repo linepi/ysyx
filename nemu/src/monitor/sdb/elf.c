@@ -110,13 +110,13 @@ void make_functbl() {
   int func_cnt = 0;
   int idx = 0;
   for (size_t i = 0; i < elfinfo.nr_sym; i++) {
-    printf("%d: st_name = %d\n", i, elfinfo.Sym[i].st_name);
-    printf("%d: st_info = %d\n", i, elfinfo.Sym[i].st_info);
-    printf("%d: st_other = %d\n", i, elfinfo.Sym[i].st_other);
-    printf("%d: st_shndx = %d\n", i, elfinfo.Sym[i].st_shndx);
-    printf("%d: st_value = %d\n", i, elfinfo.Sym[i].st_value);
-    printf("%d: st_size = %d\n", i, elfinfo.Sym[i].st_size);
-    if (elfinfo.Sym[i].st_info == STT_FUNC) func_cnt++;
+    // printf("%d: st_name = %d\n", i, elfinfo.Sym[i].st_name);
+    // printf("%d: st_info = %d\n", i, elfinfo.Sym[i].st_info);
+    // printf("%d: st_other = %d\n", i, elfinfo.Sym[i].st_other);
+    // printf("%d: st_shndx = %d\n", i, elfinfo.Sym[i].st_shndx);
+    // printf("%d: st_value = %d\n", i, elfinfo.Sym[i].st_value);
+    // printf("%d: st_size = %d\n", i, elfinfo.Sym[i].st_size);
+    if (ELF64_ST_TYPE(elfinfo.Sym[i].st_info) == STT_FUNC) func_cnt++;
   }
   functbl = (struct func_t*)wmalloc(sizeof(struct func_t) * (func_cnt + 1));
   assert(functbl != NULL);
