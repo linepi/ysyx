@@ -88,6 +88,7 @@ void make_functbl() {
   int func_cnt = 0;
   int idx = 0;
   for (size_t i = 0; i < elfinfo.nr_sym; i++) {
+    printf("st_info = %d\n", elfinfo.Sym[i].st_info);
     if (elfinfo.Sym[i].st_info == STT_FUNC) func_cnt++;
   }
   functbl = (struct func_t*)wmalloc(sizeof(struct func_t) * (func_cnt + 1));
