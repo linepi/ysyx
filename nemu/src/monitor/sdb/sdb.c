@@ -144,6 +144,11 @@ static int cmd_del(char *args) {
 }
 
 static int cmd_list(char *args) {
+  int lines = 1;
+  if(args != NULL) {
+    lines = atoi(args);
+  }
+  frame_dump(lines);
   return 0;
 }
 
