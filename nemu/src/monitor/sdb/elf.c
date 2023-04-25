@@ -75,7 +75,6 @@ void init_elf(const char *elf_file) {
       return;
     }
     IFDEF(CONFIG_FTRACE, make_functbl());
-    assert(functbl[0].end);
     for (int i = 0; !functbl[i].end; i++) {
       printf("func addr 0x%016lx, func name %s\n", functbl[i].addr, functbl[i].name);
     }
