@@ -60,6 +60,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     }
   }
 #endif
+  IFDEF(CONFIG_FTRACE, ftrace(_this->pc));
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
@@ -68,7 +69,6 @@ static void exec_once(Decode *s, vaddr_t pc) {
   isa_exec_once(s);
   cpu.pc = s->dnpc;
   
-  IFDEF(CONFIG_FTRACE, ftrace(pc));
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);

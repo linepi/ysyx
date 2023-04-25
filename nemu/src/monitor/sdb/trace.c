@@ -48,10 +48,12 @@ void ftrace(vaddr_t pc) {
     immI();
     jump_to = *imm + src1;
   }
-  printf("jump to 0x%016lx\n", jump_to);
+
   for (int i = 0; !functbl[i].end; i++) {
     if (functbl[i].addr == jump_to) {
-      printf("jump to %s\n", functbl[i].name);
+      if (i == 0x00008067) printf("ret to ");
+      else printf("call");
+      printf("%s\n", functbl[i].name);
       break;
     }
   }
