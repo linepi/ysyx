@@ -55,7 +55,6 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       printf("new val: "EXPR_NUM_FMT"\n", val);
       printf(ANSI_FMT("changed at: ", ANSI_FG_BLUE));
       puts(_this->logbuf);
-      frame_dump(5);
       i->val = val;
       nemu_state.state = NEMU_STOP;
     }
@@ -69,7 +68,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   isa_exec_once(s);
   cpu.pc = s->dnpc;
   
-  // IFDEF(CONFIG_FTRACE, ftrace(pc));
+  IFDEF(CONFIG_FTRACE, ftrace(pc));
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
