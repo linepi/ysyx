@@ -55,7 +55,7 @@ static int cmd_si(char *args) {
     steps = atoi(args);
   }
   cpu_exec(steps);
-  frame_bump(5);
+  frame_dump(5);
   return 0;
 }
 

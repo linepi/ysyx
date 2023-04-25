@@ -2,8 +2,6 @@
 
 struct func_t *functbl = NULL;
 
-
-
 void make_functbl() {
   int func_cnt = 0;
   int idx = 0;
@@ -33,7 +31,7 @@ void make_functbl() {
 }
 
 // just for riscv64
-void frame_bump(int n) {
+void frame_dump(int n) {
   printf(ANSI_FMT("Frame with pc = 0x%016lx:\n", ANSI_FG_GREEN), cpu.pc);
   char disa[128];
   vaddr_t pc = MAX(cpu.pc - 4 * (n/2), CONFIG_MBASE);
