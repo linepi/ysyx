@@ -32,14 +32,19 @@ void make_functbl() {
 
 void ftrace(vaddr_t pc) {
   vaddr_t save_pc = pc;
-  uint32_t inst = inst_fetch_add(&pc, 4);
+  uint32_t i = inst_fetch_add(&pc, 4);
+  word_t _imm = 0;
+  word_t *imm = &_imm;
   // jal
-  if ((inst & 0b1111111) == 0b1101111) {
-    printf("jal called\n");
+  if ((i & 0b1111111) == 0b1101111) {
+    immUJ();
+    printf("jump to 0x%08x\n", *imm);
   }
   // jalr
-  if ((inst & 0b111000001111111) == 0b000000001100111) {
-    printf("jalr called\n");
+  if ((i & 0b111000001111111) == 0b000000001100111) {
+    int src1 = gpr(BITS(i, 19, 15));
+    immI();
+    printf("jump to 0x%08x\n", *imm + src1);
   }
 }
 
