@@ -8,7 +8,7 @@ bool is_elf(FILE *e) {
   if (!e) return false;
   Elf64_Ehdr Ehdr;
   fseek(e, 0, SEEK_SET);
-  if (fread(&Ehdr, sizeof(Elf64_Ehdr), 1, e) != sizeof(Elf64_Ehdr))
+  if (fread(&Ehdr, sizeof(Elf64_Ehdr), 1, e) != 1)
     Error("fread\n");
   return Ehdr.e_ident[0] == 0x7f &&
          Ehdr.e_ident[1] == 0x45 &&
