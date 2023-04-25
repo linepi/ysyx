@@ -13,13 +13,6 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-#include <isa.h>
-#include <cpu/cpu.h>
-#include <cpu/decode.h>
-#include <cpu/ifetch.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <memory/paddr.h>
 #include <sdb.h>
 
 static int is_batch_mode = false;

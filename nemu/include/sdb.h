@@ -16,6 +16,13 @@
 #ifndef __SDB_H__
 #define __SDB_H__
 
+#include <isa.h>
+#include <cpu/cpu.h>
+#include <cpu/decode.h>
+#include <cpu/ifetch.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <memory/paddr.h>
 #include <common.h>
 #include <elf.h>
 
@@ -55,14 +62,17 @@ struct elfinfo_t {
   Elf64_Sym *Sym;
 };
 
+void init_elf(const char* elf_file);
+bool is_elf(FILE *e);
+extern struct elfinfo_t elfinfo;
+
+// ftrace.h
 struct func_t {
   bool end;
   word_t addr;
   char name[FUNC_LEN];
 };
-
-void init_elf(const char* elf_file);
-bool is_elf(FILE *e);
 void make_functbl();
+extern struct func_t *functbl;
 
 #endif
