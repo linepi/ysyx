@@ -121,7 +121,7 @@ void make_functbl() {
   functbl = (struct func_t*)wmalloc(sizeof(struct func_t) * (func_cnt + 1));
   assert(functbl != NULL);
   for (size_t i = 0; i < elfinfo.nr_sym; i++) {
-    if (elfinfo.Sym[i].st_info == STT_FUNC) {
+    if (ELF64_ST_TYPE(elfinfo.Sym[i].st_info) == STT_FUNC) {
       int j = 0;
       char c;
       functbl[idx].addr = elfinfo.Sym[i].st_value;
