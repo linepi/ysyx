@@ -1,7 +1,11 @@
 #include <elf.h>
 #include <common.h>
+#include <sdb.h>
 
 FILE *elf_fp = NULL;
+#ifdef CONFIG_FTRACE
+struct functbl_t functbl = {};
+#endif
 
 // the function will modify file offset 
 bool is_elf(FILE *e) {
@@ -19,11 +23,14 @@ bool is_elf(FILE *e) {
 void init_elf(const char *elf_file) {
   if (!elf_file) return;
   FILE *elf_fp = fopen(elf_file, "rb");;
-  if (elf_fp && is_elf(elf_fp))
-    Log("Elf is specified with %s", elf_file);
-  else 
+  if (elf_fp && is_elf(elf_fp)) {
+    Log("Elf is specified with %s", elf_file); 
+  } else { 
     Log("No elf file specified");
+  }
 }
+
+
 
 static void test() {
   FILE *e = fopen("/home/w/dev/ysyx-workbench/am-kernels/tests/cpu-tests/build/string-riscv64-nemu.elf", "rb");;

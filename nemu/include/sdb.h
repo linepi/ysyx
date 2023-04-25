@@ -41,10 +41,11 @@ WP* get_wp_head();
 void wp_display();
 
 // elf related declaration
-typedef struct {
-  Elf64_Sym *sym;
-  char (*name)[64];
-} symtab;
+#define FUNC_LEN 64
+struct functbl_t{
+  word_t *addr;
+  char (*name)[FUNC_LEN];
+};
 
 void init_elf(const char* elf_file);
 bool is_elf(FILE *e);
