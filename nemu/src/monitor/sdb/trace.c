@@ -34,11 +34,11 @@ void ftrace(vaddr_t pc) {
   vaddr_t save_pc = pc;
   uint32_t inst = inst_fetch_add(&pc, 4);
   // jal
-  if (inst & 0b1111111 == 0b1101111) {
+  if ((inst & 0b1111111) == 0b1101111) {
     printf("jal called\n");
   }
   // jalr
-  if (inst & 0b111000001111111 == 0b000000001100111) {
+  if ((inst & 0b111000001111111) == 0b000000001100111) {
     printf("jalr called\n");
   }
 }
