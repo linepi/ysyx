@@ -42,7 +42,7 @@ void wp_display();
 
 // elf related declaration
 #define FUNC_LEN 64
-struct ei_t {
+struct elfinfo_t {
   Elf64_Ehdr Ehdr;
   Elf64_Shdr *Shdr;
   Elf64_Shdr *Shdr_symtab;

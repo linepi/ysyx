@@ -3,7 +3,7 @@
 #include <sdb.h>
 
 FILE *elf_fp = NULL;
-struct ei_t elfinfo = {};
+struct elfinfo_t elfinfo = {};
 
 #ifdef CONFIG_FTRACE
 struct functbl_t functbl = {};
