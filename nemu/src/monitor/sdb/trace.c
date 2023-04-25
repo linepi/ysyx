@@ -1,4 +1,5 @@
 #include <sdb.h>
+#include <reg.h>
 
 struct func_t *functbl = NULL;
 
