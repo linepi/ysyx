@@ -78,6 +78,7 @@ uint64_t get_time();
 #define MAX(a, b) (a > b ? a : b);
 
 // garbage.h
-
+void *malloc(size_t);
+void free(void *);
 
 #endif
