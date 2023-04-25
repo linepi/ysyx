@@ -25,7 +25,10 @@ bool is_elf(FILE *e) {
 }
 
 void init_elf(const char *elf_file) {
-  if (!elf_file) return;
+  if (!elf_file) {
+    Log("No elf file specified");
+    return;
+  }
   elf_fp = fopen(elf_file, "rb");;
   if (elf_fp && is_elf(elf_fp)) {
     Log("Elf is specified with %s", elf_file); 
@@ -81,7 +84,7 @@ void init_elf(const char *elf_file) {
     // }
   }
   else { 
-    Log("No elf file specified");
+    Log("No elf file specified. Elf file open failed or invalid elf file");
   }
 }
 
