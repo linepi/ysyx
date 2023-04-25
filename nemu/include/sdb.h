@@ -42,7 +42,16 @@ void wp_display();
 
 // elf related declaration
 #define FUNC_LEN 64
-struct functbl_t{
+struct elfinfo_t {
+  Elf64_Ehdr Ehdr;
+  Elf64_Shdr *Shdr;
+  Elf64_Shdr *Shdr_symtab;
+  Elf64_Shdr *Shdr_strtab;
+  Elf64_Shdr *Shdr_shstrtab;
+  Elf64_Sym *Sym;
+};
+
+struct functbl_t {
   word_t *addr;
   char (*name)[FUNC_LEN];
 };
