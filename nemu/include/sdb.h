@@ -55,9 +55,10 @@ struct elfinfo_t {
   Elf64_Sym *Sym;
 };
 
-struct functbl_t {
-  word_t *addr;
-  char (*name)[FUNC_LEN];
+struct func_t {
+  bool end;
+  word_t addr;
+  char name[FUNC_LEN];
 };
 
 void init_elf(const char* elf_file);
