@@ -32,7 +32,7 @@ static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
 void device_update();
-void frame_bump(int n);
+void frame_dump(int n);
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -55,6 +55,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       printf("new val: "EXPR_NUM_FMT"\n", val);
       printf(ANSI_FMT("changed at: ", ANSI_FG_BLUE));
       puts(_this->logbuf);
+      frame_dump(5);
       i->val = val;
       nemu_state.state = NEMU_STOP;
     }
