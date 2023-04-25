@@ -33,19 +33,27 @@ void make_functbl() {
 
 void ftrace(vaddr_t pc) {
   vaddr_t save_pc = pc;
+  vaddr_t jump_to = 0;
   uint32_t i = inst_fetch_add(&pc, 4);
   word_t _imm = 0;
   word_t *imm = &_imm;
   // jal
   if ((i & 0b1111111) == 0b1101111) {
     immUJ();
-    printf("jump to 0x%08lx\n", *imm + save_pc);
+    jump_to = *imm + save_pc;
   }
   // jalr
   if ((i & 0b111000001111111) == 0b000000001100111) {
     int src1 = gpr(BITS(i, 19, 15));
     immI();
-    printf("jump to 0x%08lx\n", *imm + src1);
+    jump_to = *imm + src1;
+  }
+
+  for (int i = 0; !functbl[i].end; i++) {
+    if (functbl[i].addr == jump_to) {
+      printf("jump to %s\n", functbl[i].name);
+      break;
+    }
   }
 }
 
