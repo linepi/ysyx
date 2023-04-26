@@ -34,7 +34,7 @@ int itoa(int num, char *str, int base) {
   int digit;
   int i = 0;
   int off = 0;
-  if (num < 0) {
+  if (num < 0 && base != 16) {
     str[i++] = '-';
     off = 1;
   }
@@ -72,7 +72,7 @@ int ltoa(long num, char *str, int base) {
   int digit;
   int i = 0;
   int off = 0;
-  if (num < 0) {
+  if (num < 0 && base != 16) {
     str[i++] = '-';
     off = 1;
   }
