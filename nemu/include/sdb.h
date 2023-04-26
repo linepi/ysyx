@@ -76,6 +76,7 @@ struct func_t {
 void frame_dump(int n);
 void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 void make_functbl();
+void ftrace(vaddr_t pc);
 extern struct func_t *functbl;
 
 #endif

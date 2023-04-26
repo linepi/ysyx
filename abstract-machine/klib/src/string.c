@@ -5,14 +5,13 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 size_t strlen(const char *s) {
-  size_t len = 0;
-  while (*s++) len++;
-  return len;
+  const char *start = s;
+  while (*s++);
+  return s - start - 1;
 }
 
 char *strcpy(char *dst, const char *src) {
   char *save = dst;
-
 	for (; (*dst = *src); ++dst, ++src);
 	return save;
 }
@@ -76,6 +75,21 @@ int memcmp(const void *s1, const void *s2, size_t n) {
     if (u1 != u2) return u1 - u2;
   }
   return 0;
+}
+
+void
+strrev(char *str)
+{
+	int i;
+	int j;
+	unsigned char a;
+	unsigned len = strlen((const char *)str);
+	for (i = 0, j = len - 1; i < j; i++, j--)
+	{
+		a = str[i];
+		str[i] = str[j];
+		str[j] = a;
+	}
 }
 
 #endif

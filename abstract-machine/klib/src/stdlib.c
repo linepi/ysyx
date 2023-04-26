@@ -29,6 +29,82 @@ int atoi(const char* nptr) {
   return x;
 }
 
+int itoa(int num, char *str, int base) {
+  if (base != 10 && base != 16) return -1;
+  int digit;
+  int i = 0;
+  int off = 0;
+  if (num < 0 && base != 16) {
+    str[i++] = '-';
+    off = 1;
+  }
+  for (; num || i == 0; num /= base, i++) {
+    digit = num % base;
+    if (digit < 0) digit = -digit;
+		if (digit < 0xA)
+			str[i] = '0' + digit;
+		else
+			str[i] = 'A' + digit - 0xA;
+  }
+  str[i] = '\0';
+  strrev(str + off);
+  return i;
+}
+
+int utoa(unsigned int num, char *str, int base) {
+  if (base != 10 && base != 16) return -1;
+  int digit;
+  int i;
+  for (i = 0; num || i == 0; num /= base, i++) {
+    digit = num % base;
+		if (digit < 0xA)
+			str[i] = '0' + digit;
+		else
+			str[i] = 'A' + digit - 0xA;
+  }
+  str[i] = '\0';
+  strrev(str);
+  return i;
+}
+
+int ltoa(long num, char *str, int base) {
+  if (base != 10 && base != 16) return -1;
+  int digit;
+  int i = 0;
+  int off = 0;
+  if (num < 0 && base != 16) {
+    str[i++] = '-';
+    off = 1;
+  }
+  for (; num || i == 0; num /= base, i++) {
+    digit = num % base;
+    if (digit < 0) digit = -digit;
+		if (digit < 0xA)
+			str[i] = '0' + digit;
+		else
+			str[i] = 'A' + digit - 0xA;
+  }
+  str[i] = '\0';
+  strrev(str + off);
+  return i;
+}
+
+int ultoa(unsigned long num, char *str, int base) {
+  if (base != 10 && base != 16) return -1;
+  int digit;
+  int i;
+  for (i = 0; num || i == 0; num /= base, i++) {
+    digit = num % base;
+		if (digit < 0xA)
+			str[i] = '0' + digit;
+		else
+			str[i] = 'A' + digit - 0xA;
+  }
+  str[i] = '\0';
+  strrev(str);
+  return i;
+}
+
 void *malloc(size_t size) {
   // On native, malloc() will be called during initializaion of C runtime.
   // Therefore do not call panic() here, else it will yield a dead recursion:

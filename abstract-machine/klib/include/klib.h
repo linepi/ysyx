@@ -4,12 +4,14 @@
 #include <am.h>
 #include <stddef.h>
 #include <stdarg.h>
+#include <klib-macros.h>
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-//#define __NATIVE_USE_KLIB__
+#define __NATIVE_USE_KLIB__
 
 // string.h
 void  *memset    (void *s, int c, size_t n);
@@ -22,6 +24,7 @@ char  *strcpy    (char *dst, const char *src);
 char  *strncpy   (char *dst, const char *src, size_t n);
 int    strcmp    (const char *s1, const char *s2);
 int    strncmp   (const char *s1, const char *s2, size_t n);
+void   strrev    (char *str);
 
 // stdlib.h
 void   srand     (unsigned int seed);
@@ -30,6 +33,10 @@ void  *malloc    (size_t size);
 void   free      (void *ptr);
 int    abs       (int x);
 int    atoi      (const char *nptr);
+int    itoa      (int, char*, int);
+int    ltoa      (long int, char*, int);
+int    ultoa(unsigned long num, char *str, int base);
+int    utoa(unsigned int num, char *str, int base);
 
 // stdio.h
 int    printf    (const char *format, ...);
@@ -45,7 +52,7 @@ int    vsnprintf (char *str, size_t size, const char *format, va_list ap);
   #define assert(cond) \
     do { \
       if (!(cond)) { \
-        printf("Assertion fail at %s:%d\n", __FILE__, __LINE__); \
+        printf(ANSI_FMT("Assertion fail at %s:%d\n", ANSI_FG_RED), __FILE__, __LINE__); \
         halt(1); \
       } \
     } while (0)
