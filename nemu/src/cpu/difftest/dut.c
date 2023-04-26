@@ -96,6 +96,7 @@ static void checkregs(CPU_state *ref, vaddr_t pc) {
   if (!isa_difftest_checkregs(ref, pc)) {
     nemu_state.state = NEMU_ABORT;
     nemu_state.halt_pc = pc;
+    Error("Error checkregs");
     isa_reg_display();
     frame_dump(pc, 20);
   }
