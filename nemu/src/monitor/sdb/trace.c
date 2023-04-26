@@ -2,7 +2,8 @@
 #include <reg.h>
 
 struct func_t *functbl = NULL;
-
+struct func_t cur_func = {};
+extern bool g_print_step;
 
 void make_functbl() {
   int func_cnt = 0;
@@ -37,7 +38,7 @@ void ftrace(vaddr_t pc) {
   vaddr_t save_pc = pc;
   uint32_t i = inst_fetch_add(&pc, 4);
   if (i == 0x00008067) {
-    printf(ANSI_FMT("ret from %s\n", ANSI_FG_BLUE), lastfunc);
+    if (g_print_step) printf(ANSI_FMT("ret from %s\n", ANSI_FG_BLUE), lastfunc);
     return;
   }
 
@@ -58,7 +59,8 @@ void ftrace(vaddr_t pc) {
 
   for (int i = 0; !functbl[i].end; i++) {
     if (functbl[i].addr == jump_to) {
-      printf(ANSI_FMT("call %s\n", ANSI_FG_BLUE), functbl[i].name);
+      if (g_print_step) printf(ANSI_FMT("call %s\n", ANSI_FG_BLUE), functbl[i].name);
+      cur_func = functbl[i];
       strcpy(lastfunc, functbl[i].name);
       break;
     }
@@ -67,7 +69,7 @@ void ftrace(vaddr_t pc) {
 
 // just for riscv64
 void frame_dump(int n) {
-  printf(ANSI_FMT("Frame with pc = 0x%016lx:\n", ANSI_FG_GREEN), cpu.pc);
+  printf(ANSI_FMT("Frame %s, with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func.name, cpu.pc);
   char disa[128];
   vaddr_t pc = MAX(cpu.pc - 4 * (n/2), CONFIG_MBASE);
   for (int i = 0; i < n; i++) {
