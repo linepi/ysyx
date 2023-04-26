@@ -1,5 +1,6 @@
 #include <common.h>
 #include <sdb.h>
+#include <utils.h>
 
 static struct heap_node head = {};
 
