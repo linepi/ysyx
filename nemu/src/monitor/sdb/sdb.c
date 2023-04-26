@@ -50,11 +50,29 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_si(char *args) {
+  if (nemu_state.state == NEMU_ABORT) {
+    printf("nemu is aborted\n");
+    return 0;
+  }
+  if (nemu_state.state == NEMU_END) {
+    printf("program is ended\n");
+    return 0;
+  }
+
   int steps = 1;
   if(args != NULL) {
     steps = atoi(args);
   }
   cpu_exec(steps);
+
+  if (nemu_state.state == NEMU_ABORT) {
+    printf("nemu is aborted\n");
+    return 0;
+  }
+  if (nemu_state.state == NEMU_END) {
+    printf("program is ended\n");
+    return 0;
+  }
   frame_dump(cpu.pc, 5);
   return 0;
 }
@@ -144,6 +162,15 @@ static int cmd_del(char *args) {
 }
 
 static int cmd_list(char *args) {
+  if (nemu_state.state == NEMU_ABORT) {
+    printf("nemu is aborted\n");
+    return 0;
+  }
+  if (nemu_state.state == NEMU_END) {
+    printf("program is ended\n");
+    return 0;
+  }
+
   int lines = 1;
   if(args != NULL) {
     lines = atoi(args);
