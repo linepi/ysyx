@@ -119,13 +119,7 @@ $(DST_DIR)/%.o: %.cpp
 $(DST_DIR)/%.o: %.S
 	@mkdir -p $(dir $@) && echo + AS $<
 	@$(AS) $(ASFLAGS) -c -o $@ $(realpath $<)
-_PLATFORM__=$(PLATFORM) -D__PLATFORM_$(shell echo $(PLATFORM) | tr a-z A-Z | tr - _) \
-            -DARCH_H=\"arch/$(ARCH).h\" \
-            -fno-asynchronous-unwind-tables -fno-builtin -fno-stack-protector \
-            -Wno-main -U_FORTIFY_SOURCE
-CXXFLAGS +=  $(CFLAGS) -ffreestanding -fno-rtti -fno-exceptions
-ASFLAGS  += -MMD $(INCFLAGS)
-LDFLAGS  += -z noexecstack
+
 ### Rule (recursive make): build a dependent library (am, klib, ...)
 $(LIBS): %:
 	@$(MAKE) -s -C $(AM_HOME)/$* archive

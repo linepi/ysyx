@@ -37,7 +37,7 @@ void ftrace(vaddr_t pc) {
   vaddr_t save_pc = pc;
   uint32_t i = inst_fetch_add(&pc, 4);
   if (i == 0x00008067) {
-    printf("ret from %s\n", lastfunc);
+    printf(ANSI_FMT("ret from %s\n", ANSI_FG_BLUE), lastfunc);
     return;
   }
 
@@ -58,8 +58,7 @@ void ftrace(vaddr_t pc) {
 
   for (int i = 0; !functbl[i].end; i++) {
     if (functbl[i].addr == jump_to) {
-      printf("call ");
-      printf("%s\n", functbl[i].name);
+      printf(ANSI_FMT("call %s\n", ANSI_FG_BLUE), functbl[i].name);
       strcpy(lastfunc, functbl[i].name);
       break;
     }
