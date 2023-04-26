@@ -68,18 +68,18 @@ void ftrace(vaddr_t pc) {
 }
 
 // just for riscv64
-void frame_dump(int n) {
+void frame_dump(vaddr_t pc, int n) {
   printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func.name[0] ? cur_func.name : "unknown", cpu.pc);
   char disa[128];
-  vaddr_t pc = MAX(cpu.pc - 4 * (n/2), CONFIG_MBASE);
+  vaddr_t _pc = MAX(pc - 4 * (n/2), CONFIG_MBASE);
   for (int i = 0; i < n; i++) {
-    if (pc != cpu.pc)
+    if (_pc != pc)
       printf("    ");
     else 
       printf(ANSI_FMT("=>  ", ANSI_FG_GREEN));
     // 这里保存pc的原因是，inst_fetch_add会使pc增加，以至于反汇编得不到所执行指令的正确相对地址
-    vaddr_t saved_pc = pc;
-    uint32_t inst = inst_fetch_add(&pc, 4);
+    vaddr_t saved_pc = _pc;
+    uint32_t inst = inst_fetch_add(&_pc, 4);
     disassemble(disa, 128, saved_pc, (uint8_t *)&inst, 4);
 
     printf("0x%08lx: %s", saved_pc, disa); 

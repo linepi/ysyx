@@ -73,7 +73,7 @@ struct func_t {
   char name[FUNC_LEN];
 };
 
-void frame_dump(int n);
+void frame_dump(vaddr_t pc, int n);
 void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 void make_functbl();
 void ftrace(vaddr_t pc);

@@ -55,7 +55,7 @@ static int cmd_si(char *args) {
     steps = atoi(args);
   }
   cpu_exec(steps);
-  frame_dump(5);
+  frame_dump(cpu.pc, 5);
   return 0;
 }
 
@@ -148,7 +148,7 @@ static int cmd_list(char *args) {
   if(args != NULL) {
     lines = atoi(args);
   }
-  frame_dump(lines);
+  frame_dump(cpu.pc, lines);
   return 0;
 }
 
