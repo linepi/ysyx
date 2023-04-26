@@ -29,6 +29,7 @@
 #define NR_WP 32
 typedef sword_t expr_t;
 #define EXPR_NUM_FMT "%ld"
+void help(int argc, char *argv[]);
 
 // watchpoint.h
 typedef struct watchpoint {
