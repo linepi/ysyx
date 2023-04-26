@@ -31,14 +31,31 @@ int atoi(const char* nptr) {
 
 int itoa(int num, char *str, int base) {
   if (base != 10 && base != 16) return -1;
-  if (num == 0) {
-    str[0] = '0';
-    str[1] = '\0';
-    return 1;
+  int digit;
+  int i = 0;
+  int off = 0;
+  if (num < 0) {
+    str[i++] = '-';
+    off = 1;
   }
+  for (; num || i == 0; num /= base, i++) {
+    digit = num % base;
+    if (digit < 0) digit = -digit;
+		if (digit < 0xA)
+			str[i] = '0' + digit;
+		else
+			str[i] = 'A' + digit - 0xA;
+  }
+  str[i] = '\0';
+  strrev(str + off);
+  return i;
+}
+
+int utoa(unsigned int num, char *str, int base) {
+  if (base != 10 && base != 16) return -1;
   int digit;
   int i;
-  for (i = 0; num; num /= base, i++) {
+  for (i = 0; num || i == 0; num /= base, i++) {
     digit = num % base;
 		if (digit < 0xA)
 			str[i] = '0' + digit;
@@ -52,14 +69,31 @@ int itoa(int num, char *str, int base) {
 
 int ltoa(long num, char *str, int base) {
   if (base != 10 && base != 16) return -1;
-  if (num == 0) {
-    str[0] = '0';
-    str[1] = '\0';
-    return 1;
+  int digit;
+  int i = 0;
+  int off = 0;
+  if (num < 0) {
+    str[i++] = '-';
+    off = 1;
   }
+  for (; num || i == 0; num /= base, i++) {
+    digit = num % base;
+    if (digit < 0) digit = -digit;
+		if (digit < 0xA)
+			str[i] = '0' + digit;
+		else
+			str[i] = 'A' + digit - 0xA;
+  }
+  str[i] = '\0';
+  strrev(str + off);
+  return i;
+}
+
+int ultoa(unsigned long num, char *str, int base) {
+  if (base != 10 && base != 16) return -1;
   int digit;
   int i;
-  for (i = 0; num; num /= base, i++) {
+  for (i = 0; num || i == 0; num /= base, i++) {
     digit = num % base;
 		if (digit < 0xA)
 			str[i] = '0' + digit;

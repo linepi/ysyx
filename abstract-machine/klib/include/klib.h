@@ -11,7 +11,7 @@
 extern "C" {
 #endif
 
-// #define __NATIVE_USE_KLIB__
+#define __NATIVE_USE_KLIB__
 
 // string.h
 void  *memset    (void *s, int c, size_t n);
@@ -35,6 +35,8 @@ int    abs       (int x);
 int    atoi      (const char *nptr);
 int    itoa      (int, char*, int);
 int    ltoa      (long int, char*, int);
+int    ultoa(unsigned long num, char *str, int base);
+int    utoa(unsigned int num, char *str, int base);
 
 // stdio.h
 int    printf    (const char *format, ...);
