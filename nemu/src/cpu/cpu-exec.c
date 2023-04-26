@@ -32,7 +32,6 @@ static uint64_t g_timer = 0; // unit: us
 bool g_print_step = false;
 
 void device_update();
-void frame_dump(int n);
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -60,7 +59,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     }
   }
 #endif
-  IFDEF(CONFIG_FTRACE, ftrace(_this->pc));
+  IFDEF(CONFIG_FTRACE, if (elf_fp) ftrace(_this->pc));
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
@@ -118,7 +117,7 @@ static void statistic() {
 }
 
 void assert_fail_msg() {
-  frame_dump(20);
+  frame_dump(cpu.pc, 20);
   isa_reg_display();
   statistic();
 }

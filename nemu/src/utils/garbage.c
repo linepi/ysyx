@@ -1,5 +1,6 @@
 #include <common.h>
 #include <sdb.h>
+#include <utils.h>
 
 static struct heap_node head = {};
 
@@ -26,6 +27,6 @@ void garbage_collect(int num) {
 }
 
 void close_file() {
-  if (!elf_fp) fclose(elf_fp);
-  if (!log_fp) fclose(log_fp);
+  if (elf_fp) fclose(elf_fp);
+  if (log_fp) fclose(log_fp);
 }
