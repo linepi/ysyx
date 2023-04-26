@@ -5,6 +5,7 @@
 !/nexus-am/*
 !/nanos-lite/*
 !/navy-apps/*
+!/am-kernels/*
 !/npc/*
 !Makefile
 !README.md
@@ -12,5 +13,4 @@
 !init.sh
 /nvboard
 /playground
-/am-kernels
 /fceux-am
