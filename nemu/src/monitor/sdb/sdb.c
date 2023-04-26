@@ -199,6 +199,7 @@ static struct {
   { "list", "Usage list [N]. Show N instruction, default 1", cmd_list},
 };
 
+
 #define NR_CMD ARRLEN(cmd_table)
 
 static int cmd_help(char *args) {
