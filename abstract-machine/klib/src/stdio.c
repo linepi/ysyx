@@ -39,7 +39,6 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
       switch (*(fmt+1)) 
       {
       case 's':
-        putch('@');
         char *str = va_arg(ap, char *);
         if (valid) strcpy(out, str);
         out += strlen(str);
