@@ -70,9 +70,6 @@ static long load_img() {
 }
 
 static int parse_args(int argc, char *argv[]) {
-  // if (argc == 1) {
-  //   help(argc, argv); 
-  // }
   const struct option table[] = {
     {"batch"    , no_argument      , NULL, 'b'},
     {"log"      , required_argument, NULL, 'l'},
@@ -92,21 +89,17 @@ static int parse_args(int argc, char *argv[]) {
       case 'e': elf_file = optarg; break;
       case 1: img_file = optarg; return 0;
       default:
-        help(argc, argv);
+        printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
+        printf("\t-b,--batch              run with batch mode\n");
+        printf("\t-l,--log=FILE           output log to FILE\n");
+        printf("\t-e,--elf=FILE           read elf\n");
+        printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
+        printf("\t-p,--port=PORT          run DiffTest with port PORT\n");
+        printf("\n");
+        exit(0);
     }
   }
   return 0;
-}
-
-void help(int argc, char *argv[]) {
-  printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
-  printf("\t-b,--batch              run with batch mode\n");
-  printf("\t-l,--log=FILE           output log to FILE\n");
-  printf("\t-e,--elf=FILE           read elf\n");
-  printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
-  printf("\t-p,--port=PORT          run DiffTest with port PORT\n");
-  printf("\n");
-  exit(0);
 }
 
 void init_monitor(int argc, char *argv[]) {
