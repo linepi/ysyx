@@ -181,6 +181,7 @@ static int cmd_list(char *args) {
   }
 
   while (*args++ == '-');
+  args--;
   if (*args == 'i') {
     while (*args++ == ' ');
     frame_dump(cpu.pc, atoi(args));
