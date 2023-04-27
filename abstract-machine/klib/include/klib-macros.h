@@ -30,7 +30,7 @@
     n /= base; \
     _l++; \
   } while(n); \
-  _l; \ 
+  _l; \
 })
 
 #define ROUNDUP(a, sz)      ((((uintptr_t)a) + (sz) - 1) & ~((sz) - 1))
