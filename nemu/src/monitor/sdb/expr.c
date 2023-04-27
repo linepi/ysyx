@@ -55,6 +55,7 @@ static struct rule {
   {"<=", TK_LE},        
   {">", TK_GT},        
   {"<", TK_LT},        
+  {"&([_]|[a-z]|[A-Z])\\w*", TK_FUNC_ADDR},
   {"&&", TK_AND},        
   {"\\|\\|", TK_OR},        
   {"!", TK_NOT},        
@@ -67,7 +68,6 @@ static struct rule {
   {"0[xX]([0-9]|[a-f]|[A-F])+", TK_HEX},    
   {"[0-9]+", TK_DEC},    // digital number
   {"\\$\\w{2,3}", TK_REG},   
-  {"([_]|[a-z]|[A-Z])\\w*", TK_FUNC_ADDR} 
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -241,8 +241,10 @@ static expr_t eval(int p, int q, bool *status) {
         return 0;
       }
       for (int i = 0; !functbl[i].end; i++) {
-        if (strcmp(functbl[i].name, tokens[p].str) == 0)
+        if (strcmp(functbl[i].name, tokens[p].str) == 0) {
           val = functbl[i].addr;
+          break;
+        }
       }
     } else {
       *status = false;
