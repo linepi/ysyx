@@ -111,6 +111,21 @@ static int cmd_x(char *args) {
   return 0;
 }
 
+static int cmd_b(char *args) {
+  bool success;
+  expr_t val = expr(args, &success);
+  if (!success) {
+    Error("Invalid Expression\n");
+    return 0;
+  }
+  WP *new = new_wp();
+  char *buf = (char *)wmalloc(sizeof(args) + 7);
+  strcpy(buf, "$pc==");
+  strcat(buf, "args");
+  memcpy(new->e, args, strlen(buf) + 1);  // copy args and its end '\0'
+  new->val = (cpu.pc == val);
+}
+
 static int cmd_p(char *args) {
   bool success;
   expr_t val = expr(args, &success);
@@ -210,6 +225,7 @@ static struct {
   { "p", "Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
   { "p/x", "Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
   { "w", "Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
+  { "b", "Usage: b <expression>. example: b 0x80000010", cmd_p },
   { "del", "Usage: del <watchpoint NO>. example: d 2", cmd_del },
   { "list", "Usage list -i [N] or list -f. Show N instruction with default 1 or show functions", cmd_list},
 };
