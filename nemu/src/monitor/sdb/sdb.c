@@ -175,7 +175,6 @@ static int cmd_list(char *args) {
     printf("Usage: list -i [N] or list -f. Show N instruction with default 1 or show functions\n");
     return 0;
   }
-  while (*args++ == ' ');
   if (*args == '\0' || *args != '-') {
     printf("Usage: list -i [N] or list -f. Show N instruction with default 1 or show functions\n");
     return 0;
