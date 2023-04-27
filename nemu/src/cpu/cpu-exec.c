@@ -56,6 +56,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
         } else {
           printf("%s()\n", i->funcName);
         }
+        nemu_state.state = NEMU_STOP;
       } 
     } else {
       if (val != i->val) {
@@ -65,7 +66,6 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
         printf(ANSI_FMT("changed at: ", ANSI_FG_BLUE));
         puts(_this->logbuf);
         i->val = val;
-        nemu_state.state = NEMU_STOP;
       }
     }
   }
