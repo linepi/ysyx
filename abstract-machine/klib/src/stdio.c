@@ -14,13 +14,16 @@ int printf(const char *fmt, ...) {
 }
 
 int vprintf(const char *fmt, va_list ap) {
+  va_list copy_ap;
+  va_copy(copy_ap, ap);
   int len = vsprintf(NULL, fmt, ap);
   char _buf[len+1];
   char *buf = _buf;
   assert(_buf != NULL);
-  int __len = vsprintf(buf, fmt, ap);
+  int __len = vsprintf(buf, fmt, copy_ap);
   assert(__len == len);
   while (*buf) putch(*buf++);
+  va_end(copy_ap);
   return len;
 }
 
