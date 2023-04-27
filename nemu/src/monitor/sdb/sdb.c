@@ -183,7 +183,6 @@ static int cmd_list(char *args) {
 
   while (*args++ == '-');
   if (*args == 'i') {
-    args++;
     while (*args++ == ' ');
     frame_dump(cpu.pc, atoi(args));
   } else if (*args == 'f') {
