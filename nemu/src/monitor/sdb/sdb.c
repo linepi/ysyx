@@ -117,7 +117,7 @@ static int cmd_b(char *args) {
   strcpy(buf, "$pc==");
   strcat(buf, args);
 
-  expr_t val = expr(buf + 4, &success);
+  expr_t val = expr(buf + 5, &success);
   if (!success) {
     Error("Invalid Expression\n");
     return 0;
