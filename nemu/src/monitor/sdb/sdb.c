@@ -170,12 +170,18 @@ static int cmd_list(char *args) {
     printf("program is ended\n");
     return 0;
   }
-
-  int lines = 1;
-  if(args != NULL) {
-    lines = atoi(args);
+  if (args == NULL) {
+    printf("Usage: list -i [N] or list -f. Show N instruction with default 1 or show functions");
+    return;
   }
-  frame_dump(cpu.pc, lines);
+  while (*args++ != '-');
+  if (*args == 'i') {
+    args++;
+    while (*args++ != ' ');
+    frame_dump(cpu.pc, atoi(args));
+  } else if (*args == 'f') {
+    func_list();
+  }
   return 0;
 }
 
@@ -196,7 +202,7 @@ static struct {
   { "p/x", "Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
   { "w", "Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
   { "del", "Usage: del <watchpoint NO>. example: d 2", cmd_del },
-  { "list", "Usage list [N]. Show N instruction, default 1", cmd_list},
+  { "list", "Usage list -i [N] or list -f. Show N instruction with default 1 or show functions", cmd_list},
 };
 
 

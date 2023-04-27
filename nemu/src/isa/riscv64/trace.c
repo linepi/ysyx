@@ -91,3 +91,10 @@ void frame_dump(vaddr_t pc, int n) {
     printf("\n");
   }
 }
+
+void func_list() {
+  printf(ANSI_FMT("Address             Name",ANSI_FG_BLUE));
+  for (int i = 0; !functbl[i].end; i++) {
+    printf("0x%016lx  %s\n", functbl[i].addr, functbl[i].name);
+  }
+}
