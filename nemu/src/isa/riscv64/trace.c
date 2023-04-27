@@ -97,7 +97,7 @@ void func_list() {
     Error("No functbl specified");
     return;
   }
-  printf(ANSI_FMT("Address             Name", ANSI_FG_BLUE));
+  printf(ANSI_FMT("Address             Name\n", ANSI_FG_BLUE));
   for (int i = 0; !functbl[i].end; i++) {
     printf("0x%016lx  %s\n", functbl[i].addr, functbl[i].name);
   }
