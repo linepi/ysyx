@@ -14,6 +14,7 @@
 ***************************************************************************************/
 
 #include <sdb.h>
+#include <utils.h>
 
 static int is_batch_mode = false;
 
@@ -184,7 +185,7 @@ static int cmd_list(char *args) {
   args--;
   if (*args == 'i') {
     while (*args++ == ' ');
-    frame_dump(cpu.pc, atoi(args));
+    frame_dump(cpu.pc, MAX(atoi(args), 1));
   } else if (*args == 'f') {
     func_list();
   } else {
