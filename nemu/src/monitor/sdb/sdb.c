@@ -122,7 +122,7 @@ static int cmd_b(char *args) {
   char *buf = (char *)wmalloc(sizeof(args) + 7);
   strcpy(buf, "$pc==");
   strcat(buf, args);
-  memcpy(new->e, args, strlen(buf) + 1);  // copy args and its end '\0'
+  memcpy(new->e, buf, strlen(buf) + 1);  // copy args and its end '\0'
   new->val = (cpu.pc == val);
   return 0;
 }
