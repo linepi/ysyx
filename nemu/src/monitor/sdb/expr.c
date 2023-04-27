@@ -236,15 +236,21 @@ static expr_t eval(int p, int q, bool *status) {
         *status = false;
     } else if (tokens[p].type == TK_FUNC_ADDR ){
       if (!functbl) {
-        Error("No functbl specified");
+        printf("No functbl specified\n");
         *status = false;
         return 0;
       }
+      bool found = false;
       for (int i = 0; !functbl[i].end; i++) {
         if (strcmp(functbl[i].name, tokens[p].str + 1) == 0) {
           val = functbl[i].addr;
+          found = true;
           break;
         }
+      }
+      if (!found) {
+        printf("Function not found\n");
+        *status = false;
       }
     } else {
       *status = false;
