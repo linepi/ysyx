@@ -175,16 +175,16 @@ static int cmd_list(char *args) {
     printf("Usage: list -i [N] or list -f. Show N instruction with default 1 or show functions\n");
     return 0;
   }
-  while (*args++ != ' ');
+  while (*args++ == ' ');
   if (*args == '\0' || *args != '-') {
     printf("Usage: list -i [N] or list -f. Show N instruction with default 1 or show functions\n");
     return 0;
   }
 
-  while (*args++ != '-');
+  while (*args++ == '-');
   if (*args == 'i') {
     args++;
-    while (*args++ != ' ');
+    while (*args++ == ' ');
     frame_dump(cpu.pc, atoi(args));
   } else if (*args == 'f') {
     func_list();
