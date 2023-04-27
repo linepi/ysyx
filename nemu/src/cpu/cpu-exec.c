@@ -52,10 +52,11 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       if (val == 1) {
         printf(ANSI_FMT("Hit ", ANSI_FG_BLUE));
         if (i->funcName == NULL) {
-          printf("%s\n", i->e);
+          printf("%s\n", i->e + 5);
         } else {
           printf("%s()\n", i->funcName);
         }
+        frame_dump(cpu.pc, 5);
         nemu_state.state = NEMU_STOP;
       } 
     } else {
