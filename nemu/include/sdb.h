@@ -33,6 +33,8 @@ typedef sword_t expr_t;
 // watchpoint.h
 typedef struct watchpoint {
   int NO;
+  bool breakpoint;
+  char *funcName;
   struct watchpoint *next;
 
   /* TODO: Add more members if necessary */

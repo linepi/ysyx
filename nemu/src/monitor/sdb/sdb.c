@@ -122,9 +122,16 @@ static int cmd_b(char *args) {
     Error("Invalid Expression\n");
     return 0;
   }
+
   WP *new = new_wp();
   memcpy(new->e, buf, strlen(buf) + 1);  // copy args and its end '\0'
   new->val = (cpu.pc == val);
+  new->breakpoint = true;
+  // breakpoint is a function
+  if (args[0] == '&') {
+    new->funcName = (char *)wmalloc(strlen(args) + 1); 
+    strcpy(new->funcName, args + 1);
+  }
   return 0;
 }
 
@@ -160,6 +167,7 @@ static int cmd_w(char *args) {
   WP *new = new_wp();
   memcpy(new->e, args, strlen(args) + 1);  // copy args and its end '\0'
   new->val = val;
+  new->breakpoint = false;
   return 0;
 }
 
