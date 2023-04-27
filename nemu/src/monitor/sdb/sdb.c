@@ -124,6 +124,7 @@ static int cmd_b(char *args) {
   strcat(buf, "args");
   memcpy(new->e, args, strlen(buf) + 1);  // copy args and its end '\0'
   new->val = (cpu.pc == val);
+  return 0;
 }
 
 static int cmd_p(char *args) {
