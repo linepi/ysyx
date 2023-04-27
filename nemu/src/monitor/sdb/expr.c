@@ -238,7 +238,7 @@ static expr_t eval(int p, int q, bool *status) {
       if (!functbl) {
         Error("No functbl specified");
         *status = false;
-        return;
+        return 0;
       }
       for (int i = 0; !functbl[i].end; i++) {
         if (strcmp(functbl[i].name, tokens[p].str) == 0)
