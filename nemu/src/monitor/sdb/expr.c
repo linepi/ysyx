@@ -67,7 +67,7 @@ static struct rule {
   {"0[xX]([0-9]|[a-f]|[A-F])+", TK_HEX},    
   {"[0-9]+", TK_DEC},    // digital number
   {"\\$\\w{2,3}", TK_REG},   
-  {"([_]|[a-z]|[A-Z])w*", TK_FUNC_ADDR} 
+  {"([_]|[a-z]|[A-Z])\\w*", TK_FUNC_ADDR} 
 };
 
 #define NR_REGEX ARRLEN(rules)
