@@ -172,7 +172,7 @@ static int cmd_list(char *args) {
   }
   if (args == NULL) {
     printf("Usage: list -i [N] or list -f. Show N instruction with default 1 or show functions");
-    return;
+    return 0;
   }
   while (*args++ != '-');
   if (*args == 'i') {
