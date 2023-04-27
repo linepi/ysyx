@@ -17,7 +17,7 @@ int vprintf(const char *fmt, va_list ap) {
   int len = vsprintf(NULL, fmt, ap);
   char _buf[len+1];
   char *buf = _buf;
-  assert(buf != NULL);
+  assert(_buf != NULL);
   int __len = vsprintf(buf, fmt, ap);
   assert(__len == len);
   while (*buf) putch(*buf++);
