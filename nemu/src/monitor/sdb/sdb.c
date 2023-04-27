@@ -113,14 +113,14 @@ static int cmd_x(char *args) {
 
 static int cmd_b(char *args) {
   bool success;
-  expr_t val = expr(args, &success);
+  expr_t val = expr(strcat("&", args), &success);
   if (!success) {
     Error("Invalid Expression\n");
     return 0;
   }
   WP *new = new_wp();
   char *buf = (char *)wmalloc(sizeof(args) + 7);
-  strcpy(buf, "$pc==");
+  strcpy(buf, "$pc==&");
   strcat(buf, args);
   memcpy(new->e, buf, strlen(buf) + 1);  // copy args and its end '\0'
   new->val = (cpu.pc == val);
