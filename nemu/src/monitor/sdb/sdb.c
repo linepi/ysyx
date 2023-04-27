@@ -225,7 +225,7 @@ static struct {
   { "p", "Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
   { "p/x", "Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
   { "w", "Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
-  { "b", "Usage: b <expression>. example: b 0x80000010", cmd_p },
+  { "b", "Usage: b <expression>. example: b 0x80000010", cmd_b },
   { "del", "Usage: del <watchpoint NO>. example: d 2", cmd_del },
   { "list", "Usage list -i [N] or list -f. Show N instruction with default 1 or show functions", cmd_list},
 };
