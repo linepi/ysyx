@@ -114,10 +114,10 @@ static int cmd_x(char *args) {
 static int cmd_b(char *args) {
   bool success;
   char *buf = (char *)wmalloc(sizeof(args) + 7);
-  strcpy(buf, "$pc==&");
+  strcpy(buf, "$pc==");
   strcat(buf, args);
 
-  expr_t val = expr(buf + 5, &success);
+  expr_t val = expr(buf + 4, &success);
   if (!success) {
     Error("Invalid Expression\n");
     return 0;
