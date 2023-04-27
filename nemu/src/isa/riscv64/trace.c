@@ -11,7 +11,7 @@ void make_functbl() {
   for (size_t i = 0; i < elfinfo.nr_sym; i++) {
     if (ELF64_ST_TYPE(elfinfo.Sym[i].st_info) == STT_FUNC) func_cnt++;
   }
-  functbl = (struct func_t*)malloc(sizeof(struct func_t) * (func_cnt + 1));
+  functbl = (struct func_t*)wmalloc(sizeof(struct func_t) * (func_cnt + 1));
   assert(functbl != NULL);
   for (size_t i = 0; i < elfinfo.nr_sym; i++) {
     if (ELF64_ST_TYPE(elfinfo.Sym[i].st_info) == STT_FUNC) {
