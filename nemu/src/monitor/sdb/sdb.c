@@ -113,7 +113,7 @@ static int cmd_x(char *args) {
 
 static int cmd_b(char *args) {
   bool success;
-  char *buf = (char *)wmalloc(sizeof(args) + 7);
+  char *buf = (char *)wmalloc(strlen(args) + 7);
   strcpy(buf, "$pc==");
   strcat(buf, args);
 
