@@ -19,7 +19,7 @@ int vprintf(const char *fmt, va_list ap) {
   int len = vsprintf(NULL, fmt, ap);
   char _buf[len+1];
   char *buf = _buf;
-  assert(_buf != NULL);
+
   int __len = vsprintf(buf, fmt, copy_ap);
   assert(__len == len);
   while (*buf) putch(*buf++);
@@ -55,12 +55,12 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
       case 'u':
         unsigned int u = va_arg(ap, unsigned int);
         if (valid) out += utoa(u, out, 10);
-        else out += INTEGER_LEN(d, 10);
+        else out += INTEGER_LEN(u, 10);
         break;
       case 'x':
         unsigned int x = va_arg(ap, unsigned int);
-        if (valid) out += itoa(x, out, 16);
-        else out += INTEGER_LEN(d, 16);
+        if (valid) out += utoa(x, out, 16);
+        else out += INTEGER_LEN(x, 16);
         break;
       case 'l':
         switch (*(fmt+2))
@@ -68,17 +68,17 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         case 'd':
           long int ld = va_arg(ap, long int);
           if (valid) out += ltoa(ld, out, 10);
-          else out += INTEGER_LEN(d, 10);
+          else out += INTEGER_LEN(ld, 10);
           break;
         case 'u':
           unsigned long lu = va_arg(ap, unsigned long);
           if (valid) out += ultoa(lu, out, 10);
-          else out += INTEGER_LEN(d, 10);
+          else out += INTEGER_LEN(lu, 10);
           break;
         case 'x':
           unsigned long lx = va_arg(ap, unsigned long);
-          if (valid) out += ltoa(lx, out, 16);
-          else out += INTEGER_LEN(d, 16);
+          if (valid) out += ultoa(lx, out, 16);
+          else out += INTEGER_LEN(lx, 16);
           break;
         default: panic("Not implemented");
         }
