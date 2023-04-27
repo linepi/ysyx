@@ -15,7 +15,8 @@ int printf(const char *fmt, ...) {
 
 int vprintf(const char *fmt, va_list ap) {
   int len = vsprintf(NULL, fmt, ap);
-  char *buf = (char *)malloc(len + 1);
+  char _buf[len+1];
+  char *buf = _buf;
   assert(buf != NULL);
   int __len = vsprintf(buf, fmt, ap);
   assert(__len == len);
@@ -102,7 +103,7 @@ int snprintf(char *out, size_t n, const char *fmt, ...) {
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
-  
+  panic("Not implemented");
 }
 
 
