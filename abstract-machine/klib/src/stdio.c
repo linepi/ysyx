@@ -6,26 +6,29 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 int printf(const char *fmt, ...) {
-  panic("Not implemented");
+  va_list ap;
+  va_start(ap, fmt);
+  int len = vprintf(fmt, ap);
+  va_end(ap);
+  return len;
 }
 
 int vprintf(const char *fmt, va_list ap) {
-  panic("Not implemented");
+  int len = vsprintf(NULL, fmt, ap);
+  char *buf = (char *)malloc(len + 1);
+  assert(buf != NULL);
+  int __len = vsprintf(buf, fmt, ap);
+  assert(__len == len);
+  while (*buf) putch(*buf++);
+  return len;
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
-  panic("Not implemented");
-}
-
-int sprintf(char *out, const char *fmt, ...) {
-  assert(out != NULL);
-
-  va_list ap;
-  va_start(ap, fmt);
+  bool valid = (out != NULL); // if out = NULL, do not dereference it
   char *base = out;
   while (*fmt) {
     if (*fmt != '%') {
-      *out = *fmt;
+      if (valid) *out = *fmt;
       out++;
       fmt++;
     } else {
@@ -33,38 +36,45 @@ int sprintf(char *out, const char *fmt, ...) {
       {
       case 's':
         char *str = va_arg(ap, char *);
-        strcpy(out, str);
+        if (valid) strcpy(out, str);
         out += strlen(str);
         break;
       case 'c':
-        *out++ = va_arg(ap, int);
+        if (valid) *out = va_arg(ap, int);
+        out++;
         break;
       case 'd':
         int d = va_arg(ap, int);
-        out += itoa(d, out, 10);
+        if (valid) out += itoa(d, out, 10);
+        else out += INTEGER_LEN(d, 10);
         break;
       case 'u':
         unsigned int u = va_arg(ap, unsigned int);
-        out += utoa(u, out, 10);
+        if (valid) out += utoa(u, out, 10);
+        else out += INTEGER_LEN(d, 10);
         break;
       case 'x':
         unsigned int x = va_arg(ap, unsigned int);
-        out += itoa(x, out, 16);
+        if (valid) out += itoa(x, out, 16);
+        else out += INTEGER_LEN(d, 16);
         break;
       case 'l':
         switch (*(fmt+2))
         {
         case 'd':
           long int ld = va_arg(ap, long int);
-          out += ltoa(ld, out, 10);
+          if (valid) out += ltoa(ld, out, 10);
+          else out += INTEGER_LEN(d, 10);
           break;
         case 'u':
           unsigned long lu = va_arg(ap, unsigned long);
-          out += ultoa(lu, out, 10);
+          if (valid) out += ultoa(lu, out, 10);
+          else out += INTEGER_LEN(d, 10);
           break;
         case 'x':
           unsigned long lx = va_arg(ap, unsigned long);
-          out += ltoa(lx, out, 16);
+          if (valid) out += ltoa(lx, out, 16);
+          else out += INTEGER_LEN(d, 16);
           break;
         default: panic("Not implemented");
         }
@@ -75,8 +85,16 @@ int sprintf(char *out, const char *fmt, ...) {
       fmt += 2;
     }
   }
-  *out = '\0';
-  return strlen(base);
+  if (valid) *out = '\0';
+  return out - base;
+}
+
+int sprintf(char *out, const char *fmt, ...) {
+  va_list ap;
+  va_start(ap, fmt);
+  int ret = vsprintf(out, fmt, ap);
+  va_end(ap);
+  return ret;
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
@@ -84,7 +102,8 @@ int snprintf(char *out, size_t n, const char *fmt, ...) {
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
-  panic("Not implemented");
+  
 }
+
 
 #endif
