@@ -115,7 +115,7 @@ static int cmd_p(char *args) {
   bool success;
   expr_t val = expr(args, &success);
   if (!success) {
-    Error("Invalid Expression\n");
+    printf("Invalid Expression.\n");
     return 0;
   }
   printf(EXPR_NUM_FMT"\n", val);

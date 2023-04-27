@@ -236,7 +236,7 @@ static expr_t eval(int p, int q, bool *status) {
         *status = false;
     } else if (tokens[p].type == TK_FUNC_ADDR ){
       if (!functbl) {
-        printf("No functbl specified\n");
+        printf("No functbl specified.\n");
         *status = false;
         return 0;
       }
@@ -249,7 +249,7 @@ static expr_t eval(int p, int q, bool *status) {
         }
       }
       if (!found) {
-        printf("Function not found\n");
+        printf("Function not found.\n");
         *status = false;
       }
     } else {
