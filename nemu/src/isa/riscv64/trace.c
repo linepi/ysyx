@@ -77,7 +77,7 @@ void frame_dump(vaddr_t pc, int n) {
     // 这里保存pc的原因是，inst_fetch_add会使pc增加，以至于反汇编得不到所执行指令的正确相对地址
     vaddr_t saved_pc = _pc;
     uint32_t inst = inst_fetch_add(&_pc, 4);
-    disassemble(disa, 128, saved_pc, (uint8_t *)&inst, 4);
+    IFDEF(CONFIG_ITRACE, disassemble(disa, 128, saved_pc, (uint8_t *)&inst, 4));
 
     printf("0x%08lx: %s", saved_pc, disa); 
     for (int i = 0; i < 30 - strlen(disa); i++) putchar(' ');
