@@ -71,7 +71,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     }
   }
 #endif
-  IFDEF(CONFIG_FTRACE, if (elf_fp) ftrace(_this->pc));
+  IFDEF(CONFIG_ITRACE, if (elf_fp) ftrace(_this->pc));
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
@@ -115,7 +115,7 @@ static void execute(uint64_t n) {
     g_nr_guest_inst ++;
     trace_and_difftest(&s, cpu.pc);
     if (nemu_state.state != NEMU_RUNNING) break;
-    // IFDEF(CONFIG_DEVICE, device_update());
+    IFDEF(CONFIG_DEVICE, device_update());
   }
 }
 
@@ -129,7 +129,7 @@ static void statistic() {
 }
 
 void assert_fail_msg() {
-  frame_dump(cpu.pc, 20);
+  IFDEF(CONFIG_ITRACE, frame_dump(cpu.pc, 20));
   isa_reg_display();
   statistic();
 }

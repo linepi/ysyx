@@ -72,7 +72,7 @@ void init_elf(const char *elf_file) {
       return;
     }
     /* end of elfinfo making */
-    IFDEF(CONFIG_FTRACE, make_functbl());
+    IFDEF(CONFIG_ITRACE, make_functbl());
 
   }
   else { 

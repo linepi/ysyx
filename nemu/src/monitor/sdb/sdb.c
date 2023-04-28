@@ -74,7 +74,7 @@ static int cmd_si(char *args) {
     printf("program is ended\n");
     return 0;
   }
-  frame_dump(cpu.pc, 5);
+  IFDEF(CONFIG_ITRACE, frame_dump(cpu.pc, 5));
   return 0;
 }
 
@@ -210,7 +210,7 @@ static int cmd_list(char *args) {
   args--;
   if (*args == 'i') {
     while (*args++ == ' ');
-    frame_dump(cpu.pc, MAX(atoi(args), 1));
+    IFDEF(CONFIG_ITRACE, frame_dump(cpu.pc, MAX(atoi(args), 1)));
   } else if (*args == 'f') {
     func_list();
   } else {
