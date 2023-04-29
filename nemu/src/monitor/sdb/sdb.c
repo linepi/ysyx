@@ -189,6 +189,7 @@ static int cmd_del(char *args) {
 
 static int cmd_bt(char *args) { 
   backtrace();
+  return 0;
 }
 
 static int cmd_list(char *args) {

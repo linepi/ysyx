@@ -4,7 +4,7 @@
 struct func_t *functbl = NULL;
 struct func_t *cur_func = NULL;
 struct func_stack_t func_stack_bottom = {};
-struct func_stack_t *func_stack_top = &func_stack_bottom;
+struct func_stack_t *func_stack_top;
 
 extern bool g_print_step;
 
@@ -26,6 +26,14 @@ void make_functbl() {
         functbl[idx].name[j++] = c;
       }
       functbl[idx].name[j] = '\0';
+      // init func stack
+      if (strcmp(functbl[idx].name, "_start") == 0) {
+        func_stack_bottom.func = &functbl[idx].name;
+        func_stack_bottom.pre = NULL;
+        func_stack_bottom.next = NULL;
+        func_stack_top = &func_stack_bottom;
+        cur_func = func_stack_top->func;
+      }
       functbl[idx].end = false;
       idx++;
     }
@@ -75,7 +83,7 @@ void ftrace(vaddr_t pc) {
 
 // just for riscv64
 void frame_dump(vaddr_t pc, int n) {
-  printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func ? cur_func->name : "_start", cpu.pc);
+  printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func->name);
   char disa[128];
   vaddr_t _pc = MAX(pc - 4 * (n/2), CONFIG_MBASE);
   for (int i = 0; i < n; i++) {
