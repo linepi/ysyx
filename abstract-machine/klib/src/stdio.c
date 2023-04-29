@@ -77,7 +77,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           else out += INTEGER_LEN(x, 16);
           break;
         case 'l':
-          switch (*(fmt+2)) {
+          switch (*(fmt+1)) {
             case 'd':
               long int ld = va_arg(ap, long int);
               if (valid) out += ltoa(ld, out, 10);
@@ -101,6 +101,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         case 'f':
         default: panic("Not implemented");
       }
+      fmt += 1;
       int added_len = out - saved_out;
       if (nr_pre > added_len) {
         if (valid) {
@@ -115,7 +116,6 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         } 
         out = saved_out + nr_pre;
       }
-      fmt += 1;
     }
   }
   if (valid) *out = '\0';
