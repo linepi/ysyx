@@ -88,14 +88,6 @@ void ftrace(vaddr_t pc) {
   }
 }
 
-// just for riscv64
-void frame_dump(vaddr_t pc, int n) {
-  printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func->name, cur_func->addr);
-  // dump from _pc
-  vaddr_t _pc = MAX(pc - 4 * (n/2), CONFIG_MBASE);
-  _frame_dump(_pc, n);
-}
-
 void _frame_dump(vaddr_t pc, int n) {
   char disa[128];
   for (int i = 0; i < n; i++) {
@@ -116,6 +108,14 @@ void _frame_dump(vaddr_t pc, int n) {
     }
     printf("\n");
   }
+}
+
+// just for riscv64
+void frame_dump(vaddr_t pc, int n) {
+  printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func->name, cur_func->addr);
+  // dump from _pc
+  vaddr_t _pc = MAX(pc - 4 * (n/2), CONFIG_MBASE);
+  _frame_dump(_pc, n);
 }
 
 void pc_trace(vaddr_t pc) {
