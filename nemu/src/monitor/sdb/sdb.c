@@ -298,6 +298,7 @@ void sdb_mainloop() {
     /* extract the first token as the command */
     char *cmd = strtok(str, " ");
     if (cmd == NULL) { 
+      if (command_cache[0] == '\0') continue;
       nullcmd = 1;
       strcpy(str_cache, command_cache);
       str_end = str_cache + strlen(str_cache);
