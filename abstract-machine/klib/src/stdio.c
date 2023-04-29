@@ -101,7 +101,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         case 'f':
         default: panic("Not implemented");
       }
-      int added_len = saved_out - out;
+      int added_len = out - saved_out;
       if (nr_pre > added_len) {
         if (valid) {
           // move string forward nr_pre - added_len char
