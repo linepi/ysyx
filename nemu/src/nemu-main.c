@@ -14,6 +14,8 @@
 ***************************************************************************************/
 
 #include <common.h>
+#include <stdint.h>
+#include <cpu/decode.h>
 
 void init_monitor(int, char *[]);
 void am_init_monitor();
@@ -35,5 +37,12 @@ int main(int argc, char *argv[]) {
   // clear out
   garbage_collect();
   close_file();
+
+  uint64_t _imm;
+  uint64_t *imm = &_imm;
+  uint32_t i = 0xfc079663;
+  immSB();
+  printf("imm = 0x%lx\n", *imm);
+
   return is_exit_status_bad();
 }
