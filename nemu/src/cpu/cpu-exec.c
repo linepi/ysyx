@@ -111,6 +111,8 @@ static void execute(uint64_t n) {
   if (g_print_step && n)
     printf(ANSI_FMT("Lines executed:\n", ANSI_FG_GREEN));
   for (;n > 0; n --) {
+    if (cpu.pc == 0x80000b90) 
+      ;
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
     trace_and_difftest(&s, cpu.pc);
