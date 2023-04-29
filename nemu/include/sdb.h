@@ -75,6 +75,12 @@ struct func_t {
   char name[FUNC_LEN];
 };
 
+struct func_stack_t {
+  struct func_t *func;
+  struct func_stack_t *next;
+  struct func_stack_t *pre;
+};
+
 void frame_dump(vaddr_t pc, int n);
 void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 void make_functbl();

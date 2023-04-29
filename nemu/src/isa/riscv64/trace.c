@@ -2,7 +2,10 @@
 #include <reg.h>
 
 struct func_t *functbl = NULL;
-struct func_t cur_func = {};
+struct func_t *cur_func = NULL;
+struct func_stack_t func_stack_bottom = {};
+struct func_stack_t *func_stack_top = &func_stack_bottom;
+
 extern bool g_print_step;
 
 void make_functbl() {
@@ -31,34 +34,40 @@ void make_functbl() {
 }
 
 void ftrace(vaddr_t pc) {
-  static char lastfunc[FUNC_LEN];
   vaddr_t save_pc = pc;
   uint32_t i = inst_fetch_add(&pc, 4);
-  if (i == 0x00008067) {
-    if (g_print_step) printf(ANSI_FMT("ret from %s\n", ANSI_FG_BLUE), lastfunc);
+  if (i == 0x00008067) { // mean ret instuction
+    if (g_print_step) printf(ANSI_FMT("ret from %s\n", ANSI_FG_BLUE), func_stack_top->func->name);
+    func_stack_top = func_stack_top->pre;
+    cur_func = func_stack_top->func;
     return;
   }
 
   vaddr_t jump_to = 0;
   word_t _imm = 0;
   word_t *imm = &_imm;
-  // jal
-  if ((i & 0b1111111) == 0b1101111) {
+  if ((i & 0b1111111) == 0b1101111) { // jal
     immUJ();
     jump_to = *imm + save_pc;
   }
-  // jalr
-  if ((i & 0b111000001111111) == 0b000000001100111) {
+  else if ((i & 0b111000001111111) == 0b000000001100111) { // jalr
     word_t src1 = gpr(BITS(i, 19, 15));
     immI();
     jump_to = *imm + src1;
   }
+  else return;
 
   for (int i = 0; !functbl[i].end; i++) {
     if (functbl[i].addr == jump_to) {
       if (g_print_step) printf(ANSI_FMT("call %s\n", ANSI_FG_BLUE), functbl[i].name);
-      cur_func = functbl[i];
-      strcpy(lastfunc, functbl[i].name);
+      func_stack_top->func = &functbl[i];
+      if (!func_stack_top->next) {
+        func_stack_top->next = (struct func_stack_t *)wmalloc(sizeof(struct func_stack_t));
+        func_stack_top->next->pre = func_stack_top;
+        assert(func_stack_top->next != NULL);
+      }
+      func_stack_top = func_stack_top->next;
+      cur_func = func_stack_top->func;
       break;
     }
   }
@@ -66,7 +75,7 @@ void ftrace(vaddr_t pc) {
 
 // just for riscv64
 void frame_dump(vaddr_t pc, int n) {
-  printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func.name[0] ? cur_func.name : "unknown", cpu.pc);
+  printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func->name[0] ? cur_func->name : "unknown", cpu.pc);
   char disa[128];
   vaddr_t _pc = MAX(pc - 4 * (n/2), CONFIG_MBASE);
   for (int i = 0; i < n; i++) {
