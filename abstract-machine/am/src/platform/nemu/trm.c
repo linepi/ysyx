@@ -2,8 +2,7 @@
 #include <nemu.h>
 
 extern char _heap_start;
-Area heap = {};
-// Area heap = RANGE(&_heap_start, PMEM_END); 
+Area heap = RANGE(&_heap_start, PMEM_END); 
 int main(const char *args);
 
 #ifndef MAINARGS
