@@ -198,6 +198,16 @@ static int cmd_bt(char *args) {
   return 0;
 }
 
+static int cmd_pt(char *args) { 
+  IFNDEF(CONFIG_ITRACE, printf("ITRACE disabled, open it before pc trace\n"); return 0;);
+  if (args == NULL) {
+    printf("Usage: pt [N]. pc trace.\n");
+    return 0;
+  }
+  pc_trace_dump(atoi(args));
+  return 0;
+}
+
 static int cmd_list(char *args) {
   if (nemu_state.state == NEMU_ABORT) {
     printf("nemu is aborted\n");
@@ -248,6 +258,7 @@ static struct {
   { "w", "Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
   { "b", "Usage: b <expression>. example: b 0x80000010", cmd_b },
   { "bt", "Usage: bt", cmd_bt },
+  { "pt", "Usage: pt [N]. pc trace.", cmd_pt },
   { "del", "Usage: del <watchpoint NO>. example: d 2", cmd_del },
   { "list", "Usage list -i [N] or list -f. Show N instruction with default 1 or show functions", cmd_list},
 };

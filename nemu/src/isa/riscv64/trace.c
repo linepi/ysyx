@@ -5,6 +5,7 @@ struct func_t *functbl = NULL;
 struct func_t *cur_func = NULL;
 struct func_stack_t func_stack_bottom = {};
 struct func_stack_t *func_stack_top;
+struct pc_road pc_road = {};
 
 extern bool g_print_step;
 
@@ -109,6 +110,36 @@ void frame_dump(vaddr_t pc, int n) {
       printf(" %02x", p_inst[i]);
     }
     printf("\n");
+  }
+}
+
+void pc_trace(vaddr_t pc) {
+  if (!pc_road.initialised) {
+    for (int i = 0; i < NR_PC_ROAD; i++) {
+      pc_road.arr[i].next = (i + 1) % NR_PC_ROAD;
+    }
+  }
+  pc_road.arr[pc_road.cur].pc = pc;
+  pc_road.cur = (pc_road.cur + 1) % NR_PC_ROAD;
+}
+
+// dump the latest n instructions that are executed
+void pc_trace_dump(int n) {
+  char disa[128];
+  for (int i = (pc_road.cur + NR_PC_ROAD - n) % NR_PC_ROAD; n--;i = (i + 1) % NR_PC_ROAD) {
+    vaddr_t pc = pc_road.arr[i].pc;
+    if (pc != 0) {
+      vaddr_t saved_pc = pc;
+      uint32_t inst = inst_fetch_add(&pc, 4);
+      IFDEF(CONFIG_ITRACE, disassemble(disa, 128, saved_pc, (uint8_t *)&inst, 4));
+      printf("0x%08lx: %s", saved_pc, disa); 
+      for (int i = 0; i < 30 - strlen(disa); i++) putchar(' ');
+      uint8_t *p_inst = (uint8_t *)&inst;
+      for (int i = 3; i >= 0; i --) {
+        printf(" %02x", p_inst[i]);
+      }
+      printf("\n");
+    } 
   }
 }
 

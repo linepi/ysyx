@@ -69,6 +69,8 @@ bool is_elf(FILE *e);
 extern struct elfinfo_t elfinfo;
 
 // trace.h
+#define NR_PC_ROAD 100
+
 struct func_t {
   bool end;
   word_t addr;
@@ -81,11 +83,24 @@ struct func_stack_t {
   struct func_stack_t *pre;
 };
 
+struct pc_road_t {
+  vaddr_t pc;
+  int next;
+};
+
+struct pc_road {
+  struct pc_road_t arr[NR_PC_ROAD];
+  int cur;
+  bool initialised;
+};
+
 void frame_dump(vaddr_t pc, int n);
 void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 void make_functbl();
 void func_list();
 void backtrace();
+void pc_trace(vaddr_t pc);
+void pc_trace_dump(int n);
 void ftrace(vaddr_t pc);
 extern struct func_t *functbl;
 
