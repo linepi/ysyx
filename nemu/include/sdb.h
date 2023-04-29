@@ -83,13 +83,8 @@ struct func_stack_t {
   struct func_stack_t *pre;
 };
 
-struct pc_road_t {
-  vaddr_t pc;
-  int next;
-};
-
 struct pc_road {
-  struct pc_road_t arr[NR_PC_ROAD];
+  vaddr_t arr[NR_PC_ROAD];
   int cur;
   bool initialised;
 };

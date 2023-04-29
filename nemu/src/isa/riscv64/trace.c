@@ -114,12 +114,7 @@ void frame_dump(vaddr_t pc, int n) {
 }
 
 void pc_trace(vaddr_t pc) {
-  if (!pc_road.initialised) {
-    for (int i = 0; i < NR_PC_ROAD; i++) {
-      pc_road.arr[i].next = (i + 1) % NR_PC_ROAD;
-    }
-  }
-  pc_road.arr[pc_road.cur].pc = pc;
+  pc_road.arr[pc_road.cur] = pc;
   pc_road.cur = (pc_road.cur + 1) % NR_PC_ROAD;
 }
 
@@ -127,7 +122,7 @@ void pc_trace(vaddr_t pc) {
 void pc_trace_dump(int n) {
   char disa[128];
   for (int i = (pc_road.cur + NR_PC_ROAD - n) % NR_PC_ROAD; n--;i = (i + 1) % NR_PC_ROAD) {
-    vaddr_t pc = pc_road.arr[i].pc;
+    vaddr_t pc = pc_road.arr[i];
     if (pc != 0) {
       vaddr_t saved_pc = pc;
       uint32_t inst = inst_fetch_add(&pc, 4);
