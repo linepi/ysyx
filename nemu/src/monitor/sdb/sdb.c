@@ -193,6 +193,7 @@ static int cmd_del(char *args) {
 }
 
 static int cmd_bt(char *args) { 
+  IFNDEF(CONFIG_ITRACE, printf("ITRACE disabled, open it before backtrace\n"); return 0;);
   backtrace();
   return 0;
 }
