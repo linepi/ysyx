@@ -113,6 +113,7 @@ void frame_dump(vaddr_t pc, int n) {
 }
 
 void backtrace() {
+  printf(ANSI_FMT("Backtrace:\n", ANSI_FG_GREEN));
   int i = 0;
   for (struct func_stack_t *p = func_stack_top->pre; p; p = p->pre, i++) {
     printf("#%d: %s() 0x%016lx\n", i, p->func->name, p->func->addr);
