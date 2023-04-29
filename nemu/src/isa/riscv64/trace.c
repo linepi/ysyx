@@ -100,7 +100,7 @@ void frame_dump(vaddr_t pc, int n) {
 
 void backtrace() {
   int i = 0;
-  for (struct func_stack_t *p = func_stack_top; p; p = p->pre) {
+  for (struct func_stack_t *p = func_stack_top->pre; p; p = p->pre) {
     printf("#%d: %s() 0x%016lx\n", i, p->func->name, p->func->addr);
   }
 }
