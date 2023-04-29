@@ -187,6 +187,10 @@ static int cmd_del(char *args) {
   return 0;
 }
 
+static int cmd_bt(char *args) { 
+  backtrace();
+}
+
 static int cmd_list(char *args) {
   if (nemu_state.state == NEMU_ABORT) {
     printf("nemu is aborted\n");
@@ -236,6 +240,7 @@ static struct {
   { "p/x", "Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
   { "w", "Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
   { "b", "Usage: b <expression>. example: b 0x80000010", cmd_b },
+  { "bt", "Usage: bt", cmd_bt },
   { "del", "Usage: del <watchpoint NO>. example: d 2", cmd_del },
   { "list", "Usage list -i [N] or list -f. Show N instruction with default 1 or show functions", cmd_list},
 };
