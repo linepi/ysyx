@@ -122,6 +122,22 @@ static int cmd_b(char *args) {
   strcpy(buf, "$pc==");
   strcat(buf, args);
 
+  int func_cnt = 0;
+  for (int i = 0; !functbl[i].end; i++) {
+    if (strcmp(functbl[i].name, args) == 0) {
+      func_cnt++;
+    }
+  }
+  if (func_cnt != 1) {
+    printf("More than one %s() detected, please choose one below:\n");
+    for (int i = 0; !functbl[i].end; i++) {
+      if (strcmp(functbl[i].name, args) == 0) {
+        printf("0x%016lx\n", functbl[i].addr);
+      }
+    }
+    return 0;
+  }
+
   expr_t val = expr(buf + 5, &success);
   if (!success) {
     Error("Invalid Expression\n");
