@@ -30,9 +30,13 @@ void make_functbl() {
       if (strcmp(functbl[idx].name, "_start") == 0) {
         func_stack_bottom.func = &functbl[idx];
         func_stack_bottom.pre = NULL;
-        func_stack_bottom.next = NULL;
-        func_stack_top = &func_stack_bottom;
-        cur_func = func_stack_top->func;
+        func_stack_bottom.next = (struct func_stack_t *)wmalloc(sizeof(struct func_stack_t));
+        assert(func_stack_bottom.next);
+        func_stack_bottom.next->pre = &func_stack_bottom;
+        func_stack_bottom.next->next = NULL;
+        func_stack_bottom.next->func = NULL;
+        func_stack_top = func_stack_bottom.next;
+        cur_func = func_stack_bottom.func;
       }
       functbl[idx].end = false;
       idx++;
@@ -73,6 +77,8 @@ void ftrace(vaddr_t pc) {
       if (!func_stack_top->next) {
         func_stack_top->next = (struct func_stack_t *)wmalloc(sizeof(struct func_stack_t));
         func_stack_top->next->pre = func_stack_top;
+        func_stack_top->next->next = NULL;
+        func_stack_top->next->func = NULL;
         assert(func_stack_top->next != NULL);
       }
       func_stack_top = func_stack_top->next;
