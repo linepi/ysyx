@@ -28,7 +28,7 @@ void make_functbl() {
       functbl[idx].name[j] = '\0';
       // init func stack
       if (strcmp(functbl[idx].name, "_start") == 0) {
-        func_stack_bottom.func = &functbl[idx].name;
+        func_stack_bottom.func = &functbl[idx];
         func_stack_bottom.pre = NULL;
         func_stack_bottom.next = NULL;
         func_stack_top = &func_stack_bottom;
