@@ -48,7 +48,7 @@ void invalid_inst(vaddr_t thispc) {
         "* The machine is always right!\n"
         "* Every line of untested code is always wrong!\n\n", ANSI_FG_RED), isa_logo);
 
-  IFDEF(CONFIG_ITRACE, frame_dump(cpu.pc, 20));
+  IFDEF(CONFIG_ITRACE, pc_trace_dump(20));
   IFDEF(CONFIG_ITRACE, backtrace());
 
   set_nemu_state(NEMU_ABORT, thispc, -1);
