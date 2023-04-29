@@ -100,7 +100,7 @@ static void checkregs(CPU_state *ref, vaddr_t pc) {
     nemu_state.halt_pc = pc;
     Error("Error checkregs");
     isa_reg_display();
-    frame_dump(pc, 20);
+    pc_trace_dump(20);
   }
 }
 
