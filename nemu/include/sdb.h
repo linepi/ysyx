@@ -33,6 +33,8 @@ typedef sword_t expr_t;
 // watchpoint.h
 typedef struct watchpoint {
   int NO;
+  bool breakpoint;
+  char *funcName;
   struct watchpoint *next;
 
   /* TODO: Add more members if necessary */
@@ -73,9 +75,17 @@ struct func_t {
   char name[FUNC_LEN];
 };
 
+struct func_stack_t {
+  struct func_t *func;
+  struct func_stack_t *next;
+  struct func_stack_t *pre;
+};
+
 void frame_dump(vaddr_t pc, int n);
 void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 void make_functbl();
+void func_list();
+void backtrace();
 void ftrace(vaddr_t pc);
 extern struct func_t *functbl;
 

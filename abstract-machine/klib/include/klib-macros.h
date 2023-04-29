@@ -21,6 +21,18 @@
 
 #define ANSI_FMT(str, fmt) fmt str ANSI_NONE
 
+// get integer's length when to string
+// base only 10 or 16
+#define INTEGER_LEN(n, base) ({ \
+  int _l = 0; \
+  if (n < 0 && base == 10) _l++; \
+  do { \
+    n /= base; \
+    _l++; \
+  } while(n); \
+  _l; \
+})
+
 #define ROUNDUP(a, sz)      ((((uintptr_t)a) + (sz) - 1) & ~((sz) - 1))
 #define ROUNDDOWN(a, sz)    ((((uintptr_t)a)) & ~((sz) - 1))
 #define LENGTH(arr)         (sizeof(arr) / sizeof((arr)[0]))

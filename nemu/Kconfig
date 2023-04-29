@@ -130,6 +130,7 @@ config TRACE
   default y
 
 config WATCHPOINT
+  depends on ITRACE
   bool "Enable watchpoint"
   default y
 
@@ -146,10 +147,6 @@ config TRACE_END
 config ITRACE
   depends on TRACE && TARGET_NATIVE_ELF && ENGINE_INTERPRETER
   bool "Enable instruction tracer"
-  default y
-
-config FTRACE
-  bool "Enable function tracer"
   default y
 
 config ITRACE_COND

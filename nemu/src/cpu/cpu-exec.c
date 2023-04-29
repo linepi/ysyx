@@ -48,18 +48,30 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       Error("Invalid expression\n");
       continue;
     }
-    if (val != i->val) {
-      printf(ANSI_FMT("hit watchpoint %d:", ANSI_FG_BLUE)" %s\n", i->NO, i->e);
-      printf("old val: "EXPR_NUM_FMT"\n", i->val);
-      printf("new val: "EXPR_NUM_FMT"\n", val);
-      printf(ANSI_FMT("changed at: ", ANSI_FG_BLUE));
-      puts(_this->logbuf);
-      i->val = val;
-      nemu_state.state = NEMU_STOP;
+    if (i->breakpoint) {
+      if (val == 1) {
+        printf(ANSI_FMT("Hit ", ANSI_FG_BLUE));
+        if (i->funcName == NULL) {
+          printf("%s\n", i->e + 5);
+        } else {
+          printf("%s()\n", i->funcName);
+        }
+        frame_dump(cpu.pc, 5);
+        nemu_state.state = NEMU_STOP;
+      } 
+    } else {
+      if (val != i->val) {
+        printf(ANSI_FMT("hit watchpoint %d:", ANSI_FG_BLUE)" %s\n", i->NO, i->e);
+        printf("old val: "EXPR_NUM_FMT"\n", i->val);
+        printf("new val: "EXPR_NUM_FMT"\n", val);
+        printf(ANSI_FMT("changed at: ", ANSI_FG_BLUE));
+        puts(_this->logbuf);
+        i->val = val;
+      }
     }
   }
 #endif
-  IFDEF(CONFIG_FTRACE, if (elf_fp) ftrace(_this->pc));
+  IFDEF(CONFIG_ITRACE, if (elf_fp) ftrace(_this->pc));
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
@@ -117,7 +129,7 @@ static void statistic() {
 }
 
 void assert_fail_msg() {
-  frame_dump(cpu.pc, 20);
+  IFDEF(CONFIG_ITRACE, frame_dump(cpu.pc, 20));
   isa_reg_display();
   statistic();
 }

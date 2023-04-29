@@ -11,7 +11,7 @@
 extern "C" {
 #endif
 
-#define __NATIVE_USE_KLIB__
+// #define __NATIVE_USE_KLIB__
 
 // string.h
 void  *memset    (void *s, int c, size_t n);
@@ -40,6 +40,7 @@ int    utoa(unsigned int num, char *str, int base);
 
 // stdio.h
 int    printf    (const char *format, ...);
+int    vprintf   (const char *format, va_list ap);
 int    sprintf   (char *str, const char *format, ...);
 int    snprintf  (char *str, size_t size, const char *format, ...);
 int    vsprintf  (char *str, const char *format, va_list ap);

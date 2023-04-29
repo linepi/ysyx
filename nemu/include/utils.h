@@ -76,8 +76,8 @@ extern FILE* log_fp;
 
 
 // math macro
-#define MIN(a, b) (a < b ? a : b);
-#define MAX(a, b) (a > b ? a : b);
+#define MIN(a, b) (a < b ? a : b)
+#define MAX(a, b) (a > b ? a : b)
 
 // garbage.h
 struct heap_node {

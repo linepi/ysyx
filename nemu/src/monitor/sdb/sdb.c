@@ -14,6 +14,7 @@
 ***************************************************************************************/
 
 #include <sdb.h>
+#include <utils.h>
 
 static int is_batch_mode = false;
 
@@ -73,7 +74,7 @@ static int cmd_si(char *args) {
     printf("program is ended\n");
     return 0;
   }
-  frame_dump(cpu.pc, 5);
+  IFDEF(CONFIG_ITRACE, frame_dump(cpu.pc, 5));
   return 0;
 }
 
@@ -110,11 +111,40 @@ static int cmd_x(char *args) {
   return 0;
 }
 
+static int cmd_b(char *args) {
+  if (args == NULL) {
+    printf("Usage: b <expression>. example: b 0x80000010\n");
+    return 0;
+  }
+
+  bool success;
+  char *buf = (char *)wmalloc(strlen(args) + 7);
+  strcpy(buf, "$pc==");
+  strcat(buf, args);
+
+  expr_t val = expr(buf + 5, &success);
+  if (!success) {
+    Error("Invalid Expression\n");
+    return 0;
+  }
+
+  WP *new = new_wp();
+  memcpy(new->e, buf, strlen(buf) + 1);  // copy args and its end '\0'
+  new->val = (cpu.pc == val);
+  new->breakpoint = true;
+  // breakpoint is a function
+  if (args[0] == '&') {
+    new->funcName = (char *)wmalloc(strlen(args) + 1); 
+    strcpy(new->funcName, args + 1);
+  }
+  return 0;
+}
+
 static int cmd_p(char *args) {
   bool success;
   expr_t val = expr(args, &success);
   if (!success) {
-    Error("Invalid Expression\n");
+    printf("Invalid Expression.\n");
     return 0;
   }
   printf(EXPR_NUM_FMT"\n", val);
@@ -142,6 +172,7 @@ static int cmd_w(char *args) {
   WP *new = new_wp();
   memcpy(new->e, args, strlen(args) + 1);  // copy args and its end '\0'
   new->val = val;
+  new->breakpoint = false;
   return 0;
 }
 
@@ -161,6 +192,12 @@ static int cmd_del(char *args) {
   return 0;
 }
 
+static int cmd_bt(char *args) { 
+  IFNDEF(CONFIG_ITRACE, printf("ITRACE disabled, open it before backtrace\n"); return 0;);
+  backtrace();
+  return 0;
+}
+
 static int cmd_list(char *args) {
   if (nemu_state.state == NEMU_ABORT) {
     printf("nemu is aborted\n");
@@ -171,11 +208,25 @@ static int cmd_list(char *args) {
     return 0;
   }
 
-  int lines = 1;
-  if(args != NULL) {
-    lines = atoi(args);
+  if (args == NULL) {
+    printf("Usage: list -i [N] or list -f. Show N instruction with default 1 or show functions\n");
+    return 0;
   }
-  frame_dump(cpu.pc, lines);
+  if (*args == '\0' || *args != '-') {
+    printf("Usage: list -i [N] or list -f. Show N instruction with default 1 or show functions\n");
+    return 0;
+  }
+
+  while (*args++ == '-');
+  args--;
+  if (*args == 'i') {
+    while (*args++ == ' ');
+    IFDEF(CONFIG_ITRACE, frame_dump(cpu.pc, MAX(atoi(args), 1)));
+  } else if (*args == 'f') {
+    func_list();
+  } else {
+    printf("Usage: list -i [N] or list -f. Show N instruction with default 1 or show functions\n");
+  }
   return 0;
 }
 
@@ -195,9 +246,12 @@ static struct {
   { "p", "Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
   { "p/x", "Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
   { "w", "Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
+  { "b", "Usage: b <expression>. example: b 0x80000010", cmd_b },
+  { "bt", "Usage: bt", cmd_bt },
   { "del", "Usage: del <watchpoint NO>. example: d 2", cmd_del },
-  { "list", "Usage list [N]. Show N instruction, default 1", cmd_list},
+  { "list", "Usage list -i [N] or list -f. Show N instruction with default 1 or show functions", cmd_list},
 };
+
 
 #define NR_CMD ARRLEN(cmd_table)
 
@@ -245,6 +299,7 @@ void sdb_mainloop() {
     /* extract the first token as the command */
     char *cmd = strtok(str, " ");
     if (cmd == NULL) { 
+      if (command_cache[0] == '\0') continue;
       nullcmd = 1;
       strcpy(str_cache, command_cache);
       str_end = str_cache + strlen(str_cache);

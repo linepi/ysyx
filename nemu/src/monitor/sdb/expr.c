@@ -29,7 +29,8 @@ enum {
   TK_HEX,
   TK_EQ, TK_NE, TK_GE, TK_GT, TK_LT, TK_LE,
   TK_AND, TK_OR, TK_NOT, TK_BOR, TK_BAND, TK_BXOR, TK_BNOT, 
-  TK_LEFT, TK_RIGHT, TK_NEG, TK_DEREFERENCE
+  TK_LEFT, TK_RIGHT, TK_NEG, TK_DEREFERENCE,
+  TK_FUNC_ADDR
   /* TODO: Add more token types */
 };
 
@@ -54,6 +55,7 @@ static struct rule {
   {"<=", TK_LE},        
   {">", TK_GT},        
   {"<", TK_LT},        
+  {"&([_]|[a-z]|[A-Z])\\w*", TK_FUNC_ADDR},
   {"&&", TK_AND},        
   {"\\|\\|", TK_OR},        
   {"!", TK_NOT},        
@@ -65,7 +67,7 @@ static struct rule {
   {"\\*", TK_DEREFERENCE},        
   {"0[xX]([0-9]|[a-f]|[A-F])+", TK_HEX},    
   {"[0-9]+", TK_DEC},    // digital number
-  {"\\$\\w{2,3}", TK_REG},    
+  {"\\$\\w{2,3}", TK_REG},   
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -123,7 +125,7 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
           case TK_NOTYPE: 
             break;
-          case TK_DEC: case TK_HEX: case TK_REG:
+          case TK_DEC: case TK_HEX: case TK_REG: case TK_FUNC_ADDR:
             tokens[nr_token].type = rules[i].token_type;
             memcpy(tokens[nr_token].str, e + position - substr_len, substr_len);
             tokens[nr_token].str[substr_len] = '\0';
@@ -232,6 +234,24 @@ static expr_t eval(int p, int q, bool *status) {
       val = isa_reg_str2val(tokens[p].str + 1, &success);
       if (!success) 
         *status = false;
+    } else if (tokens[p].type == TK_FUNC_ADDR ){
+      if (!functbl) {
+        printf("No functbl specified.\n");
+        *status = false;
+        return 0;
+      }
+      bool found = false;
+      for (int i = 0; !functbl[i].end; i++) {
+        if (strcmp(functbl[i].name, tokens[p].str + 1) == 0) {
+          val = functbl[i].addr;
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        printf("Function not found.\n");
+        *status = false;
+      }
     } else {
       *status = false;
     }

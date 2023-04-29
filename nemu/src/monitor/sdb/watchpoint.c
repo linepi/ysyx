@@ -25,6 +25,7 @@ void init_wp_pool() {
   for (i = 0; i < NR_WP; i ++) {
     wp_pool[i].NO = i;
     wp_pool[i].next = (i == NR_WP - 1 ? NULL : &wp_pool[i + 1]);
+    wp_pool[i].funcName = NULL;
   }
 
   head = NULL;
@@ -52,6 +53,8 @@ WP* new_wp() {
 void free_wp(WP *wp) {
   if (wp == NULL) return;
   WP *t = head;
+  // let funcName to NULL for next use
+  wp->funcName = NULL;
 
   if (t == wp) {
     head = head->next;
