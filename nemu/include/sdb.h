@@ -85,6 +85,7 @@ void frame_dump(vaddr_t pc, int n);
 void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 void make_functbl();
 void func_list();
+void backtrace();
 void ftrace(vaddr_t pc);
 extern struct func_t *functbl;
 
