@@ -37,19 +37,19 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
       fmt++;
     } else {
       fmt++;
-      // char pre = '\0';
-      // int nr_pre = 0;
-      // if (*fmt == '0') {
-      //   pre = '0';
-      //   fmt++;
-      // }
-      // else if (*fmt <= '9' && *fmt >= '1') pre = ' ';
-      // while (*fmt <= '9' && *fmt >= '1') {
-      //   nr_pre *= 10;
-      //   nr_pre += *fmt - '0';
-      //   fmt++;
-      // }
-      // char *saved_out = out;
+      char pre = '\0';
+      int nr_pre = 0;
+      if (*fmt == '0') {
+        pre = '0';
+        fmt++;
+      }
+      else if (*fmt <= '9' && *fmt >= '1') pre = ' ';
+      while (*fmt <= '9' && *fmt >= '1') {
+        nr_pre *= 10;
+        nr_pre += *fmt - '0';
+        fmt++;
+      }
+      char *saved_out = out;
 
       switch (*fmt) {
         case 's':
@@ -102,20 +102,20 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         default: panic("Not implemented");
       }
       fmt += 1;
-      // int added_len = out - saved_out;
-      // if (nr_pre > added_len) {
-      //   if (valid) {
-      //     // move string forward nr_pre - added_len char
-      //     for (int i = added_len - 1; i >= 0; i--) {
-      //       saved_out[i + nr_pre - added_len] = saved_out[i]; 
-      //     }
-      //     // fill pre
-      //     for (int i = 0; i < nr_pre - added_len; i++) {
-      //       saved_out[i] = pre;
-      //     }
-      //   } 
-      //   out = saved_out + nr_pre;
-      // }
+      int added_len = out - saved_out;
+      if (nr_pre > added_len) {
+        if (valid) {
+          // move string forward nr_pre - added_len char
+          for (int i = added_len - 1; i >= 0; i--) {
+            saved_out[i + nr_pre - added_len] = saved_out[i]; 
+          }
+          // fill pre
+          for (int i = 0; i < nr_pre - added_len; i++) {
+            saved_out[i] = pre;
+          }
+        } 
+        out = saved_out + nr_pre;
+      }
     }
   }
   if (valid) *out = '\0';
