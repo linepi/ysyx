@@ -112,7 +112,15 @@ void *malloc(size_t size) {
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
   panic("Not implemented");
 #endif
-  return NULL;
+  // if (size == 0) return NULL;
+  // // ret addr must 8-byte aligned
+  // if (size % 8 != 0) {
+  //   size += 8 - (size % 8);
+  // }
+  // static void *last_addr = heap.start;
+  // void *ret = last_addr;
+  // last_addr += size;
+  // return ret;
 }
 
 void free(void *ptr) {
