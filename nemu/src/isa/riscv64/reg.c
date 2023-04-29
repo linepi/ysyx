@@ -24,6 +24,7 @@ const char *regs[] = {
 };
 
 void isa_reg_display() {
+  printf("reg info:\n");
   for(int i = 0; i < 32; i++) {
     printf("%s: ", reg_name(i));
     if (strlen(reg_name(i)) != 3) putchar(' ');
