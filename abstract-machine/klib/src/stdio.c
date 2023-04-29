@@ -44,7 +44,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         fmt++;
       }
       else if (*fmt <= '9' && *fmt >= '1') pre = ' ';
-      while (*fmt <= '9' && *fmt >= '1') {
+      while (*fmt <= '9' && *fmt >= '0') {
         nr_pre *= 10;
         nr_pre += *fmt - '0';
         fmt++;
