@@ -61,13 +61,13 @@ void ftrace(vaddr_t pc) {
     if (functbl[i].addr == jump_to) {
       if (g_print_step) printf(ANSI_FMT("call %s\n", ANSI_FG_BLUE), functbl[i].name);
       func_stack_top->func = &functbl[i];
+      cur_func = func_stack_top->func;
       if (!func_stack_top->next) {
         func_stack_top->next = (struct func_stack_t *)wmalloc(sizeof(struct func_stack_t));
         func_stack_top->next->pre = func_stack_top;
         assert(func_stack_top->next != NULL);
       }
       func_stack_top = func_stack_top->next;
-      cur_func = func_stack_top->func;
       break;
     }
   }
