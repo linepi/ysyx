@@ -124,14 +124,14 @@ static int cmd_b(char *args) {
 
   int func_cnt = 0;
   for (int i = 0; !functbl[i].end; i++) {
-    if (strcmp(functbl[i].name, args) == 0) {
+    if (strcmp(functbl[i].name, args + 1) == 0) {
       func_cnt++;
     }
   }
-  if (func_cnt != 1) {
-    printf("More than one %s() detected, please choose one below:\n", args);
+  if (func_cnt >= 1) {
+    printf("More than one %s() detected, please choose one below:\n", args + 1);
     for (int i = 0; !functbl[i].end; i++) {
-      if (strcmp(functbl[i].name, args) == 0) {
+      if (strcmp(functbl[i].name, args + 1) == 0) {
         printf("0x%016lx\n", functbl[i].addr);
       }
     }
