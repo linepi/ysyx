@@ -105,22 +105,23 @@ int ultoa(unsigned long num, char *str, int base) {
   return i;
 }
 
+void *last_addr = NULL;
+
 void *malloc(size_t size) {
   // On native, malloc() will be called during initializaion of C runtime.
   // Therefore do not call panic() here, else it will yield a dead recursion:
   //   panic() -> putchar() -> (glibc) -> malloc() -> panic()
-#if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
-  panic("Not implemented");
-#endif
-  // if (size == 0) return NULL;
-  // // ret addr must 8-byte aligned
-  // if (size % 8 != 0) {
-  //   size += 8 - (size % 8);
-  // }
-  // static void *last_addr = heap.start;
-  // void *ret = last_addr;
-  // last_addr += size;
-  // return ret;
+// #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
+//   panic("Not implemented");
+// #endif
+  if (size == 0) return NULL;
+  // ret addr must 8-byte aligned
+  size  = (size_t)ROUNDUP(size, 8);
+
+  if (last_addr == NULL) last_addr = heap.start;
+  void *ret = last_addr;
+  last_addr += size;
+  return ret;
 }
 
 void free(void *ptr) {
