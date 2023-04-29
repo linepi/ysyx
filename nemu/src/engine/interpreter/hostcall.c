@@ -16,6 +16,7 @@
 #include <utils.h>
 #include <cpu/ifetch.h>
 #include <isa.h>
+#include <sdb.h>
 #include <cpu/difftest.h>
 
 void set_nemu_state(int state, vaddr_t pc, int halt_ret) {
@@ -47,5 +48,6 @@ void invalid_inst(vaddr_t thispc) {
         "* The machine is always right!\n"
         "* Every line of untested code is always wrong!\n\n", ANSI_FG_RED), isa_logo);
 
+  IFDEF(CONFIG_ITRACE, frame_dump(cpu.pc, 20));
   set_nemu_state(NEMU_ABORT, thispc, -1);
 }
