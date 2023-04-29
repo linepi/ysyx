@@ -126,7 +126,7 @@ void pc_trace(vaddr_t pc) {
 
 // dump the latest n instructions that are executed
 void pc_trace_dump(int n) {
-  printf("pc trace dump:\n");
+  printf(ANSI_FMT("pc trace dump:\n", ANSI_FG_GREEN));
   char disa[128];
   for (int i = (pc_road.cur + NR_PC_ROAD - n) % NR_PC_ROAD; n--;i = (i + 1) % NR_PC_ROAD) {
     vaddr_t pc = pc_road.arr[i];

@@ -130,8 +130,9 @@ static void statistic() {
 }
 
 void assert_fail_msg() {
-  IFDEF(CONFIG_ITRACE, frame_dump(cpu.pc, 20));
+  IFDEF(CONFIG_ITRACE, backtrace());
   isa_reg_display();
+  IFDEF(CONFIG_ITRACE, pc_trace_dump(20));
   statistic();
 }
 
