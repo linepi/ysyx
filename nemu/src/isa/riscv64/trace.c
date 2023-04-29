@@ -75,7 +75,7 @@ void ftrace(vaddr_t pc) {
 
 // just for riscv64
 void frame_dump(vaddr_t pc, int n) {
-  printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func->name[0] ? cur_func->name : "unknown", cpu.pc);
+  printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func ? cur_func->name : "unknown", cpu.pc);
   char disa[128];
   vaddr_t _pc = MAX(pc - 4 * (n/2), CONFIG_MBASE);
   for (int i = 0; i < n; i++) {
