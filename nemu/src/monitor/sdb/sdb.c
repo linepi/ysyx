@@ -128,10 +128,6 @@ static int cmd_b(char *args) {
       func_cnt++;
     }
   }
-  if (func_cnt == 0) {
-    printf("Function not found.\n");
-    return 0;
-  }
   if (func_cnt > 1) {
     printf("More than one %s() detected, please choose one below:\n", args + 1);
     for (int i = 0; !functbl[i].end; i++) {
