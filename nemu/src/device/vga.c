@@ -94,6 +94,11 @@ static void vgactl_io_handler(uint32_t offset, int len, bool is_write) {
   }
 }
 
+static void vmem_io_handler(uint32_t offset, int len, bool is_write) {
+  
+}
+
+
 void init_vga() {
   vgactl_port_base = (uint32_t *)new_space(8);
   vgactl_port_base[0] = (screen_width() << 16) | screen_height();
@@ -104,7 +109,7 @@ void init_vga() {
 #endif
 
   vmem = new_space(screen_size());
-  add_mmio_map("vmem", CONFIG_FB_ADDR, vmem, screen_size(), NULL);
+  add_mmio_map("vmem", CONFIG_FB_ADDR, vmem, screen_size(), vmem_io_handler);
   IFDEF(CONFIG_VGA_SHOW_SCREEN, init_screen());
   IFDEF(CONFIG_VGA_SHOW_SCREEN, memset(vmem, 0, screen_size()));
 }
