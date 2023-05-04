@@ -5,16 +5,16 @@
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 
 void __am_gpu_init() {
-  uint32_t reg_screensize = inl(VGACTL_ADDR);
-  int i;
-  int w = reg_screensize >> 16;  
-  int h = reg_screensize & 0xffff;  
-  uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-  for (i = 0; i < w * h; i ++) {
-    // fb[i] = 0xE0FFFF;
-    outl(FB_ADDR, 0xE0FFFF);
-  }
-  outl(SYNC_ADDR, 1);
+  // uint32_t reg_screensize = inl(VGACTL_ADDR);
+  // int i;
+  // int w = reg_screensize >> 16;  
+  // int h = reg_screensize & 0xffff;  
+  // uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
+  // for (i = 0; i < w * h; i ++) {
+  //   // fb[i] = 0xE0FFFF;
+  //   outl(FB_ADDR + i, 0xE0FFFF);
+  // }
+  // outl(SYNC_ADDR, 1);
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
@@ -34,18 +34,17 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
     outl(SYNC_ADDR, 1);
     return;
   }
-  // uint32_t reg_screensize = inl(VGACTL_ADDR);
-  // int w = reg_screensize >> 16;  
-  // int h = reg_screensize & 0xffff;  
-  // int p_idx = 0;
-  // uint32_t *pixels = (uint32_t *)ctl->pixels;
-  // for (int j = ctl->y; j < ctl->y + ctl->h; j++) {
-  //   for (int i = ctl->x; i < ctl->x + ctl->w; i++) {
-  //     // outl(FB_ADDR + j*w + i, pixels[p_idx++]);
-  //     outl(FB_ADDR + j*w + i, 0xE0FFFF);
-  //     printf("fill (%d, %d) color %x\n", j, i, 0xE0FFFF);
-  //   }
-  // }
+  uint32_t reg_screensize = inl(VGACTL_ADDR);
+  int w = reg_screensize >> 16;  
+  int h = reg_screensize & 0xffff;  
+  int p_idx = 0;
+  uint32_t *pixels = (uint32_t *)ctl->pixels;
+  for (int j = ctl->y; j < ctl->y + ctl->h; j++) {
+    for (int i = ctl->x; i < ctl->x + ctl->w; i++) {
+      // outl(FB_ADDR + j*w + i, pixels[p_idx++]);
+      outl(FB_ADDR + 4 * (j*w + i), 0xE0FFFF);
+    }
+  }
 }
 
 void __am_gpu_status(AM_GPU_STATUS_T *status) {
