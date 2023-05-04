@@ -98,9 +98,9 @@ static void checkregs(CPU_state *ref, vaddr_t pc) {
   if (!isa_difftest_checkregs(ref, pc)) {
     nemu_state.state = NEMU_ABORT;
     nemu_state.halt_pc = pc;
-    Error("Error checkregs");
+    Error("Error checkregs\n");
     isa_reg_display();
-    frame_dump(pc, 20);
+    pc_trace_dump(20);
   }
 }
 
@@ -131,7 +131,7 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
   ref_difftest_exec(1);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
 
-  checkregs(&ref_r, pc);
+  checkregs(&ref_r, npc);
 }
 #else
 void init_difftest(char *ref_so_file, long img_size, int port) { }

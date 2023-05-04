@@ -154,6 +154,10 @@ config ITRACE_COND
   string "Only trace instructions when the condition is true"
   default "true"
 
+config DTRACE
+  depends on TRACE
+  bool "Enable divice tracer"
+  default y
 
 config DIFFTEST
   depends on TARGET_NATIVE_ELF

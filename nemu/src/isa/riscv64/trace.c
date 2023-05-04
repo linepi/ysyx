@@ -5,6 +5,7 @@ struct func_t *functbl = NULL;
 struct func_t *cur_func = NULL;
 struct func_stack_t func_stack_bottom = {};
 struct func_stack_t *func_stack_top;
+struct pc_road pc_road = {};
 
 extern bool g_print_step;
 
@@ -49,7 +50,8 @@ void ftrace(vaddr_t pc) {
   vaddr_t save_pc = pc;
   uint32_t i = inst_fetch_add(&pc, 4);
   if (i == 0x00008067) { // mean ret instuction
-    if (g_print_step) printf(ANSI_FMT("ret from %s\n", ANSI_FG_BLUE), func_stack_top->func->name);
+    if (g_print_step) 
+      printf(ANSI_FMT("ret from %s\n", ANSI_FG_BLUE), func_stack_top->pre->func->name);
     func_stack_top = func_stack_top->pre;
     cur_func = func_stack_top->func;
     return;
@@ -71,7 +73,8 @@ void ftrace(vaddr_t pc) {
 
   for (int i = 0; !functbl[i].end; i++) {
     if (functbl[i].addr == jump_to) {
-      if (g_print_step) printf(ANSI_FMT("call %s\n", ANSI_FG_BLUE), functbl[i].name);
+      if (g_print_step) 
+        printf(ANSI_FMT("call %s\n", ANSI_FG_BLUE), functbl[i].name);
       func_stack_top->func = &functbl[i];
       cur_func = func_stack_top->func;
       if (!func_stack_top->next) {
@@ -87,19 +90,17 @@ void ftrace(vaddr_t pc) {
   }
 }
 
-// just for riscv64
-void frame_dump(vaddr_t pc, int n) {
-  printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func->name, cur_func->addr);
+// dump next n static instruction from pc
+void _frame_dump(vaddr_t pc, int n) {
   char disa[128];
-  vaddr_t _pc = MAX(pc - 4 * (n/2), CONFIG_MBASE);
   for (int i = 0; i < n; i++) {
-    if (_pc != pc)
+    if (pc != cpu.pc)
       printf("    ");
     else 
       printf(ANSI_FMT("=>  ", ANSI_FG_GREEN));
     // 这里保存pc的原因是，inst_fetch_add会使pc增加，以至于反汇编得不到所执行指令的正确相对地址
-    vaddr_t saved_pc = _pc;
-    uint32_t inst = inst_fetch_add(&_pc, 4);
+    vaddr_t saved_pc = pc;
+    uint32_t inst = inst_fetch_add(&pc, 4);
     IFDEF(CONFIG_ITRACE, disassemble(disa, 128, saved_pc, (uint8_t *)&inst, 4));
 
     printf("0x%08lx: %s", saved_pc, disa); 
@@ -110,6 +111,41 @@ void frame_dump(vaddr_t pc, int n) {
     }
     printf("\n");
   }
+}
+
+// dump n static instruction before and after pc
+void frame_dump(vaddr_t pc, int n) {
+  printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func->name, cur_func->addr);
+  vaddr_t _pc = MAX(pc - 4 * (n/2), CONFIG_MBASE);
+  _frame_dump(_pc, n);
+}
+
+// trace the pc
+void pc_trace(vaddr_t pc) {
+  pc_road.arr[pc_road.cur] = pc;
+  pc_road.cur = (pc_road.cur + 1) % NR_PC_ROAD;
+}
+
+// dump the latest n instructions that are executed
+void pc_trace_dump(int n) {
+  printf(ANSI_FMT("pc trace dump:\n", ANSI_FG_GREEN));
+  char disa[128];
+  for (int i = (pc_road.cur + NR_PC_ROAD - n) % NR_PC_ROAD; n--;i = (i + 1) % NR_PC_ROAD) {
+    vaddr_t pc = pc_road.arr[i];
+    if (pc != 0) {
+      vaddr_t saved_pc = pc;
+      uint32_t inst = inst_fetch_add(&pc, 4);
+      IFDEF(CONFIG_ITRACE, disassemble(disa, 128, saved_pc, (uint8_t *)&inst, 4));
+      printf("    0x%08lx: %s", saved_pc, disa); 
+      for (int i = 0; i < 30 - strlen(disa); i++) putchar(' ');
+      uint8_t *p_inst = (uint8_t *)&inst;
+      for (int i = 3; i >= 0; i --) {
+        printf(" %02x", p_inst[i]);
+      }
+      printf("\n");
+    } 
+  }
+  _frame_dump(cpu.pc, 10);
 }
 
 void backtrace() {
