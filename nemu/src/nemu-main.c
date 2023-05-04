@@ -38,11 +38,5 @@ int main(int argc, char *argv[]) {
   garbage_collect();
   close_file();
 
-  uint64_t _imm;
-  uint64_t *imm = &_imm;
-  uint32_t i = 0xfc079663;
-  immSB();
-  printf("imm = 0x%lx\n", *imm);
-
   return is_exit_status_bad();
 }
