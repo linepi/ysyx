@@ -73,7 +73,7 @@ void ftrace(vaddr_t pc) {
 
   for (int i = 0; !functbl[i].end; i++) {
     if (functbl[i].addr == jump_to) {
-      // if (g_print_step) 
+      if (g_print_step) 
         printf(ANSI_FMT("call %s\n", ANSI_FG_BLUE), functbl[i].name);
       func_stack_top->func = &functbl[i];
       cur_func = func_stack_top->func;
