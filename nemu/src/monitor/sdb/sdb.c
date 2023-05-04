@@ -80,7 +80,7 @@ static int cmd_si(char *args) {
 
 static int cmd_info(char *args) {
   if(args == NULL) {
-    printf("Usage: info <r|w>. r --> register, w --> watch points.\n");
+    printf("Usage: info <r|w>. r --> register, w --> watchpoints.\n");
     return 0;
   }
   switch(args[0]) {

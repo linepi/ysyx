@@ -21,7 +21,6 @@ void init_monitor(int, char *[]);
 void am_init_monitor();
 void engine_start();
 int is_exit_status_bad();
-void test_expr();
 
 int main(int argc, char *argv[]) {
   /* Initialize the monitor. */
@@ -31,7 +30,6 @@ int main(int argc, char *argv[]) {
   init_monitor(argc, argv);
 #endif
 
-  // test_expr();
   /* Start engine. */
   engine_start();
   // clear out
