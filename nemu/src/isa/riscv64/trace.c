@@ -50,7 +50,8 @@ void ftrace(vaddr_t pc) {
   vaddr_t save_pc = pc;
   uint32_t i = inst_fetch_add(&pc, 4);
   if (i == 0x00008067) { // mean ret instuction
-    if (g_print_step) printf(ANSI_FMT("ret from %s\n", ANSI_FG_BLUE), func_stack_top->func->name);
+    // if (g_print_step) 
+      printf(ANSI_FMT("ret from %s\n", ANSI_FG_BLUE), func_stack_top->func->name);
     func_stack_top = func_stack_top->pre;
     cur_func = func_stack_top->func;
     return;
@@ -72,7 +73,8 @@ void ftrace(vaddr_t pc) {
 
   for (int i = 0; !functbl[i].end; i++) {
     if (functbl[i].addr == jump_to) {
-      if (g_print_step) printf(ANSI_FMT("call %s\n", ANSI_FG_BLUE), functbl[i].name);
+      // if (g_print_step) 
+        printf(ANSI_FMT("call %s\n", ANSI_FG_BLUE), functbl[i].name);
       func_stack_top->func = &functbl[i];
       cur_func = func_stack_top->func;
       if (!func_stack_top->next) {
