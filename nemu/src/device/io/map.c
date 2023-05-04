@@ -65,7 +65,7 @@ word_t map_read(paddr_t addr, int len, IOMap *map) {
 }
 
 void map_write(paddr_t addr, int len, word_t data, IOMap *map) {
-  if (strcmp(map->name, "vmem") == 0) printf("Try to write to %s device: %d byte to 0x%08x\n", map->name, len, addr);
+  // if (strcmp(map->name, "vmem") == 0) printf("Try to write to %s device: %d byte to 0x%08x\n", map->name, len, addr);
   IFDEF(CONFIG_DTRACE, printf("Try to write to %s device: %d byte to 0x%08x, ", map->name, len, addr));
   assert(len >= 1 && len <= 8);
   check_bound(map, addr);
