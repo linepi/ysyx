@@ -40,6 +40,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
     for (int i = ctl->x; i < ctl->x + ctl->w; i++) {
       // outl(FB_ADDR + j*w + i, pixels[p_idx++]);
       outl(FB_ADDR + j*w + i, 0xE0FFFF);
+      printf("fill (%d, %d) color %x\n", j, i, 0xE0FFFF);
     }
   }
 }
