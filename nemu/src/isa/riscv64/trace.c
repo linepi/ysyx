@@ -51,7 +51,7 @@ void ftrace(vaddr_t pc) {
   uint32_t i = inst_fetch_add(&pc, 4);
   if (i == 0x00008067) { // mean ret instuction
     // if (g_print_step) 
-      printf(ANSI_FMT("ret from %s\n", ANSI_FG_BLUE), func_stack_top->func->name);
+      printf(ANSI_FMT("ret from %s\n", ANSI_FG_BLUE), func_stack_top->pre->func->name);
     func_stack_top = func_stack_top->pre;
     cur_func = func_stack_top->func;
     return;
