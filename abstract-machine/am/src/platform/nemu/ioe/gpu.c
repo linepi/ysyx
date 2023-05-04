@@ -5,7 +5,6 @@
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 
 void __am_gpu_init() {
-  return; 
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {

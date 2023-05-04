@@ -77,14 +77,18 @@ void ftrace(vaddr_t pc) {
         printf(ANSI_FMT("call %s\n", ANSI_FG_BLUE), functbl[i].name);
       func_stack_top->func = &functbl[i];
       cur_func = func_stack_top->func;
+      printf("there1\n");
       if (!func_stack_top->next) {
+        printf("there2\n");
         func_stack_top->next = (struct func_stack_t *)wmalloc(sizeof(struct func_stack_t));
         func_stack_top->next->pre = func_stack_top;
         func_stack_top->next->next = NULL;
         func_stack_top->next->func = NULL;
         assert(func_stack_top->next != NULL);
+        printf("there3\n");
       }
       func_stack_top = func_stack_top->next;
+      printf("there4\n");
       break;
     }
   }
