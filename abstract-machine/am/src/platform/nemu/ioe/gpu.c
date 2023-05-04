@@ -9,9 +9,11 @@ void __am_gpu_init() {
   int i;
   int w = reg_screensize >> 16;  
   int h = reg_screensize & 0xffff;  
+  uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
   for (i = 0; i < w * h; i ++) {
-    outl(FB_ADDR + i, 0xE0FFFF);
-  };
+    fb[i] = 0xE0FFFF;
+    // outl(FB_ADDR, 0xE0FFFF);
+  }
   outl(SYNC_ADDR, 1);
 }
 
