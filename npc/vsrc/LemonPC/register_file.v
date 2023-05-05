@@ -14,15 +14,14 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
       rf[rd] <= dataD;
     end
   end
-  assign rf[0] = 0;
+  wire ground = 0;
+  always @(posedge clk) rf[0] <= ground;
   assign data1 = rf[rs1];
   assign data2 = rf[rs2];
 
   // For debug.
   reg [DATA_WIDTH-1:0] rf_debug [(1<<ADDR_WIDTH)-1 : 0];
   reg [DATA_WIDTH-1:0] rf_debug_last [(1<<ADDR_WIDTH)-1 : 0];
-  assign rf_debug[0] = 0;
-  assign rf_debug_last[0] = 0;
   integer i;
   always @(posedge clk) begin
     if (wen) begin 
@@ -31,7 +30,8 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
         if (rf_debug_last[i] != rf_debug[i])
           $display("x%0d changed, from 0x%0x(%0d) to 0x%0x(%0d)", i, rf_debug_last[i], $signed(rf_debug_last[i]), rf_debug[i], $signed(rf_debug[i]));
       end
-      rf_debug_last[rd] = dataD;
+      rf_debug_last[rd] = rf_debug[rd];
     end
   end
+  always @(posedge clk) rf_debug[0] <= ground;
 endmodule
