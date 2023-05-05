@@ -35,7 +35,7 @@ VM_PREFIX = Vver
 VM_MODPREFIX = Vver
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
-	-Icsrc/include \
+	-I/home/w/dev/ysyx-workbench/npc/csrc/include \
 	-I/home/w/dev/ysyx-workbench/nvboard/include \
 	-D \
 
