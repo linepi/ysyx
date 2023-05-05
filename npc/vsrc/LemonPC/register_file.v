@@ -12,7 +12,7 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   always @(posedge clk) begin
     if (wen) begin 
       rf[rd] <= dataD;
-      $display("dataD %lx write to rd %x\n", dataD, rd);
+      $display("dataD %x write to rd %x\n", dataD, rd);
     end
   end
   assign rf[0] = 0;
