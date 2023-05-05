@@ -14,6 +14,12 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
       rf[rd] <= dataD;
       $display("dataD %x write to rd %x\n", dataD, rd);
     end
+
+    $display("Regs:\n");
+    integer i;
+    for (i = 0; i < (1 << ADDR_WIDTH); i++) begin
+      $display("x%d: %x\n", i, rf[i]);
+    end
   end
   assign rf[0] = 0;
   assign data1 = rf[rs1];
