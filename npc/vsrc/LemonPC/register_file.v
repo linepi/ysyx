@@ -12,9 +12,9 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   always @(posedge clk) begin
     if (wen) begin 
       rf[rd] <= dataD;
-      for (i = 0; i < 4; i++) begin
-        $display("x%0d: %0d", i, rf[i]);
-      end
+      // for (i = 0; i < 4; i++) begin
+      //   $display("x%0d: %0d", i, rf[i]);
+      // end
     end
   end
   wire [63:0] ground = 64'b0;
