@@ -13,12 +13,12 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   always @(posedge clk) begin
     if (wen) begin 
       rf[rd] <= dataD;
-      $display("dataD %x write to rd %x\n", dataD, rd);
+      $display("dataD %x write to rd %x", dataD, rd);
     end
 
-    $display("Regs:\n");
+    $display("Regs:");
     for (i = 0; i < (1 << ADDR_WIDTH); i++) begin
-      $display("x%d: %x\n", i, rf[i]);
+      $display("x%0d: %x", i, rf[i]);
     end
   end
   assign rf[0] = 0;
