@@ -15,6 +15,7 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
       for (i = 0; i < (1 << ADDR_WIDTH); i++) begin
         $display("x%0d: %0d\n", i, rf[i]);
       end
+    end
   end
   reg [63:0] ground = 64'b0;
   always @(*) rf[0] <= ground;
