@@ -17,9 +17,14 @@ VL_ATTR_COLD void VPC___024root___eval_initial__TOP(VPC___024root* vlSelf) {
     // Init
     IData/*31:0*/ __Vfunc_add__0__Vfuncout;
     __Vfunc_add__0__Vfuncout = 0;
+    IData/*31:0*/ __Vfunc_add__1__Vfuncout;
+    __Vfunc_add__1__Vfuncout = 0;
     // Body
-    VPC___024unit____Vdpiimwrap_add_TOP____024unit(0U, 0U, __Vfunc_add__0__Vfuncout);
-    vlSelf->PC__DOT__i_rf__DOT__rf[0U] = VL_EXTENDS_QI(64,32, __Vfunc_add__0__Vfuncout);
+    VPC___024unit____Vdpiimwrap_add_TOP____024unit(1U, 2U, __Vfunc_add__1__Vfuncout);
+    VPC___024unit____Vdpiimwrap_add_TOP____024unit(1U, 2U, __Vfunc_add__0__Vfuncout);
+    vlSelf->PC__DOT__i_rf__DOT__rf[0U] = (((QData)((IData)(__Vfunc_add__0__Vfuncout)) 
+                                           << 0x20U) 
+                                          | (QData)((IData)(__Vfunc_add__1__Vfuncout)));
 }
 
 #ifdef VL_DEBUG

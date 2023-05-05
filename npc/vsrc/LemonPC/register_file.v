@@ -14,7 +14,7 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
       rf[rd] <= dataD;
     end
   end
-  assign rf[0] = {add(1,2), add(1,2)};
+  assign rf[0] = 0;
   assign data1 = rf[rs1];
   assign data2 = rf[rs2];
 
