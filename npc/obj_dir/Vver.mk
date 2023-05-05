@@ -37,7 +37,7 @@ VM_MODPREFIX = Vver
 VM_USER_CFLAGS = \
 	-I/home/w/dev/ysyx-workbench/npc/csrc/include \
 	-I/home/w/dev/ysyx-workbench/nvboard/include \
-	-D \
+	-D1 \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
