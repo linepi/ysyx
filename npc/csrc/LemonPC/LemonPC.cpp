@@ -25,9 +25,9 @@ int main(int argc, char** argv, char** env) {
   PC->pc = MBASE;
   while (!contextp->gotFinish()) {
     PC->inst = pmem_read(PC->pc, 4);
+    if (PC->inst == 0) break;
     printf("%016lx: %08x\n", PC->pc, PC->inst);
     single_cycle();
-    if (cnt++ > 10) break;
   }
   PC->final();
   delete PC;
