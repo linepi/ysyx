@@ -14,11 +14,10 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
     if (wen) begin 
       rf[rd] <= dataD;
       $display("dataD %x write to rd %x", dataD, rd);
-    end
-
-    $display("Regs:");
-    for (i = 0; i < (1 << ADDR_WIDTH); i = i + 2) begin
-      $display("x%0d: %x, x%0d: %x", i, rf[i], i+1, rf[i+1]);
+      $display("Regs:");
+      for (i = 0; i < (1 << ADDR_WIDTH); i = i + 2) begin
+        $display("x%0d: %x, x%0d: %x", i, rf[i], i+1, rf[i+1]);
+      end
     end
   end
   assign rf[0] = 0;
