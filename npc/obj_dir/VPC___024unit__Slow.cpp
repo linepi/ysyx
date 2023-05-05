@@ -6,21 +6,21 @@
 #include "verilated_dpi.h"
 
 #include "VPC__Syms.h"
-#include "VPC___024root.h"
+#include "VPC___024unit.h"
 
-void VPC___024root___ctor_var_reset(VPC___024root* vlSelf);
+void VPC___024unit___ctor_var_reset(VPC___024unit* vlSelf);
 
-VPC___024root::VPC___024root(VPC__Syms* symsp, const char* v__name)
+VPC___024unit::VPC___024unit(VPC__Syms* symsp, const char* v__name)
     : VerilatedModule{v__name}
     , vlSymsp{symsp}
  {
     // Reset structure values
-    VPC___024root___ctor_var_reset(this);
+    VPC___024unit___ctor_var_reset(this);
 }
 
-void VPC___024root::__Vconfigure(bool first) {
+void VPC___024unit::__Vconfigure(bool first) {
     if (false && first) {}  // Prevent unused
 }
 
-VPC___024root::~VPC___024root() {
+VPC___024unit::~VPC___024unit() {
 }

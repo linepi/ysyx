@@ -3,6 +3,7 @@
 // See VPC.h for the primary calling header
 
 #include "verilated.h"
+#include "verilated_dpi.h"
 
 #include "VPC___024root.h"
 
@@ -61,7 +62,7 @@ VL_ATTR_COLD void VPC___024root___eval_settle(VPC___024root* vlSelf) {
 #ifdef VL_DEBUG
                 VPC___024root___dump_triggers__stl(vlSelf);
 #endif
-                VL_FATAL_MT("/home/w/dev/ysyx-workbench/npc/vsrc/LemonPC/LemonPC.v", 1, "", "Settle region did not converge.");
+                VL_FATAL_MT("/home/w/dev/ysyx-workbench/npc/vsrc/LemonPC/LemonPC.v", 3, "", "Settle region did not converge.");
             }
             vlSelf->__VstlIterCount = ((IData)(1U) 
                                        + vlSelf->__VstlIterCount);

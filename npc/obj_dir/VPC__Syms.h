@@ -15,6 +15,9 @@
 
 // INCLUDE MODULE CLASSES
 #include "VPC___024root.h"
+#include "VPC___024unit.h"
+
+// DPI TYPES for DPI Export callbacks (Internal use)
 
 // SYMS CLASS (contains all model state)
 class VPC__Syms final : public VerilatedSyms {
@@ -26,6 +29,7 @@ class VPC__Syms final : public VerilatedSyms {
 
     // MODULE INSTANCE STATE
     VPC___024root                  TOP;
+    VPC___024unit                  TOP____024unit;
 
     // CONSTRUCTORS
     VPC__Syms(VerilatedContext* contextp, const char* namep, VPC* modelp);

@@ -9,9 +9,12 @@
 #define VERILATED_VPC_H_  // guard
 
 #include "verilated.h"
+#include "svdpi.h"
 
 class VPC__Syms;
 class VPC___024root;
+class VPC___024unit;
+
 
 // This class is the main interface to the Verilated model
 class VPC VL_NOT_FINAL : public VerilatedModel {
@@ -31,6 +34,7 @@ class VPC VL_NOT_FINAL : public VerilatedModel {
     // CELLS
     // Public to allow access to /* verilator public */ items.
     // Otherwise the application code can consider these internals.
+    VPC___024unit* const __PVT____024unit;
 
     // Root instance pointer to allow access to model internals,
     // including inlined /* verilator public_flat_* */ items.

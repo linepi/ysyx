@@ -8,9 +8,13 @@
 #include "verilated.h"
 
 class VPC__Syms;
+class VPC___024unit;
+
 
 class VPC___024root final : public VerilatedModule {
   public:
+    // CELLS
+    VPC___024unit* __PVT____024unit;
 
     // DESIGN SPECIFIC STATE
     VL_IN8(clk,0,0);

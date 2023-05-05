@@ -3,6 +3,7 @@
 
 #include "VPC.h"
 #include "VPC__Syms.h"
+#include "verilated_dpi.h"
 
 //============================================================
 // Constructors
@@ -13,6 +14,7 @@ VPC::VPC(VerilatedContext* _vcontextp__, const char* _vcname__)
     , clk{vlSymsp->TOP.clk}
     , inst{vlSymsp->TOP.inst}
     , pc{vlSymsp->TOP.pc}
+    , __PVT____024unit{vlSymsp->TOP.__PVT____024unit}
     , rootp{&(vlSymsp->TOP)}
 {
     // Register model with the context

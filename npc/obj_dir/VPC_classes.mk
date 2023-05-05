@@ -26,15 +26,19 @@ VM_CLASSES_FAST += \
 	VPC \
 	VPC___024root__DepSet_haad30a11__0 \
 	VPC___024root__DepSet_hffb5eac1__0 \
+	VPC___024unit__DepSet_hb486f04d__0 \
 
 # Generated module classes, non-fast-path, compile with low/medium optimization
 VM_CLASSES_SLOW += \
 	VPC___024root__Slow \
 	VPC___024root__DepSet_haad30a11__0__Slow \
 	VPC___024root__DepSet_hffb5eac1__0__Slow \
+	VPC___024unit__Slow \
+	VPC___024unit__DepSet_hea0b6515__0__Slow \
 
 # Generated support classes, fast-path, compile with highest optimization
 VM_SUPPORT_FAST += \
+	VPC__Dpi \
 
 # Generated support classes, non-fast-path, compile with low/medium optimization
 VM_SUPPORT_SLOW += \
@@ -43,6 +47,7 @@ VM_SUPPORT_SLOW += \
 # Global classes, need linked once per executable, fast-path, compile with highest optimization
 VM_GLOBAL_FAST += \
 	verilated \
+	verilated_dpi \
 	verilated_threads \
 
 # Global classes, need linked once per executable, non-fast-path, compile with low/medium optimization

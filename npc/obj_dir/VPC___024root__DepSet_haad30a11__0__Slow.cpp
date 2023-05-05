@@ -3,6 +3,7 @@
 // See VPC.h for the primary calling header
 
 #include "verilated.h"
+#include "verilated_dpi.h"
 
 #include "VPC__Syms.h"
 #include "VPC___024root.h"
