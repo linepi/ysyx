@@ -18,12 +18,13 @@ $(SRC_AUTO_BIND): $(NXDC_FILES)
 INC_PATH += scrc/include 
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
-NB_CSRCS = $(filter-out %ver.cpp %LemonPC.cpp, $(CSRCS))
-NB_VSRCS = $(shell find $(abspath ./vsrc/nb) $(abspath ./vsrc/common) -name "*.v")
-VER_CSRCS = $(filter-out %nb.cpp %LemonPC.cpp %$(SRC_AUTO_BIND), $(CSRCS))
-VER_VSRCS = $(shell find $(abspath ./vsrc/ver) $(abspath ./vsrc/common) -name "*.v")
+
 PC_CSRCS = $(filter-out %nb.cpp %ver.cpp %$(SRC_AUTO_BIND), $(CSRCS))
 PC_VSRCS = $(shell find $(abspath ./vsrc/LemonPC) $(abspath ./vsrc/common) -name "*.v")
+NB_CSRCS = $(filter-out %ver.cpp $(PC_CSRCS), $(CSRCS))
+NB_VSRCS = $(shell find $(abspath ./vsrc/nb) $(abspath ./vsrc/common) -name "*.v")
+VER_CSRCS = $(filter-out %nb.cpp $(PC_CSRCS) %$(SRC_AUTO_BIND), $(CSRCS))
+VER_VSRCS = $(shell find $(abspath ./vsrc/ver) $(abspath ./vsrc/common) -name "*.v")
 CSRCS += $(SRC_AUTO_BIND)
 
 # rules for NVBoard
