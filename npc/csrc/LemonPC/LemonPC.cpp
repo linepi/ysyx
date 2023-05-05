@@ -22,8 +22,6 @@ int main(int argc, char** argv, char** env) {
   
   int cnt = 0;
   srand((unsigned) time(NULL));
-
-  PC->pc = MBASE;
   while (!contextp->gotFinish()) {
     PC->inst = pmem_read(PC->pc, 4);
     printf("%016lx: %08x\n", PC->pc, PC->inst);

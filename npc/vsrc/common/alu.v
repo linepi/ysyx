@@ -1,32 +1,23 @@
-module alu
-#(N)
-(
-    input [N-1:0] A, B,  // ALU Inputs                 
-    input [3:0] select,// ALU Selection
-    output [N-1:0] res // ALU Output
+module alu #(N) (
+  input [N-1:0] A, 
+  input [N-1:0] B,
+  input [3:0] sel,  
+  output [N-1:0] res   
 );
-    always @(*)
-    begin
-        case(select)
-            4'b0000: // Addition
-            res = A + B ; 
-            4'b0001: // Subtraction
-            res = A - B ;
-            4'b0010: // Multiplication
-            res = A * B;
-            4'b0011: // Division
-            res = A / B;
-            4'b0110: //  Logical and 
-            res = A & B;
-            4'b0111: //  Logical or
-            res = A | B;
-            4'b1000: //  Logical xor 
-            res = A ^ B;
-            4'b1001: // Greater comparison
-            res = (A < B)? 8'd1 : 8'd0 ;
-            4'b1010: // Equal comparison   
-            res = (A == B) ? 8'd1 : 8'd0 ;
-            default: res = 0; 
-        endcase
-    end
+  always @(*) begin
+    case(sel)
+      4'd0: res = A + B; 
+      4'd1: res = A - B;
+      4'd2: res = A * B;
+      4'd3: res = A / B;
+      4'd4: res = A & B;
+      4'd5: res = A | B;
+      4'd6: res = A ^ B;
+      4'd7: res = (A >= B) ? 8'd1 : 8'd0;
+      4'd8: res = (A < B) ? 8'd1 : 8'd0;
+      4'd9: res = (A == B) ? 8'd1 : 8'd0;
+      4'd10: res = (A != B) ? 8'd1 : 8'd0;
+      default: res = 0; 
+    endcase
+  end
 endmodule
