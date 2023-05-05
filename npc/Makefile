@@ -38,7 +38,7 @@ CFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(NBNAME)\""
 LDFLAGS += -lSDL2 -lSDL2_image
 
 $(NBNAME): $(NB_VSRCS) $(NB_CSRCS) $(NVBOARD_ARCHIVE)
-	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+	$(call git_commit, "build nvboard") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
 		--top-module $(NBNAME) $^ \
 		$(addprefix -CFLAGS , $(CFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
@@ -47,7 +47,7 @@ $(NBNAME): $(NB_VSRCS) $(NB_CSRCS) $(NVBOARD_ARCHIVE)
 
 # just for the simulator of verilator
 $(VERNAME): $(VER_VSRCS) $(VER_CSRCS)
-	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+	$(call git_commit, "build ver") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
 		--top-module $(VERNAME) \
 		$(addprefix -CFLAGS , $(INCFLAGS)) $^ \
@@ -55,7 +55,7 @@ $(VERNAME): $(VER_VSRCS) $(VER_CSRCS)
 	$(abspath $(VERNAME))
 
 $(PCNAME): $(PC_VSRCS) $(PC_CSRCS)
-	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+	$(call git_commit, "build npc") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
 		--top-module PC \
 		$(addprefix -CFLAGS , $(INCFLAGS)) $^ \
@@ -64,7 +64,7 @@ $(PCNAME): $(PC_VSRCS) $(PC_CSRCS)
 
 # just for testbench of verilator
 $(TESTNAME): $(VSRCS)
-	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+	$(call git_commit, "build testbench") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) --binary --timing \
 		--top-module $(TESTNAME) $^ \
 		-o $(abspath $(TESTNAME))
