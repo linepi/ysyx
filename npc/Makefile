@@ -47,7 +47,7 @@ $(VERNAME): $(VSRCS) $(VER_CSRCS)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
 		--top-module $(VERNAME) \
-		$(addprefix -CFLAGS, $(INCFLAGS) -D$(SEQUENTIAL)) $^ \
+		$(addprefix -CFLAGS , $(INCFLAGS) -D$(SEQUENTIAL)) $^ \
 		--exe -o $(abspath $(VERNAME))
 	$(abspath $(VERNAME))
 	-@rm -rf obj_dir
