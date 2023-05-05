@@ -1,6 +1,6 @@
 module control (
   input [31:0] inst,
-  output ebreak
+  output reg ebreak
 );
   always @(*) begin
     case (inst)
