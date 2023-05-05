@@ -13,7 +13,7 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
     if (wen) rf[rd] <= dataD;
   end
   // x0 is always zero.
-  assign rd[0] = 0;
+  assign rf[0] = 0;
   assign data1 = rf[rs1];
   assign data2 = rf[rs2];
 endmodule
