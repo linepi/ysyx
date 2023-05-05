@@ -11,7 +11,7 @@ module PC (
   wire [63:0] dataD;
 
   register_file i_rf(.clk(clk), .rs1(rs1), .rd(rd), .data1(data1), .wen(1), .dataD(dataD));
-  alu i_alu(.A(data1), .B(imm), .sel(4'd0), .res(dataD));
+  alu #(64) i_alu(.A(data1), .B(imm), .sel(4'd0), .res(dataD));
   always @(posedge clk) begin
     pc = pc + 4;
   end
