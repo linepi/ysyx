@@ -37,4 +37,5 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
     end
   end
   always @(posedge clk) rf_debug[0] = ground;
+  always @(posedge clk) rf_debug_last[0] = ground;
 endmodule

@@ -13,24 +13,12 @@ VL_ATTR_COLD void VPC___024root___eval_static(VPC___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    VPC___024root___eval_static\n"); );
 }
 
-VL_ATTR_COLD void VPC___024root___eval_initial__TOP(VPC___024root* vlSelf);
-
 VL_ATTR_COLD void VPC___024root___eval_initial(VPC___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     VPC__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    VPC___024root___eval_initial\n"); );
     // Body
-    VPC___024root___eval_initial__TOP(vlSelf);
     vlSelf->__Vtrigrprev__TOP__clk = vlSelf->clk;
-}
-
-VL_ATTR_COLD void VPC___024root___eval_initial__TOP(VPC___024root* vlSelf) {
-    if (false && vlSelf) {}  // Prevent unused
-    VPC__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+    VPC___024root___eval_initial__TOP\n"); );
-    // Body
-    vlSelf->PC__DOT__i_rf__DOT__rf[0U] = 0ULL;
-    vlSelf->PC__DOT__i_rf__DOT__rf_debug[0U] = 0ULL;
 }
 
 VL_ATTR_COLD void VPC___024root___eval_final(VPC___024root* vlSelf) {

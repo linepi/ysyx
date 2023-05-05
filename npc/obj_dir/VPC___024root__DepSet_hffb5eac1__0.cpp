@@ -55,6 +55,7 @@ VL_INLINE_OPT void VPC___024root___nba_sequent__TOP__0(VPC___024root* vlSelf) {
               64,vlSelf->PC__DOT__i_rf__DOT__rf[1U],
               64,vlSelf->PC__DOT__i_rf__DOT__rf[2U],
               64,vlSelf->PC__DOT__i_rf__DOT__rf[3U]);
+    vlSelf->PC__DOT__i_rf__DOT__rf_debug[0U] = 0ULL;
     vlSelf->pc = (4ULL + vlSelf->pc);
     vlSelf->PC__DOT__i_rf__DOT__rf_debug[(0x1fU & (vlSelf->inst 
                                                    >> 7U))] 
@@ -391,6 +392,7 @@ VL_INLINE_OPT void VPC___024root___nba_sequent__TOP__0(VPC___024root* vlSelf) {
                                                   >> 7U));
     vlSelf->PC__DOT__i_rf__DOT__rf[__Vdlyvdim0__PC__DOT__i_rf__DOT__rf__v0] 
         = __Vdlyvval__PC__DOT__i_rf__DOT__rf__v0;
+    vlSelf->PC__DOT__i_rf__DOT__rf[0U] = 0ULL;
     vlSelf->PC__DOT__dataD = (vlSelf->PC__DOT__i_rf__DOT__rf
                               [(0x1fU & (vlSelf->inst 
                                          >> 0xfU))] 
