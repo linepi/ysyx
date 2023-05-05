@@ -10,9 +10,11 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
 );
   reg [DATA_WIDTH-1:0] rf [(1<<ADDR_WIDTH)-1 : 0];
   always @(posedge clk) begin
-    if (wen) rf[rd] <= dataD;
+    if (wen) begin 
+      rf[rd] <= dataD;
+      $display("dataD %lx write to rd %x\n", dataD, rd);
+    end
   end
-  // x0 is always zero.
   assign rf[0] = 0;
   assign data1 = rf[rs1];
   assign data2 = rf[rs2];

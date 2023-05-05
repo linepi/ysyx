@@ -27,7 +27,6 @@ int main(int argc, char** argv, char** env) {
     PC->inst = pmem_read(PC->pc, 4);
     if (PC->inst == 0) break;
     printf("%016lx: %08x\n", PC->pc, PC->inst);
-    printf("%d, %d\n", PC->rs1, PC->rs2);
     single_cycle();
   }
   PC->final();
