@@ -6,7 +6,7 @@ module PC (
   wire [4:0] rs1 = inst[19:15];
   wire [4:0] rd = inst[11:7];
   // signed extend
-  wire [63:0] imm = {52{inst[31]}, inst[31:20]};
+  wire [63:0] imm = {{52{inst[31]}}, inst[31:20]};
   wire [63:0] data1;
   wire [63:0] dataD;
 
