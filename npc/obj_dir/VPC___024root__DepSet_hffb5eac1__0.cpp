@@ -50,39 +50,11 @@ VL_INLINE_OPT void VPC___024root___nba_sequent__TOP__0(VPC___024root* vlSelf) {
     QData/*63:0*/ __Vdlyvval__PC__DOT__i_rf__DOT__rf__v0;
     __Vdlyvval__PC__DOT__i_rf__DOT__rf__v0 = 0;
     // Body
-    VL_WRITEF("x0: %0#\n\nx1: %0#\n\nx2: %0#\n\nx3: %0#\n\nx4: %0#\n\nx5: %0#\n\nx6: %0#\n\nx7: %0#\n\nx8: %0#\n\nx9: %0#\n\nx10: %0#\n\nx11: %0#\n\nx12: %0#\n\nx13: %0#\n\nx14: %0#\n\nx15: %0#\n\nx16: %0#\n\nx17: %0#\n\nx18: %0#\n\nx19: %0#\n\nx20: %0#\n\nx21: %0#\n\nx22: %0#\n\nx23: %0#\n\nx24: %0#\n\nx25: %0#\n\nx26: %0#\n\nx27: %0#\n\nx28: %0#\n\nx29: %0#\n\nx30: %0#\n\nx31: %0#\n\n",
+    VL_WRITEF("x0: %0#\nx1: %0#\nx2: %0#\nx3: %0#\n",
               64,vlSelf->PC__DOT__i_rf__DOT__rf[0U],
               64,vlSelf->PC__DOT__i_rf__DOT__rf[1U],
               64,vlSelf->PC__DOT__i_rf__DOT__rf[2U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[3U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[4U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[5U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[6U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[7U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[8U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[9U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0xaU],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0xbU],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0xcU],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0xdU],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0xeU],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0xfU],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x10U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x11U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x12U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x13U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x14U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x15U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x16U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x17U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x18U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x19U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x1aU],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x1bU],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x1cU],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x1dU],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x1eU],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0x1fU]);
+              64,vlSelf->PC__DOT__i_rf__DOT__rf[3U]);
     vlSelf->pc = (4ULL + vlSelf->pc);
     vlSelf->PC__DOT__i_rf__DOT__rf_debug[(0x1fU & (vlSelf->inst 
                                                    >> 7U))] 
