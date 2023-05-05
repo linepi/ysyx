@@ -19,8 +19,11 @@ INC_PATH += scrc/include
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
 NB_CSRCS = $(filter-out %ver.cpp %LemonPC.cpp, $(CSRCS))
+NB_VSRCS = $(shell find $(abspath ./vsrc/nb) $(abspath ./vsrc/common))
 VER_CSRCS = $(filter-out %nb.cpp %LemonPC.cpp %$(SRC_AUTO_BIND), $(CSRCS))
+VER_VSRCS = $(shell find $(abspath ./vsrc/ver) $(abspath ./vsrc/common))
 PC_CSRCS = $(filter-out %nb.cpp %ver.cpp %$(SRC_AUTO_BIND), $(CSRCS))
+PC_VSRCS = $(shell find $(abspath ./vsrc/LemonPC) $(abspath ./vsrc/common))
 CSRCS += $(SRC_AUTO_BIND)
 
 # rules for NVBoard
@@ -33,7 +36,7 @@ INCFLAGS = $(addprefix -I, $(INC_PATH))
 CFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(NBNAME)\""
 LDFLAGS += -lSDL2 -lSDL2_image
 
-$(NBNAME): $(VSRCS) $(NB_CSRCS) $(NVBOARD_ARCHIVE)
+$(NBNAME): $(NB_VSRCS) $(NB_CSRCS) $(NVBOARD_ARCHIVE)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
 		--top-module $(NBNAME) $^ \
@@ -43,7 +46,7 @@ $(NBNAME): $(VSRCS) $(NB_CSRCS) $(NVBOARD_ARCHIVE)
 	-@rm -rf obj_dir auto_bind.cpp
 
 # just for the simulator of verilator
-$(VERNAME): $(VSRCS) $(VER_CSRCS)
+$(VERNAME): $(VER_VSRCS) $(VER_CSRCS)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
 		--top-module $(VERNAME) \
@@ -52,7 +55,7 @@ $(VERNAME): $(VSRCS) $(VER_CSRCS)
 	$(abspath $(VERNAME))
 	-@rm -rf obj_dir
 
-$(PCNAME): $(VSRCS) $(PC_CSRCS)
+$(PCNAME): $(PC_VSRCS) $(PC_CSRCS)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
 		--top-module PC $^ \

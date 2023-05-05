@@ -10,7 +10,4 @@ module PC (
 
     register_file i0(.clk(clk), )
 
-    always @(posedge clk) begin
-
-    end
 endmodule
