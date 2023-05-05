@@ -9,6 +9,7 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   output [DATA_WIDTH-1:0] data2
 );
   reg [DATA_WIDTH-1:0] rf [(1<<ADDR_WIDTH)-1 : 0];
+  integer i;
   always @(posedge clk) begin
     if (wen) begin 
       rf[rd] <= dataD;
@@ -16,7 +17,6 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
     end
 
     $display("Regs:\n");
-    integer i;
     for (i = 0; i < (1 << ADDR_WIDTH); i++) begin
       $display("x%d: %x\n", i, rf[i]);
     end
