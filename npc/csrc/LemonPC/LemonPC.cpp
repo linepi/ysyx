@@ -26,7 +26,7 @@ int main(int argc, char** argv, char** env) {
   while (!contextp->gotFinish()) {
     PC->inst = pmem_read(PC->pc, 4);
     if (PC->inst == 0) break;
-    printf("%016lx: %08x\n", PC->pc, PC->inst);
+    printf(ANSI_FMT("execute %016lx: %08x\n", ANSI_FG_GREEN), PC->pc, PC->inst);
     single_cycle();
   }
   PC->final();
