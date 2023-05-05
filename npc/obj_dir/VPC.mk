@@ -35,6 +35,8 @@ VM_PREFIX = VPC
 VM_MODPREFIX = VPC
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
+	-I/home/w/dev/ysyx-workbench/npc/csrc/include \
+	-I/home/w/dev/ysyx-workbench/nvboard/include \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \

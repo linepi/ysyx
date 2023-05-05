@@ -9,11 +9,11 @@
 #include <macro.h>
 #include <mem.h>
 
+VPC *PC;
 void single_cycle() {
   PC->clk = 0; PC->eval();
   PC->clk = 1; PC->eval();
 }
-VPC *PC;
  
 int main(int argc, char** argv, char** env) {
   VerilatedContext* contextp = new VerilatedContext;
@@ -25,7 +25,7 @@ int main(int argc, char** argv, char** env) {
   single_cycle();
   while (!contextp->gotFinish()) {
     PC->inst = pmem_read(PC->pc, 4);
-    printf("%016lx: %016lx\n", PC->pc, PC->inst);
+    printf("%016lx: %08x\n", PC->pc, PC->inst);
     single_cycle();
     if (cnt++ > 10) break;
   }
