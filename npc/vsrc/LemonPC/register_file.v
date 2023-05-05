@@ -1,3 +1,5 @@
+import "DPI-C" function int add (input int a, input int b);
+
 module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   input clk,
   input [ADDR_WIDTH-1:0] rs1,
@@ -27,6 +29,7 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
       for (i = 0; i < (1 << ADDR_WIDTH); i++) begin
         if (rf_debug_last[i] != rf_debug[i])
           $display("x%0d changed, from 0x%0x(%0d) to 0x%0x(%0d)", i, rf_debug_last[i], $signed(rf_debug_last[i]), rf_debug[i], $signed(rf_debug[i]));
+          $display("1 + 2 = %0d", add(1, 2));
       end
       rf_debug_last[rd] = dataD;
     end
