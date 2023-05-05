@@ -7,7 +7,4 @@ module PC (
     initial begin
         assign pc = {32'd0, 32'h80000000};
     end
-
-    register_file i0(.clk(clk), )
-
 endmodule
