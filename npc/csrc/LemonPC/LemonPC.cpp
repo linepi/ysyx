@@ -3,24 +3,17 @@
 #include <assert.h>
 #include <VPC.h>  
 #include <time.h>
-#include "common.h"
-#include "defs.h"
-#define SEQUENTIAL
 
-VPC *PC;
+#include <common.h>
+#include <defs.h>
+#include <macro.h>
+#include <mem.h>
 
-#ifdef SEQUENTIAL
 void single_cycle() {
   PC->clk = 0; PC->eval();
   PC->clk = 1; PC->eval();
 }
-// void reset(int n) {
-//   PC->rst = 1;
-//   while (n-- > 0) single_cycle();
-//   PC->rst = 0;
-// }
-#endif
- 
+VPC *PC;
  
 int main(int argc, char** argv, char** env) {
   VerilatedContext* contextp = new VerilatedContext;
@@ -29,14 +22,11 @@ int main(int argc, char** argv, char** env) {
   
   int cnt = 0;
   srand((unsigned) time(NULL));
+  single_cycle();
   while (!contextp->gotFinish()) {
-#ifdef SEQUENTIAL
-    single_cycle();
-#else
-    PC->eval();
-#endif
     PC->inst = pmem_read(PC->pc, 4);
-    printf("%016lx\n", PC->pc);
+    printf("%016lx: %016lx\n", PC->pc, PC->inst);
+    single_cycle();
     if (cnt++ > 10) break;
   }
   PC->final();

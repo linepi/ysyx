@@ -2,7 +2,7 @@ module PC (
     input clk,
     input [31:0] inst,
     output reg [63:0] regs[32],
-    output reg pc
+    output reg [63:0] pc
 );
     initial begin
         assign pc = {32'd0, 32'h80000000};
