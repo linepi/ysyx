@@ -15,7 +15,7 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
     end
   end
   wire [63:0] ground = 64'b0;
-  always @(*) rf[0] <= ground;
+  always @(*) rf[0] = ground;
   assign data1 = rf[rs1];
   assign data2 = rf[rs2];
 
@@ -33,5 +33,5 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
       rf_debug_last[rd] = rf_debug[rd];
     end
   end
-  always @(*) rf_debug[0] <= ground;
+  always @(*) rf_debug[0] = ground;
 endmodule
