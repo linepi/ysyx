@@ -44,13 +44,11 @@ VM_USER_LDLIBS = \
 
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \
-	mem \
 	ver \
 
 # User .cpp directories (from .cpp's on Verilator command line)
 VM_USER_DIR = \
 	/home/w/dev/ysyx-workbench/npc/csrc \
-	/home/w/dev/ysyx-workbench/npc/csrc/LemonPC \
 
 
 ### Default rules...
@@ -62,8 +60,6 @@ include $(VERILATOR_ROOT)/include/verilated.mk
 ### Executable rules... (from --exe)
 VPATH += $(VM_USER_DIR)
 
-mem.o: /home/w/dev/ysyx-workbench/npc/csrc/LemonPC/mem.cpp
-	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 ver.o: /home/w/dev/ysyx-workbench/npc/csrc/ver.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 
