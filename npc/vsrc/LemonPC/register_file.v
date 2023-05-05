@@ -8,7 +8,7 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   output [DATA_WIDTH-1:0] data1,
   output [DATA_WIDTH-1:0] data2
 );
-  reg [DATA_WIDTH-1:0] rf [ADDR_WIDTH-1:0];
+  reg [DATA_WIDTH-1:0] rf [(1<<ADDR_WIDTH)-1 : 0];
   always @(posedge clk) begin
     if (wen) rf[rd] <= dataD;
   end
