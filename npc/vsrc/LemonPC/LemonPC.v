@@ -3,8 +3,8 @@ import "DPI-C" function int add (input int a, input int b);
 module PC (
   input clk,
   input [31:0] inst,
-  output reg [63:0] pc
-  output ebreak;
+  output reg [63:0] pc,
+  output ebreak
 );
   wire [4:0] rs1 = inst[19:15];
   wire [4:0] rs2 = 0;
