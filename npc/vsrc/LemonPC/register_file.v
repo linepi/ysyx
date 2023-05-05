@@ -10,7 +10,7 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
 );
   reg [DATA_WIDTH-1:0] rf [ADDR_WIDTH-1:0];
   always @(posedge clk) begin
-    if (wen) rf[rd] <= wdata;
+    if (wen) rf[rd] <= dataD;
   end
   // x0 is always zero.
   assign rd[0] = 0;
