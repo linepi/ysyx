@@ -2,7 +2,7 @@ module alu #(N) (
   input [N-1:0] A, 
   input [N-1:0] B,
   input [3:0] sel,  
-  output [N-1:0] res   
+  output reg [N-1:0] res   
 );
   always @(*) begin
     case(sel)
