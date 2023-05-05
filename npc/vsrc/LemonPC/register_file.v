@@ -26,7 +26,7 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
       rf_debug[rd] = dataD;
       for (i = 0; i < (1 << ADDR_WIDTH); i++) begin
         if (rf_debug_last[i] != rf_debug[i])
-          $display("x%0d changed, from 0x%0x to 0x%0x", i, rf_debug_last[i], rf_debug[i]);
+          $display("x%0d changed, from 0x%0x(%0d) to 0x%0x(%0d)", i, rf_debug_last[i], rf_debug_last[i], rf_debug[i], rf_debug[i]);
       end
       rf_debug_last[rd] = dataD;
     end
