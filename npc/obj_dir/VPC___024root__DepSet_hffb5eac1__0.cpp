@@ -12,6 +12,7 @@ VL_INLINE_OPT void VPC___024root___ico_sequent__TOP__0(VPC___024root* vlSelf) {
     VPC__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    VPC___024root___ico_sequent__TOP__0\n"); );
     // Body
+    vlSelf->ebreak = (0x100073U == vlSelf->inst);
     vlSelf->PC__DOT__dataD = (vlSelf->PC__DOT__i_rf__DOT__rf
                               [(0x1fU & (vlSelf->inst 
                                          >> 0xfU))] 

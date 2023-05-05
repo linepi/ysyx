@@ -12,6 +12,7 @@ VPC::VPC(VerilatedContext* _vcontextp__, const char* _vcname__)
     : VerilatedModel{*_vcontextp__}
     , vlSymsp{new VPC__Syms(contextp(), _vcname__, this)}
     , clk{vlSymsp->TOP.clk}
+    , ebreak{vlSymsp->TOP.ebreak}
     , inst{vlSymsp->TOP.inst}
     , pc{vlSymsp->TOP.pc}
     , __PVT____024unit{vlSymsp->TOP.__PVT____024unit}
