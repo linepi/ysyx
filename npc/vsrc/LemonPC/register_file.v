@@ -9,17 +9,24 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   output [DATA_WIDTH-1:0] data2
 );
   reg [DATA_WIDTH-1:0] rf [(1<<ADDR_WIDTH)-1 : 0];
-  integer i;
+  reg [DATA_WIDTH-1:0] rf_debug [(1<<ADDR_WIDTH)-1 : 0];
   always @(posedge clk) begin
     if (wen) begin 
-      rf[rd] = dataD;
-      $display("dataD %0x write to x%0d", dataD, rd);
-      for (i = 0; i < (1 << ADDR_WIDTH); i = i + 2) begin
-        $display("x%0d: %x, x%0d: %x", i, rf[i], i+1, rf[i+1]);
-      end
+      rf[rd] <= dataD;
     end
   end
   assign rf[0] = 0;
   assign data1 = rf[rs1];
   assign data2 = rf[rs2];
+
+  integer i;
+  always @(posedge clk) begin
+    if (wen) begin 
+      rf_debug[rd] = dataD;
+      $display("dataD %0x write to x%0d", dataD, rd);
+      for (i = 0; i < (1 << ADDR_WIDTH); i = i + 2) begin
+        $display("x%0d: %x, x%0d: %x", i, rf_debug[i], i+1, rf_debug[i+1]);
+      end
+    end
+  end
 endmodule
