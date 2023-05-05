@@ -44,7 +44,6 @@ $(NBNAME): $(NB_VSRCS) $(NB_CSRCS) $(NVBOARD_ARCHIVE)
 		$(addprefix -CFLAGS , $(CFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
 		--exe -o $(abspath $(NBNAME))
 	$(abspath $(NBNAME))
-	-@rm -rf obj_dir auto_bind.cpp
 
 # just for the simulator of verilator
 $(VERNAME): $(VER_VSRCS) $(VER_CSRCS)
@@ -54,7 +53,6 @@ $(VERNAME): $(VER_VSRCS) $(VER_CSRCS)
 		$(addprefix -CFLAGS , $(INCFLAGS)) $^ \
 		--exe -o $(abspath $(VERNAME))
 	$(abspath $(VERNAME))
-	-@rm -rf obj_dir
 
 $(PCNAME): $(PC_VSRCS) $(PC_CSRCS)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
@@ -63,7 +61,6 @@ $(PCNAME): $(PC_VSRCS) $(PC_CSRCS)
 		$(addprefix -CFLAGS , $(INCFLAGS)) $^ \
 		--exe -o $(abspath '$(PCNAME)')
 	$(abspath $(PCNAME))
-	-@rm -rf obj_dir
 
 # just for testbench of verilator
 $(TESTNAME): $(VSRCS)
@@ -72,7 +69,6 @@ $(TESTNAME): $(VSRCS)
 		--top-module $(TESTNAME) $^ \
 		-o $(abspath $(TESTNAME))
 	$(abspath $(TESTNAME))
-	-@rm -rf obj_dir
 
 clean:
 	-@rm -rf obj_dir auto_bind.cpp $(NBNAME) $(VERNAME) $(TESTNAME)
