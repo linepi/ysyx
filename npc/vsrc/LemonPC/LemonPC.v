@@ -7,4 +7,7 @@ module PC (
     initial begin
         assign pc = {32'd0, 32'h80000000};
     end
+    always @(posedge clk) begin
+        pc = pc + 4;       
+    end
 endmodule
