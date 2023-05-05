@@ -50,11 +50,6 @@ VL_INLINE_OPT void VPC___024root___nba_sequent__TOP__0(VPC___024root* vlSelf) {
     QData/*63:0*/ __Vdlyvval__PC__DOT__i_rf__DOT__rf__v0;
     __Vdlyvval__PC__DOT__i_rf__DOT__rf__v0 = 0;
     // Body
-    VL_WRITEF("x0: %0#\nx1: %0#\nx2: %0#\nx3: %0#\n",
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[0U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[1U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[2U],
-              64,vlSelf->PC__DOT__i_rf__DOT__rf[3U]);
     vlSelf->PC__DOT__i_rf__DOT__rf_debug[0U] = 0ULL;
     vlSelf->PC__DOT__i_rf__DOT__rf_debug_last[0U] = 0ULL;
     vlSelf->pc = (4ULL + vlSelf->pc);
