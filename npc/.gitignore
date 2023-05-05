@@ -1,6 +1,8 @@
 *.*
 *
-!*/
+obj_dir/
+!csrc/
+!vsrc/
 !Makefile
 !*.mk
 !*.[cSh]
@@ -10,4 +12,3 @@
 !*.nxdc
 !.gitignore
 !README.md
-build/
