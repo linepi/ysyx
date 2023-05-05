@@ -12,8 +12,8 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   always @(posedge clk) begin
     if (wen) begin 
       rf[rd] <= dataD;
-      for (i = 0; i < (1 << ADDR_WIDTH); i++) begin
-        $display("x%0d: %0d\n", i, rf[i]);
+      for (i = 0; i < 4; i++) begin
+        $display("x%0d: %0d", i, rf[i]);
       end
     end
   end
