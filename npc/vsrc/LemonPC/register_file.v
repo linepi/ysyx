@@ -21,6 +21,8 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   // For debug.
   reg [DATA_WIDTH-1:0] rf_debug [(1<<ADDR_WIDTH)-1 : 0];
   reg [DATA_WIDTH-1:0] rf_debug_last [(1<<ADDR_WIDTH)-1 : 0];
+  assign rf_debug[0] = 0;
+  assign rf_debug_last[0] = 0;
   integer i;
   always @(posedge clk) begin
     if (wen) begin 
