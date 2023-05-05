@@ -16,9 +16,7 @@
     output; \
 }) 
 
-#define MSIZE 0x8000000 
-#define PG_ALIGN __attribute__((aligned(4096)))
-#define MBASE 0x80000000
+
 typedef uint32_t paddr_t;
 typedef uint64_t word_t;
 typedef int64_t sword_t;

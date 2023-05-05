@@ -1,7 +1,14 @@
 #include "common.h"
 #include "defs.h"
+#include "mem.h"
+#include "macro.h"
 
-static uint8_t pmem[MSIZE] PG_ALIGN = {};
+static uint8_t pmem[MSIZE] PG_ALIGN = {
+    0x93,0x00,0x30,0x00, // addi x1, x0, 3 
+    0x13,0x00,0x40,0x00, // addi x0, x0, 4 
+    0x93,0x00,0x00,0x00, // addi x1, x0, 0 
+    0x73,0x00,0x10,0x00, // ebreak
+};
 
 word_t pmem_read(paddr_t paddr, int len) {
     uint8_t* host = guest_to_host(paddr); 

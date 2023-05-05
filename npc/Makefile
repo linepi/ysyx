@@ -4,7 +4,7 @@ TESTNAME = testbench
 PCNAME = LemonPC
 
 OBJ_DIR = obj_dir
-NXDC_FILES = vsrc/$(NBNAME).nxdc
+NXDC_FILES = vsrc/nb/$(NBNAME).nxdc
 VERILATOR = verilator
 VERILATOR_CFLAGS += -MMD --build -cc --timing \
 				# -O3 --x-assign fast --x-initial fast --noassert
@@ -15,12 +15,16 @@ $(SRC_AUTO_BIND): $(NXDC_FILES)
 	python3 $(NVBOARD_HOME)/scripts/auto_pin_bind.py $^ $@
 
 # project source
-INC_PATH ?=
+INC_PATH += $(NPC_HOME)/csrc/include 
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
-NB_CSRCS = $(filter-out %ver.cpp, $(CSRCS))
-VER_CSRCS = $(filter-out %nb.cpp %$(SRC_AUTO_BIND), $(CSRCS))
-PC_CSRCS = $(filter-out %nb.cpp %$(SRC_AUTO_BIND) %ver.cpp, $(CSRCS))
+
+PC_CSRCS = $(filter-out %nb.cpp %ver.cpp %$(SRC_AUTO_BIND), $(CSRCS))
+PC_VSRCS = $(shell find $(abspath ./vsrc/LemonPC) $(abspath ./vsrc/common) -name "*.v")
+NB_CSRCS = $(filter-out %ver.cpp $(PC_CSRCS), $(CSRCS))
+NB_VSRCS = $(shell find $(abspath ./vsrc/nb) $(abspath ./vsrc/common) -name "*.v")
+VER_CSRCS = $(filter-out %nb.cpp $(PC_CSRCS) %$(SRC_AUTO_BIND), $(CSRCS))
+VER_VSRCS = $(shell find $(abspath ./vsrc/ver) $(abspath ./vsrc/common) -name "*.v")
 CSRCS += $(SRC_AUTO_BIND)
 
 # rules for NVBoard
@@ -33,31 +37,30 @@ INCFLAGS = $(addprefix -I, $(INC_PATH))
 CFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(NBNAME)\""
 LDFLAGS += -lSDL2 -lSDL2_image
 
-$(NBNAME): $(VSRCS) $(NB_CSRCS) $(NVBOARD_ARCHIVE)
+$(NBNAME): $(NB_VSRCS) $(NB_CSRCS) $(NVBOARD_ARCHIVE)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
 		--top-module $(NBNAME) $^ \
 		$(addprefix -CFLAGS , $(CFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
 		--exe -o $(abspath $(NBNAME))
 	$(abspath $(NBNAME))
-	-@rm -rf obj_dir auto_bind.cpp
 
 # just for the simulator of verilator
-$(VERNAME): $(VSRCS) $(VER_CSRCS)
+$(VERNAME): $(VER_VSRCS) $(VER_CSRCS)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
-		--top-module $(VERNAME) $^ \
+		--top-module $(VERNAME) \
+		$(addprefix -CFLAGS , $(INCFLAGS)) $^ \
 		--exe -o $(abspath $(VERNAME))
 	$(abspath $(VERNAME))
-	-@rm -rf obj_dir
 
-$(PCNAME): $(VSRCS) $(PC_CSRCS)
+$(PCNAME): $(PC_VSRCS) $(PC_CSRCS)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
-		--top-module PC $^ \
+		--top-module PC \
+		$(addprefix -CFLAGS , $(INCFLAGS)) $^ \
 		--exe -o $(abspath '$(PCNAME)')
-	$(abspath "$(PCNAME)")
-	-@rm -rf obj_dir
+	$(abspath $(PCNAME))
 
 # just for testbench of verilator
 $(TESTNAME): $(VSRCS)
@@ -66,7 +69,6 @@ $(TESTNAME): $(VSRCS)
 		--top-module $(TESTNAME) $^ \
 		-o $(abspath $(TESTNAME))
 	$(abspath $(TESTNAME))
-	-@rm -rf obj_dir
 
 clean:
 	-@rm -rf obj_dir auto_bind.cpp $(NBNAME) $(VERNAME) $(TESTNAME)
