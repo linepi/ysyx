@@ -14,6 +14,7 @@ module PC (
 
   register_file #(5, 64) i_rf(clk, rs1, rs2, rd, wen, dataD, data1, data2);
   alu #(64) i_alu(.A(data1), .B(imm), .sel(4'd0), .res(dataD));
+
   always @(posedge clk) begin
     pc = pc + 4;
   end
