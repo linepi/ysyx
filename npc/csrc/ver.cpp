@@ -3,10 +3,10 @@
 #include <assert.h>
 #include <Vver.h>  
 #include <time.h>
-#include "common.h"
-#include "defs.h"
-// #define SEQUENTIAL
 
+#include <common.h>
+#include <defs.h>
+#include <macro.h>
 Vver *ver;
 
 #ifdef SEQUENTIAL
@@ -29,14 +29,12 @@ int main(int argc, char** argv, char** env) {
   
   int cnt = 0;
   srand((unsigned) time(NULL));
-  while (!contextp->gotFinish()) {
-    ver->inst = pmem_read(ver->pc, 4);
-#ifdef SEQUENTIAL
-    single_cycle();
-#else
-    ver->eval();
-#endif
 
+  while (!contextp->gotFinish()) {
+    ver->a = rand() & 1;
+    ver->b = rand() & 1;
+    MUXDEF(SEQUENTIAL, single_cycle(), ver->eval());
+    printf("%s & %s = %s\n", b(ver->a,1), b(ver->b,1), b(ver->c, 1));
   }
   ver->final();
   delete ver;

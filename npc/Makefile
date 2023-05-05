@@ -15,12 +15,12 @@ $(SRC_AUTO_BIND): $(NXDC_FILES)
 	python3 $(NVBOARD_HOME)/scripts/auto_pin_bind.py $^ $@
 
 # project source
-INC_PATH ?=
+INC_PATH += scrc/include 
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
-NB_CSRCS = $(filter-out %ver.cpp, $(CSRCS))
-VER_CSRCS = $(filter-out %nb.cpp %$(SRC_AUTO_BIND), $(CSRCS))
-PC_CSRCS = $(filter-out %nb.cpp %$(SRC_AUTO_BIND) %ver.cpp, $(CSRCS))
+NB_CSRCS = $(filter-out %ver.cpp %LemonPC.cpp, $(CSRCS))
+VER_CSRCS = $(filter-out %nb.cpp %LemonPC.cpp %$(SRC_AUTO_BIND), $(CSRCS))
+PC_CSRCS = $(filter-out %nb.cpp %ver.cpp %$(SRC_AUTO_BIND), $(CSRCS))
 CSRCS += $(SRC_AUTO_BIND)
 
 # rules for NVBoard
@@ -46,7 +46,8 @@ $(NBNAME): $(VSRCS) $(NB_CSRCS) $(NVBOARD_ARCHIVE)
 $(VERNAME): $(VSRCS) $(VER_CSRCS)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
-		--top-module $(VERNAME) $^ \
+		--top-module $(VERNAME) \
+		$(addprefix -CFLAGS, $(INCFLAGS) -D$(SEQUENTIAL)) $^ \
 		--exe -o $(abspath $(VERNAME))
 	$(abspath $(VERNAME))
 	-@rm -rf obj_dir
