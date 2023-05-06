@@ -18,12 +18,12 @@ void single_cycle() {
 int main(int argc, char** argv, char** env) {
   VerilatedContext* contextp = new VerilatedContext;
   contextp->commandArgs(argc, argv);
-  PC = new VPC{contextp};
+  PC = new VPC;
   
   int cnt = 0;
   srand((unsigned) time(NULL));
   PC->pc = MBASE;
-  while (!contextp->gotFinish()) {
+  while (1) {
     PC->inst = pmem_read(PC->pc, 4);
     printf(ANSI_FMT("execute %016lx: %08x\n", ANSI_FG_GREEN), PC->pc, PC->inst);
     single_cycle();
@@ -34,6 +34,6 @@ int main(int argc, char** argv, char** env) {
   }
   PC->final();
   delete PC;
-  delete contextp;
+  // delete contextp;
   return 0;
 }
