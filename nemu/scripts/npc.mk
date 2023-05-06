@@ -13,7 +13,7 @@ VERILATOR_CFLAGS = -MMD -Os -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FS
 	-Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable \
 	-Wno-unused-parameter -Wno-unused-variable -Wno-shadow
 VERILATOR_CSRCS = verilated.cpp verilated_threads.cpp verilated_dpi.cpp
-VERILATOR_CSRCS := $(addprefix $(VERILATOR_ROOT), $(VERILATOR_CSRCS))
+VERILATOR_CSRCS := $(addprefix $(VERILATOR_ROOT)/, $(VERILATOR_CSRCS))
 
 NPC_INCFLAGS = $(addprefix -I, $(NPC_INC_PATH) $(VERILATOR_INC_PATH))
 
