@@ -1,5 +1,6 @@
 #include <sdb.h>
 #include <reg.h>
+#include "include/decode.h"
 
 struct func_t *functbl = NULL;
 struct func_t *cur_func = NULL;
