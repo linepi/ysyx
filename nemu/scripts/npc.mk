@@ -14,12 +14,15 @@ VERILATOR_CFLAGS = -MMD -Os -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FS
 	-Wno-unused-parameter -Wno-unused-variable -Wno-shadow
 VERILATOR_CSRCS = verilated.cpp verilated_threads.cpp verilated_dpi.cpp
 VERILATOR_CSRCS := $(addprefix $(VERILATOR_ROOT)/, $(VERILATOR_CSRCS))
+VERILATOR_OBJS = $(patsubst %.cpp, %.o, $(addprefix $(NPC_OBJ_DIR)/, $(notdir $(VERILATOR_CSRCS))))
 
 NPC_INCFLAGS = $(addprefix -I, $(NPC_INC_PATH) $(VERILATOR_INC_PATH))
 
 NPC_OBJ_DIR = $(NEMU_HOME)/src/isa/riscv64/npc/obj_dir
-NPC_OBJS = $(patsubst %.cc, %.o, $(patsubst %.cpp, %.o, $(addprefix $(NPC_OBJ_DIR)/, $(notdir $(NPC_CSRCS) $(VERILATOR_CSRCS)))))
+NPC_OBJS = $(patsubst %.cc, %.o, $(addprefix $(NPC_OBJ_DIR)/, $(notdir $(NPC_CSRCS))))
+
 $(info $(NPC_OBJS))
+$(info $(VERILATOR_OBJS))
 
 NPC_ARCHIVE = $(NPC_OBJ_DIR)/npc.a
 ARCHIVE += $(NPC_ARCHIVE)
@@ -31,4 +34,3 @@ VPC__ALL.o: $(NPC_VSRCS)
 	$(VERILATOR) $(VERILATOR_FLAGS) --top-module PC $^ \
 	--Mdir $(NPC_OBJ_DIR)
 
-$(NPC_OBJ_DIR)/%.o: 
