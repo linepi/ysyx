@@ -17,7 +17,7 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   end
   wire [63:0] ground = 64'b0;
   // x0 register is always zero.
-  // always @(posedge clk) rf[0] <= ground;
+  always @(posedge clk) rf[0] <= ground;
   assign data1 = rf[rs1];
   assign data2 = rf[rs2];
 endmodule
