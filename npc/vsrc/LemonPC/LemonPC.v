@@ -1,3 +1,4 @@
+import "DPI-C" function void write_r (input logic [4:0] no, input logic [63:0] val);
     
 module PC (
   input clk,
