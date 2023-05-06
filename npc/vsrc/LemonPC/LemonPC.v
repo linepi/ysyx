@@ -1,4 +1,3 @@
-import "DPI-C" function void write_r (input logic [4:0] no, input logic [63:0] val);
 import "DPI-C" function void ebreak ();
 import "DPI-C" function void set_gpr_ptr(input logic [63:0] a []);
     

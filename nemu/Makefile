@@ -55,6 +55,7 @@ include $(NEMU_HOME)/scripts/count.mk
 
 # Include rules for npc
 ifeq ($(PLATFORM),npc)
+  CFLAGS += -DNPC
   include $(NEMU_HOME)/scripts/npc.mk
 endif
 

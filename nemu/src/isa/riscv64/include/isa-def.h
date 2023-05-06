@@ -18,10 +18,17 @@
 
 #include <common.h>
 
+#ifdef NPC
+typedef struct {
+  word_t *gpr;
+  vaddr_t *pc;
+} riscv64_CPU_state;
+#else
 typedef struct {
   word_t gpr[32];
   vaddr_t pc;
 } riscv64_CPU_state;
+#endif
 
 // decode
 typedef struct {

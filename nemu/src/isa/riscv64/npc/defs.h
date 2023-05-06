@@ -5,6 +5,5 @@
 
 extern bool npc_end;
 void clean_PC();
-void dump_gpr();
 
 #endif
