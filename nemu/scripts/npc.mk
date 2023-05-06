@@ -1,9 +1,9 @@
 VERILATOR = verilator
-VERILATOR_FLAGS += -MMD --build -cc --timing -O3 --x-assign fast --x-initial fast --noassert
+VERILATOR_FLAGS += -MMD --build -cc -O3 --timing --x-assign fast --x-initial fast --noassert
 
 # for verilator source file
 VERILATOR_INC_PATH = $(VERILATOR_ROOT)/include $(VERILATOR_ROOT)/include/vltstd .
-VERILATOR_CFLAGS = -MMD -ggdb3 -Os -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 \
+VERILATOR_CFLAGS = -MMD -O2 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 \
 	-faligned-new -fcf-protection=none \
 	-Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable \
 	-Wno-unused-parameter -Wno-unused-variable -Wno-shadow

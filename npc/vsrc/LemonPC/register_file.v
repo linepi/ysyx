@@ -12,17 +12,16 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   always @(posedge clk) begin
     if (wen) begin 
       rf[rd] <= dataD;
-      // for (i = 0; i < 4; i++) begin
-      //   $display("x%0d: %0d", i, rf[i]);
-      // end
+      write_r(rd, dataD);
     end
   end
   wire [63:0] ground = 64'b0;
+  // x0 register is always zero.
   always @(posedge clk) rf[0] <= ground;
   assign data1 = rf[rs1];
   assign data2 = rf[rs2];
 
-  // For debug.
+  // Just For Debug.
   reg [DATA_WIDTH-1:0] rf_debug [(1<<ADDR_WIDTH)-1 : 0];
   reg [DATA_WIDTH-1:0] rf_debug_last [(1<<ADDR_WIDTH)-1 : 0];
   integer i;

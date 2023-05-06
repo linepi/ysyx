@@ -16,8 +16,8 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at /home/w/dev/ysyx-workbench/npc/vsrc/LemonPC/LemonPC.v:1:29
-    extern int add(int a, int b);
+    // DPI import at /home/w/dev/ysyx-workbench/npc/vsrc/LemonPC/LemonPC.v:1:30
+    extern void write_r(const svLogicVecVal* no, const svLogicVecVal* val);
 
 #ifdef __cplusplus
 }
