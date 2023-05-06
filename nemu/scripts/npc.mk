@@ -25,7 +25,7 @@ NPC_ARCHIVE = $(NPC_OBJ_DIR)/npc.a
 ARCHIVES += $(NPC_ARCHIVE)
 
 $(NPC_ARCHIVE): $(NPC_OBJ_DIR)/VPC__ALL.o $(NPC_OBJS) $(VERILATOR_OBJS)
-	ar rcs $@ $^
+	ar -rcs $@ $^
 
 $(NPC_OBJ_DIR)/VPC__ALL.o: $(NPC_VSRCS)
 	$(VERILATOR) $(VERILATOR_FLAGS) --top-module PC $^ \
