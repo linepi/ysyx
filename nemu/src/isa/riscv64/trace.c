@@ -93,6 +93,7 @@ void ftrace(vaddr_t pc) {
 
 // dump next n static instruction from pc
 void _frame_dump(vaddr_t pc, int n) {
+  if (!functbl) return;
   char disa[128];
   for (int i = 0; i < n; i++) {
     if (pc != cpu.pc)
