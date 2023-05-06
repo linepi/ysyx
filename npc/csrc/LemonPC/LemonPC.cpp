@@ -34,6 +34,6 @@ int main(int argc, char** argv, char** env) {
   }
   PC->final();
   delete PC;
-  delete contextp;
+  // delete contextp;
   return 0;
 }
