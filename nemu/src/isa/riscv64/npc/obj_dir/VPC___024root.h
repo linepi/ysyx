@@ -25,10 +25,8 @@ class VPC___024root final : public VerilatedModule {
     IData/*31:0*/ __VicoIterCount;
     IData/*31:0*/ __VactIterCount;
     VL_OUT64(pc,63,0);
-    QData/*63:0*/ PC__DOT__dataD;
+    QData/*63:0*/ PC__DOT__data1;
     VlUnpacked<QData/*63:0*/, 32> PC__DOT__i_rf__DOT__rf;
-    VlUnpacked<QData/*63:0*/, 32> PC__DOT__i_rf__DOT__rf_debug;
-    VlUnpacked<QData/*63:0*/, 32> PC__DOT__i_rf__DOT__rf_debug_last;
     VlTriggerVec<1> __VstlTriggered;
     VlTriggerVec<1> __VicoTriggered;
     VlTriggerVec<1> __VactTriggered;
