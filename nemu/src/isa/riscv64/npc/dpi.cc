@@ -9,6 +9,7 @@ extern "C" {
 #include <sdb.h>
 #include <cpu/cpu.h>
 }
+
 uint64_t *cpu_gpr = NULL;
 
 void write_r(const svLogicVecVal* no, const svLogicVecVal* val) {
@@ -21,7 +22,7 @@ void ebreak() {
 	npc_end = true;
 }
 
-extern "C" void set_gpr_ptr(const svOpenArrayHandle r) {
+void set_gpr_ptr(const svOpenArrayHandle r) {
   cpu_gpr = (uint64_t *)(((VerilatedDpiOpenVar*)r)->datap());
 }
 void dump_gpr() {
