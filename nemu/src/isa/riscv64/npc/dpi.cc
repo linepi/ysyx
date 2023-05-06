@@ -16,6 +16,5 @@ void write_r(const svLogicVecVal* no, const svLogicVecVal* val) {
 }
 
 void ebreak() {
-	NEMUTRAP(cpu.pc, R(10));
-	clean_PC();
+	npc_end = true;
 }

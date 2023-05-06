@@ -12,6 +12,7 @@ extern "C" {
 
 VPC *PC;
 static bool inited = false;
+bool npc_end = false;
 
 void init_PC() {
   PC = new VPC;
@@ -33,5 +34,9 @@ int isa_exec_once(Decode *s) {
   PC->inst = s->isa.inst.val;
   single_cycle();
   s->dnpc = PC->pc;
+  if (npc_end) {
+    NEMUTRAP(cpu.pc, R(10));
+    clean_PC();
+  }
   return 0;
 }
