@@ -151,6 +151,10 @@ void pc_trace_dump(int n) {
 }
 
 void backtrace() {
+  if (!functbl) {
+    Error("No functbl specified");
+    return;
+  }
   printf(ANSI_FMT("Backtrace:\n", ANSI_FG_GREEN));
   int i = 0;
   for (struct func_stack_t *p = func_stack_top->pre; p; p = p->pre, i++) {
