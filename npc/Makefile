@@ -58,7 +58,7 @@ $(PCNAME): $(PC_VSRCS) $(PC_CSRCS)
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
 		--top-module PC \
 		$(addprefix -CFLAGS , $(INCFLAGS)) $^ \
-		--exe -o $(abspath '$(PCNAME)')
+		-o $(abspath '$(PCNAME)')
 	$(abspath $(PCNAME))
 
 # just for testbench of verilator
