@@ -7,6 +7,6 @@ extern "C" {
 #include <sdb.h>
 }
 
-void write_r(int no, uint64_t val) { 
+void write_r(int no, wort_t val) { 
 	gpr(no) = val;
 }
