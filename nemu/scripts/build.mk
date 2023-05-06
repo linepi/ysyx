@@ -52,7 +52,7 @@ $(OBJ_DIR)/%.o: %.cc
 
 app: $(BINARY)
 
-$(info $(ARCHIVES))
+$(info $(OBJS))
 
 $(BINARY): $(OBJS) $(ARCHIVES)
 	@echo + LD $@
