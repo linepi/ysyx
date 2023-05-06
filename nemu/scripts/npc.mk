@@ -21,8 +21,7 @@ NPC_INCFLAGS = $(addprefix -I, $(NPC_INC_PATH) $(VERILATOR_INC_PATH))
 NPC_OBJ_DIR = $(NEMU_HOME)/src/isa/riscv64/npc/obj_dir
 NPC_OBJS = $(patsubst %.cc, %.o, $(addprefix $(NPC_OBJ_DIR)/, $(notdir $(NPC_CSRCS))))
 
-$(info $(NPC_OBJS))
-$(info $(VERILATOR_OBJS))
+NPC_CFLAGS += $(NPC_INCFLAGS)
 
 NPC_ARCHIVE = $(NPC_OBJ_DIR)/npc.a
 ARCHIVE += $(NPC_ARCHIVE)
@@ -34,3 +33,8 @@ VPC__ALL.o: $(NPC_VSRCS)
 	$(VERILATOR) $(VERILATOR_FLAGS) --top-module PC $^ \
 	--Mdir $(NPC_OBJ_DIR)
 
+$(NPC_OBJS):$(NPC_OBJ_DIR)/%.o:$(NEMU_HOME)/src/isa/riscv64/npc/%.cc
+	$(CXX) $(NPC_CFLAGS) -c -o $@ $<
+
+$(VERILATOR_OBJS):$(NPC_OBJ_DIR)/%.o:$(VERILATOR_ROOT)/include/%.cpp
+	$(CXX) $(VERILATOR_CFLAGS) -c -o $@ $<
