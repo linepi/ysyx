@@ -1,10 +1,10 @@
 import "DPI-C" function void write_r (input logic [4:0] no, input logic [63:0] val);
+import "DPI-C" function void ebreak ();
     
 module PC (
   input clk,
   input [31:0] inst,
-  output reg [63:0] pc,
-  output ebreak
+  output reg [63:0] pc
 );
   wire [4:0] rs1 = inst[19:15];
   wire [4:0] rs2 = 0;
@@ -15,7 +15,7 @@ module PC (
   wire [63:0] data2;
   wire [63:0] dataD;
   
-  control i_control(inst, ebreak);
+  control i_control(inst);
 
   register_file #(5, 64) i_rf(clk, rs1, rs2, rd, wen, dataD, data1, data2);
   alu #(64) i_alu(.A(data1), .B(imm), .sel(4'd0), .res(dataD));

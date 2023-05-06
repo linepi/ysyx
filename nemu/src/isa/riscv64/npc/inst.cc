@@ -8,8 +8,7 @@ extern "C" {
 }
 
 #include <VPC.h> 
-
-#define R(i) gpr(i)
+#include "defs.h"
 
 VPC *PC;
 static bool inited = false;
@@ -30,15 +29,9 @@ void single_cycle() {
 
 int isa_exec_once(Decode *s) {
   if (!inited) { init_PC(); inited = true; }
-
   s->isa.inst.val = inst_fetch_add(&s->snpc, 4);
   PC->inst = s->isa.inst.val;
   single_cycle();
   s->dnpc = PC->pc;
-
-  if (PC->ebreak) {
-    NEMUTRAP(s->pc, R(10));
-    clean_PC();
-  }
   return 0;
 }
