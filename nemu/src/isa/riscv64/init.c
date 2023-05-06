@@ -33,7 +33,9 @@ static void restart() {
   cpu.pc = RESET_VECTOR;
 
   /* The zero register is always 0. */
+#ifndef NPC
   cpu.gpr[0] = 0;
+#endif
 }
 
 void init_isa() {
