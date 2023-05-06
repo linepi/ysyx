@@ -4,7 +4,7 @@ NPC_VSRCS = $(shell find $(NPC_HOME)/vsrc/common $(NPC_HOME)/vsrc/LemonPC -name 
 VERILATOR = verilator
 VERILATOR_FLAGS += -MMD --build -cc --timing -O3 --x-assign fast --x-initial fast --noassert
 
-NPC_INC_PATH += $(NEMU_HOME)/src/isa/riscv64/npc
+NPC_INC_PATH += $(NEMU_HOME)/src/isa/riscv64/npc $(NEMU_HOME)/src/isa/riscv64/npc/obj_dir
 
 # for verilator source file
 VERILATOR_INC_PATH = $(VERILATOR_ROOT)/include $(VERILATOR_ROOT)/include/vltstd .
@@ -18,11 +18,16 @@ VERILATOR_CSRCS := $(addprefix $(VERILATOR_ROOT)/, $(VERILATOR_CSRCS))
 NPC_INCFLAGS = $(addprefix -I, $(NPC_INC_PATH) $(VERILATOR_INC_PATH))
 
 NPC_OBJ_DIR = $(NEMU_HOME)/src/isa/riscv64/npc/obj_dir
-NPC_OBJS = $(patsubst %.cc, %.o, $(patsubst %.cpp, %.o, $(addprefix $(NPC_OBJ_DIR)/, $(notdir $(NPC_CSRCS) $(VERILATOR_CSRCS)))))
+NPC_OBJS = $(patsubst %.cc, %.o, $(patsubst %.cpp, %.o, $(addprefix $(NPC_OBJ_DIR)/, $(NPC_CSRCS) $(VERILATOR_CSRCS))))
 
 NPC_ARCHIVE = $(NPC_OBJ_DIR)/npc.a
+ARCHIVE += $(NPC_ARCHIVE)
 
 $(NPC_ARCHIVE): $(NPC_OBJS) VPC__ALL.o
+	ar rcs $@ $^
 
-VPC__ALL.o: 
-	$(VERILATOR) $(VERILATOR_FLAGS) 
+VPC__ALL.o: $(NPC_VSRCS)
+	$(VERILATOR) $(VERILATOR_FLAGS) --top-module PC $^ \
+	--Mdir $(NPC_OBJ_DIR)
+
+$(NPC_OBJ_DIR)/%.o: 
