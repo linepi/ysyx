@@ -38,7 +38,7 @@ void npc_vmem_write(long long waddr, long long wdata, char wmask) {
 	case 0xf:
 		paddr_write((vaddr_t)waddr, 4, (word_t)wdata);
 		break;
-	case 0xff:
+	case (char)0xff:
 		paddr_write((vaddr_t)waddr, 8, (word_t)wdata);
 		break;
 	default:
