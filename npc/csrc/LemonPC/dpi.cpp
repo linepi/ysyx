@@ -1,6 +1,5 @@
 #include "svdpi.h"
 #include "VPC__Dpi.h"
 
-int add(int a, int b) { 
-    return 0;
+void write_r(int no, word_t val) { 
 }
