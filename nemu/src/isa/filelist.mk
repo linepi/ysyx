@@ -18,4 +18,4 @@ DIRS-y += src/isa/$(GUEST_ISA)
 
 ifeq ($(PLATFORM),npc)
 	DIRS-BLACKLIST-y += src/isa/$(GUEST_ISA)/nemu
-else 
+endif 
