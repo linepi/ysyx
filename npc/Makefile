@@ -6,8 +6,7 @@ PCNAME = LemonPC
 OBJ_DIR = obj_dir
 NXDC_FILES = vsrc/nb/$(NBNAME).nxdc
 VERILATOR = verilator
-VERILATOR_CFLAGS += -MMD --build -cc --timing \
-				# -O3 --x-assign fast --x-initial fast --noassert
+VERILATOR_CFLAGS += -MMD --build -cc --timing -O3 --x-assign fast --x-initial fast --noassert
 
 # constraint file
 SRC_AUTO_BIND = auto_bind.cpp

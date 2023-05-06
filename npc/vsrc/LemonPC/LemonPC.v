@@ -1,5 +1,3 @@
-import "DPI-C" function int add (input int a, input int b);
-
 module PC (
   input clk,
   input [31:0] inst,
