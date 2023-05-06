@@ -21,7 +21,7 @@
 #ifdef NPC
 typedef struct {
   word_t *gpr;
-  vaddr_t *pc;
+  vaddr_t pc;
 } riscv64_CPU_state;
 #else
 typedef struct {
