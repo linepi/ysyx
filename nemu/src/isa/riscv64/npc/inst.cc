@@ -1,13 +1,20 @@
-#include <VPC.h> 
 #include <generated/autoconf.h>
 #include <utils.h>
+#include "../local-include/reg.h"
+#include <cpu/cpu.h>
+#include <cpu/ifetch.h>
+#include <cpu/decode.h>
+
+#include <VPC.h> 
+
+#define R(i) gpr(i)
 
 VPC *PC;
 static bool inited = false;
 
 void init_PC() {
   PC = new VPC;
-  PC->pc = CONFIG_MBASE:
+  PC->pc = CONFIG_MBASE;
 }
 void clean_PC() {
   PC->final();
@@ -32,7 +39,7 @@ int isa_exec_once(Decode *s) {
 
   s->dnpc = PC->pc;
 
-  if (PC->break) {
+  if (PC->ebreak) {
     printf(ANSI_FMT("Program hit ebreak\n", ANSI_FG_GREEN));
     NEMUTRAP(s->pc, R(10));
     clean_PC();
