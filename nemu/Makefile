@@ -56,6 +56,7 @@ include $(NEMU_HOME)/scripts/count.mk
 # Include rules for npc
 ifeq ($(PLATFORM),npc)
   include $(NEMU_HOME)/scripts/npc.mk
+  OBJS += $(NPC_OBJS) $(VERILATOR_OBJS) $(NPC_OBJ_DIR)/VPC__ALL.o
 endif
 
 ifdef CONFIG_TARGET_AM
