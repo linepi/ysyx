@@ -1,5 +1,7 @@
 import "DPI-C" function void ebreak ();
 import "DPI-C" function void set_gpr_ptr(input logic [63:0] a []);
+import "DPI-C" function void npc_vmem_read(input longint raddr, output longint rdata);
+import "DPI-C" function void npc_vmem_write(input longint waddr, input longint wdata, input byte wmask);
     
 module PC (
   input clk,
@@ -22,5 +24,15 @@ module PC (
 
   always @(posedge clk) begin
     pc = pc + 4;
+  end
+
+  wire [63:0] rdata;
+  wire [63:0] raddr;
+  wire [63:0] waddr;
+  wire [63:0] wdata;
+  wire [7:0] wmask;
+  always @(*) begin
+    npc_vmem_read(raddr, rdata);
+    npc_vmem_write(waddr, wdata, wmask);
   end
 endmodule
