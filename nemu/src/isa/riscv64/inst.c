@@ -131,5 +131,11 @@ static int decode_exec(Decode *s) {
 
 int isa_exec_once(Decode *s) {
   s->isa.inst.val = inst_fetch_add(&s->snpc, 4);
+  // what the hell does this line do?
+  // no other than update Registers(cpu variable), write(read) to(from) pmem.
+  // so, maybe I can redefine the decode_exec function, so that all other things can work?
+  // how?
+  // You know, verilator just convert .v files to cpp files, so,
+  // If only I can link the cpp files to my nemu and then use it, awesome!
   return decode_exec(s);
 }
