@@ -71,7 +71,7 @@ $(TESTNAME): $(VSRCS)
 	$(abspath $(TESTNAME))
 
 clean:
-	-@rm -rf obj_dir auto_bind.cpp $(NBNAME) $(VERNAME) $(TESTNAME)
+	-@rm -rf obj_dir auto_bind.cpp $(NBNAME) $(VERNAME) $(TESTNAME) $(PCNAME)
 
 .PHONY: clean $(NBNAME) $(VERNAME) $(TESTNAME) 
 
