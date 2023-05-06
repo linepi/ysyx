@@ -1,3 +1,5 @@
+import "DPI-C" function void write_r (input logic [4:0] no, input logic [63:0] val);
+
 module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   input clk,
   input [ADDR_WIDTH-1:0] rs1,
