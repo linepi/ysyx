@@ -116,8 +116,8 @@ void _frame_dump(vaddr_t pc, int n) {
 
 // dump n static instruction before and after pc
 void frame_dump(vaddr_t pc, int n) {
-  if (!functbl) return;
-  printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func->name, cur_func->addr);
+  if (functbl) 
+    printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func->name, cur_func->addr);
   vaddr_t _pc = MAX(pc - 4 * (n/2), CONFIG_MBASE);
   _frame_dump(_pc, n);
 }

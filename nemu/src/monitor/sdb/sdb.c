@@ -247,7 +247,7 @@ static int cmd_list(char *args) {
   args--;
   if (*args == 'i') {
     while (*args++ == ' ');
-    IFDEF(CONFIG_ITRACE, pc_trace_dump(MAX(atoi(args), 1)));
+    IFDEF(CONFIG_ITRACE, frame_dump(cpu.pc, MAX(atoi(args), 1)));
   } else if (*args == 'f') {
     func_list();
   } else {
