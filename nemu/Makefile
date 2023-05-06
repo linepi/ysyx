@@ -53,6 +53,11 @@ LDFLAGS += $(CFLAGS_BUILD)
 include $(NEMU_HOME)/scripts/config.mk
 include $(NEMU_HOME)/scripts/count.mk
 
+# Include rules for npc
+ifeq ($(PLATFORM), "npc")
+  include $(NEMU_HOME)/scripts/npc.mk
+endif
+
 ifdef CONFIG_TARGET_AM
 include $(AM_HOME)/Makefile
 LINKAGE += $(ARCHIVES)
