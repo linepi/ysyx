@@ -52,7 +52,10 @@ $(OBJ_DIR)/%.o: %.cc
 
 app: $(BINARY)
 
-$(info $(OBJS))
+# Include rules for npc
+ifeq ($(PLATFORM),npc)
+  OBJS += $(NPC_OBJ_DIR)/VPC__ALL.o $(VERILATOR_OBJS) $(NPC_OBJS) 
+endif
 
 $(BINARY): $(OBJS) $(ARCHIVES)
 	@echo + LD $@
