@@ -16,12 +16,10 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at /home/w/dev/ysyx-workbench/npc/vsrc/LemonPC/LemonPC.v:2:30
-    extern void ebreak();
-    // DPI import at /home/w/dev/ysyx-workbench/npc/vsrc/LemonPC/LemonPC.v:3:30
-    extern void set_gpr_ptr(const svOpenArrayHandle a);
     // DPI import at /home/w/dev/ysyx-workbench/npc/vsrc/LemonPC/LemonPC.v:1:30
-    extern void write_r(const svLogicVecVal* no, const svLogicVecVal* val);
+    extern void ebreak();
+    // DPI import at /home/w/dev/ysyx-workbench/npc/vsrc/LemonPC/LemonPC.v:2:30
+    extern void set_gpr_ptr(const svOpenArrayHandle a);
 
 #ifdef __cplusplus
 }
