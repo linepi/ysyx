@@ -1,5 +1,3 @@
-
-
 module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   input clk,
   input [ADDR_WIDTH-1:0] rs1,
