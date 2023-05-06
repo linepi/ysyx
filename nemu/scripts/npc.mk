@@ -19,7 +19,7 @@ NPC_INCFLAGS = $(addprefix -I, $(NPC_INC_PATH) $(VERILATOR_INC_PATH))
 
 NPC_OBJ_DIR = $(NEMU_HOME)/src/isa/riscv64/npc/obj_dir
 NPC_OBJS = $(patsubst %.cc, %.o, $(addprefix $(NPC_OBJ_DIR)/, $(notdir $(NPC_CSRCS))))
-NPC_CFLAGS += $(NPC_INCFLAGS) $(CFLAGS) -ggdb3
+NPC_CFLAGS += $(NPC_INCFLAGS) $(CFLAGS) 
 
 # NPC_ARCHIVE = $(NPC_OBJ_DIR)/npc.a
 # ARCHIVES += $(NPC_ARCHIVE)
