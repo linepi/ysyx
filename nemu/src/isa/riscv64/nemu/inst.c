@@ -14,7 +14,7 @@
 ***************************************************************************************/
 
 #include "../local-include/reg.h"
-#include "decode.h"
+#include "../include/decode.h"
 #include <cpu/cpu.h>
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
