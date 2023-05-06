@@ -16,9 +16,9 @@ void single_cycle() {
 }
  
 int main(int argc, char** argv, char** env) {
-  VerilatedContext* contextp = new VerilatedContext;
-  contextp->commandArgs(argc, argv);
-  PC = new VPC{contextp};
+  // VerilatedContext* contextp = new VerilatedContext;
+  // contextp->commandArgs(argc, argv);
+  PC = new VPC;
   
   int cnt = 0;
   srand((unsigned) time(NULL));
