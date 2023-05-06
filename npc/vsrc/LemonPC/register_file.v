@@ -13,6 +13,7 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
     if (wen) begin 
       rf[rd] <= dataD;
       write_r(rd, dataD);
+      $display("%0x", dataD);
     end
   end
   wire [63:0] ground = 64'b0;
