@@ -1,5 +1,6 @@
 #include <sdb.h>
 #include <reg.h>
+#include "include/decode.h"
 
 struct func_t *functbl = NULL;
 struct func_t *cur_func = NULL;
@@ -115,7 +116,8 @@ void _frame_dump(vaddr_t pc, int n) {
 
 // dump n static instruction before and after pc
 void frame_dump(vaddr_t pc, int n) {
-  printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func->name, cur_func->addr);
+  if (functbl) 
+    printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func->name, cur_func->addr);
   vaddr_t _pc = MAX(pc - 4 * (n/2), CONFIG_MBASE);
   _frame_dump(_pc, n);
 }
@@ -149,6 +151,10 @@ void pc_trace_dump(int n) {
 }
 
 void backtrace() {
+  if (!functbl) {
+    Error("No functbl specified");
+    return;
+  }
   printf(ANSI_FMT("Backtrace:\n", ANSI_FG_GREEN));
   int i = 0;
   for (struct func_stack_t *p = func_stack_top->pre; p; p = p->pre, i++) {
