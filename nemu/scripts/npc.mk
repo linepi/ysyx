@@ -29,11 +29,14 @@ NPC_CFLAGS += $(NPC_INCFLAGS) $(CFLAGS)
 # OBJS += $(NPC_OBJS) $(VERILATOR_OBJS) $(NPC_OBJ_DIR)/VPC__ALL.o
 
 $(NPC_OBJ_DIR)/VPC__ALL.o: $(NPC_VSRCS)
-	$(VERILATOR) $(VERILATOR_FLAGS) --top-module PC $^ \
+	@echo "+ CC $(notdir $@)"
+	@$(VERILATOR) $(VERILATOR_FLAGS) --top-module PC $^ \
 	--Mdir $(NPC_OBJ_DIR)
 
 $(NPC_OBJS):$(NPC_OBJ_DIR)/%.o:$(NEMU_HOME)/src/isa/riscv64/npc/%.cc
-	$(CXX) $(NPC_CFLAGS) -c -o $@ $<
+	@echo "+ CC $(notdir $@)"
+	@$(CXX) $(NPC_CFLAGS) -c -o $@ $<
 
 $(VERILATOR_OBJS):$(NPC_OBJ_DIR)/%.o:$(VERILATOR_ROOT)/include/%.cpp
-	$(CXX) $(VERILATOR_CFLAGS) -c -o $@ $<
+	@echo "+ CC $(notdir $@)"
+	@$(CXX) $(VERILATOR_CFLAGS) -c -o $@ $<
