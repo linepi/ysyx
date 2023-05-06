@@ -1,10 +1,10 @@
 extern "C" {
-#include <generated/autoconf.h>
 #include <utils.h>
 #include "../local-include/reg.h"
 #include <cpu/cpu.h>
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
+#include <generated/autoconf.h>
 }
 
 #include <VPC.h> 
