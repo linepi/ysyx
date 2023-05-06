@@ -9,11 +9,11 @@ module register_file #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
   output [DATA_WIDTH-1:0] data2
 );
   reg [DATA_WIDTH-1:0] rf [(1<<ADDR_WIDTH)-1 : 0];
+  initial set_gpr_ptr(rf);
   always @(posedge clk) begin
     if (wen) begin 
       rf[rd] <= dataD;
       write_r(rd, dataD);
-      $display("%0x", dataD);
     end
   end
   wire [63:0] ground = 64'b0;
