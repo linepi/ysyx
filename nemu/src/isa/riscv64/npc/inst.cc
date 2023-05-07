@@ -30,10 +30,8 @@ void single_cycle() {
 
 int isa_exec_once(Decode *s) {
   if (!inited) { init_PC(); inited = true; }
-  // s->isa.inst.val = inst_fetch_add(&s->snpc, 4);
-  // PC->inst = s->isa.inst.val;
-  s->isa.inst.val = PC->inst;
   single_cycle();
+  s->isa.inst.val = PC->inst;
   s->dnpc = PC->pc;
   if (npc_end) {
     NEMUTRAP(cpu.pc, R(10));
