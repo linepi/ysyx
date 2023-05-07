@@ -25,8 +25,8 @@ endif
 remove_quote = $(patsubst "%",%,$(1))
 
 # Extract variabls from menuconfig
-GUEST_ISA ?= $(call remove_quote,$(CONFIG_ISA))
-ENGINE ?= $(call remove_quote,$(CONFIG_ENGINE))
+GUEST_ISA ?= $(call remove_quote, $(CONFIG_ISA))
+ENGINE ?= $(call remove_quote, $(CONFIG_ENGINE))
 NAME    = $(GUEST_ISA)-nemu-$(ENGINE)
 
 # Include all filelist.mk to merge file lists
@@ -52,6 +52,12 @@ LDFLAGS += $(CFLAGS_BUILD)
 # Include rules for menuconfig
 include $(NEMU_HOME)/scripts/config.mk
 include $(NEMU_HOME)/scripts/count.mk
+
+# Include rules for npc
+ifeq ($(PLATFORM),npc)
+  CFLAGS += -DNPC
+  include $(NEMU_HOME)/scripts/npc.mk
+endif
 
 ifdef CONFIG_TARGET_AM
 include $(AM_HOME)/Makefile

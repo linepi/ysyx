@@ -13,7 +13,8 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-#include "local-include/reg.h"
+#include "../local-include/reg.h"
+#include "../include/decode.h"
 #include <cpu/cpu.h>
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
@@ -27,7 +28,6 @@ enum {
   TYPE_UJ, TYPE_R, TYPE_SB,
   TYPE_N, // none
 };
-
 
 
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
@@ -131,5 +131,11 @@ static int decode_exec(Decode *s) {
 
 int isa_exec_once(Decode *s) {
   s->isa.inst.val = inst_fetch_add(&s->snpc, 4);
+  // what the hell does this line do?
+  // no other than update Registers(cpu variable), write(read) to(from) pmem.
+  // so, maybe I can redefine the decode_exec function, so that all other things can work?
+  // how?
+  // You know, verilator just convert .v files to cpp files, so,
+  // If only I can link the cpp files to my nemu and then use it, awesome!
   return decode_exec(s);
 }
