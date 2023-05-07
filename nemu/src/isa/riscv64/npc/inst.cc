@@ -9,6 +9,7 @@ uint32_t *inst;
 void init_PC() {
   PC = new VPC;
   *pc = CONFIG_MBASE;
+  printf("there");
 }
 void clean_PC() {
   PC->final();

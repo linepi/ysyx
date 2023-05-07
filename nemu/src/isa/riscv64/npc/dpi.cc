@@ -1,7 +1,5 @@
 #include "defs.h"
 
-
-
 void ebreak() {
 	npc_end = true;
 }
