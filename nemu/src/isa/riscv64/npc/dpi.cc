@@ -9,6 +9,7 @@ void set_gpr_ptr(const svOpenArrayHandle r) {
 }
 
 void set_pc_inst_ptr(const svLogicVecVal* a, const svLogicVecVal* b) {
+	printf("a: 0x%x %x, b: 0x%x %x\n", a->aval, a->bval, b->aval, b->bval);
 	pc = (vaddr_t *)a;
 	inst = (uint32_t *)b;
 }

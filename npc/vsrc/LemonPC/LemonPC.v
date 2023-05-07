@@ -9,7 +9,13 @@ module PC (
 );
   wire [31:0] inst;
   wire [63:0] pc;
-  initial set_pc_inst_ptr(pc, inst);
+  reg [63:0] test1;
+  reg [31:0] test2;
+  initial begin 
+    test1 = 64'b01101110;
+    test2 = 32'habcd1234;
+    set_pc_inst_ptr(test1, test2);
+  end
   wire [63:0] npc;
   register #(64, 64'h0000000080000000) r_pc(.clk(clk), .rst(0), .din(npc), .dout(pc), .wen(1));
 
