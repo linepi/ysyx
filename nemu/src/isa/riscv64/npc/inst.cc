@@ -30,6 +30,7 @@ void single_cycle() {
 int isa_exec_once(Decode *s) {
   if (!inited) { init_PC(); inited = true; }
   s->isa.inst.val = PC->inst;
+  printf("PC-inst = 0x%08x\n", PC->inst);
   single_cycle();
   s->dnpc = PC->pc;
   if (npc_end) {
