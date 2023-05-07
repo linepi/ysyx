@@ -263,12 +263,12 @@ int cmp(const void* a, const void* b) {
 
 int cmd_analize() {
   IFNDEF(CONFIG_ITRACE, printf("ITRACE disabled, open it before backtrace\n"); return 0;);
-  printf("Function Name                   Call Count:\n");
+  printf("Function Name                 Call Count:\n");
+  int i;
+  for (i = 0; !functbl[i].end; i++);
+  qsort(functbl, i, sizeof(struct func_t), cmp);
   int space = 30;
-  int num = 0;
-  for (int i = 0; !functbl[i].end; i++) num++;
-  qsort(functbl, num, sizeof(struct func_t), cmp);
-  for (int i = 0; !functbl[i].end; i++) {
+  for (i = 0; !functbl[i].end; i++) {
     printf("%s", functbl[i].name);
     int len = strlen(functbl[i].name);
     for (int j = 0; j < space - len; j++) putchar(' ');
