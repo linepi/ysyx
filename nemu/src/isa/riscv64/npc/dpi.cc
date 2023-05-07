@@ -8,9 +8,9 @@ void set_gpr_ptr(const svOpenArrayHandle r) {
   cpu.gpr = (uint64_t *)(((VerilatedDpiOpenVar*)r)->datap());
 }
 
-void set_pc_inst_ptr(const svBitVecVal* a, const svBitVecVal* b) {
-	pc = (vaddr_t *)a;
-	inst = (uint32_t *)b;
+void set_pc_inst_ptr(const svOpenArrayHandle a, const svOpenArrayHandle b) {
+	pc = (vaddr_t *)(((VerilatedDpiOpenVar*)a)->datap());
+	inst = (uint32_t *)(((VerilatedDpiOpenVar*)b)->datap());
 }
 
 void npc_vmem_read(long long raddr, long long *rdata) {
