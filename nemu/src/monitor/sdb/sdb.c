@@ -260,8 +260,12 @@ static int cmd_list(char *args) {
 int cmd_analize() {
   IFNDEF(CONFIG_ITRACE, printf("ITRACE disabled, open it before backtrace\n"); return 0;);
   printf("Function Name       Call Count:\n");
+  int space = 30;
   for (int i = 0; !functbl[i].end; i++) {
-    printf("%s                  %ld\n", functbl[i].name, functbl[i].cnt);
+    printf("%s", functbl[i].name);
+    int len = strlen(functbl[i].name);
+    for (int j = 0; j < space - len; j++) putchar(' ');
+    printf("%ld\n", functbl[i].cnt);
   }
   return 0;
 }
