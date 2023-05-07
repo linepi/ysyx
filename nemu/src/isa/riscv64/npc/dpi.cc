@@ -18,6 +18,9 @@ void set_gpr_ptr(const svOpenArrayHandle r) {
   cpu.gpr = (uint64_t *)(((VerilatedDpiOpenVar*)r)->datap());
 }
 
+void set_pc_inst_ptr(const svLogicVecVal* pc, const svLogicVecVal* inst) {
+}
+
 void npc_vmem_read(long long raddr, long long *rdata) {
   // 总是读取地址为`raddr & ~0x7ull`的8字节返回给`rdata`
 	*rdata = paddr_read((vaddr_t)raddr, 8);
