@@ -1,14 +1,6 @@
-#include "svdpi.h"
-#include "verilated_dpi.h"
-#include "VPC__Dpi.h"
 #include "defs.h"
 
-extern "C" {
-#include "../local-include/reg.h"
-#include <generated/autoconf.h>
-#include <sdb.h>
-#include <cpu/cpu.h>
-}
+
 
 void ebreak() {
 	npc_end = true;
@@ -18,7 +10,9 @@ void set_gpr_ptr(const svOpenArrayHandle r) {
   cpu.gpr = (uint64_t *)(((VerilatedDpiOpenVar*)r)->datap());
 }
 
-void set_pc_inst_ptr(const svLogicVecVal* pc, const svLogicVecVal* inst) {
+void set_pc_inst_ptr(const svLogicVecVal* a, const svLogicVecVal* b) {
+	pc = (vaddr_t *)a;
+	inst = (uint32_t *)b;
 }
 
 void npc_vmem_read(long long raddr, long long *rdata) {

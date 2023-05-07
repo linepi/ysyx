@@ -1,18 +1,10 @@
-extern "C" {
-#include <utils.h>
-#include "../local-include/reg.h"
-#include <cpu/cpu.h>
-#include <cpu/ifetch.h>
-#include <cpu/decode.h>
-#include <generated/autoconf.h>
-}
-
-#include <VPC.h> 
 #include "defs.h"
 
 VPC *PC;
 static bool inited = false;
 bool npc_end = false;
+vaddr_t *pc;
+uint32_t *inst;
 
 void init_PC() {
   PC = new VPC;
@@ -30,6 +22,9 @@ void single_cycle() {
 int isa_exec_once(Decode *s) {
   if (!inited) { init_PC(); inited = true; }
   s->snpc += 4;
+  single_cycle();
+  s->isa.inst.val = *inst;
+  s->dnpc = *pc;
   if (npc_end) {
     NEMUTRAP(cpu.pc, R(10));
     clean_PC();
