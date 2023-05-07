@@ -2,7 +2,7 @@ import "DPI-C" function void ebreak ();
 import "DPI-C" function void set_gpr_ptr(input logic [63:0] a []);
 import "DPI-C" function void npc_vmem_read(input longint raddr, output longint rdata);
 import "DPI-C" function void npc_vmem_write(input longint waddr, input longint wdata, input byte wmask);
-import "DPI-C" function void set_pc_inst_ptr(input logic [63:0] pc, input logic [31:0] inst);
+import "DPI-C" function void set_pc_inst_ptr(input bit [63:0] pc, input bit [31:0] inst);
     
 module PC (
   input clk
