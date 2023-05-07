@@ -35,6 +35,8 @@ void vga_update_screen();
 extern uint64_t g_nr_guest_inst;
 
 void device_update() {
+  // update device only when every 0xfff instuctions have been executed.
+  // this is to improve performance, because get_time() consume so much.
   if ((g_nr_guest_inst & 0xfff) != 0) return;
   static uint64_t last = 0;
   uint64_t now = get_time();
