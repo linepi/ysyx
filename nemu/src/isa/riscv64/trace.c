@@ -40,6 +40,7 @@ void make_functbl() {
         func_stack_top = func_stack_bottom.next;
         cur_func = func_stack_bottom.func;
       }
+      functbl[idx].cnt = 0;
       functbl[idx].end = false;
       idx++;
     }
@@ -74,6 +75,7 @@ void ftrace(vaddr_t pc) {
 
   for (int i = 0; !functbl[i].end; i++) {
     if (functbl[i].addr == jump_to) {
+      functbl[i].cnt++;
       if (g_print_step) 
         printf(ANSI_FMT("call %s\n", ANSI_FG_BLUE), functbl[i].name);
       func_stack_top->func = &functbl[i];
