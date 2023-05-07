@@ -8,7 +8,7 @@ module PC (
   output reg [31:0] inst,
   output reg [63:0] pc
 );
-  // wire [31:0] inst;
+  initial pc = 64'h0000000080000000;
   wire [4:0] rs1 = inst[19:15];
   wire [4:0] rs2 = 0;
   wire [4:0] rd = inst[11:7];

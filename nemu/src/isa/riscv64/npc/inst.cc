@@ -16,7 +16,6 @@ bool npc_end = false;
 
 void init_PC() {
   PC = new VPC;
-  PC->pc = CONFIG_MBASE;
 }
 void clean_PC() {
   PC->final();
@@ -30,8 +29,8 @@ void single_cycle() {
 
 int isa_exec_once(Decode *s) {
   if (!inited) { init_PC(); inited = true; }
-  single_cycle();
   s->isa.inst.val = PC->inst;
+  single_cycle();
   s->dnpc = PC->pc;
   if (npc_end) {
     NEMUTRAP(cpu.pc, R(10));
