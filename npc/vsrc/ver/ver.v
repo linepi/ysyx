@@ -4,4 +4,5 @@ module ver (
     output c
 );
     assign c = a & b;
+	always @(*) $display("h");
 endmodule

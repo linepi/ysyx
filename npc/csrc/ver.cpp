@@ -34,7 +34,7 @@ int main(int argc, char** argv, char** env) {
     ver->a = rand() & 1;
     ver->b = rand() & 1;
     MUXDEF(SEQUENTIAL, single_cycle(), ver->eval());
-    printf("%s & %s = %s\n", b(ver->a,1), b(ver->b,1), b(ver->c, 1));
+    // printf("%s & %s = %s\n", b(ver->a,1), b(ver->b,1), b(ver->c, 1));
   }
   ver->final();
   delete ver;
