@@ -9,7 +9,6 @@ void set_gpr_ptr(const svOpenArrayHandle r) {
 }
 
 void set_pc_inst_ptr(const svBitVecVal* a, const svBitVecVal* b) {
-	printf("a: 0x%x, b: 0x%x\n", *a, *b);
 	pc = (vaddr_t *)a;
 	inst = (uint32_t *)b;
 }
