@@ -15,7 +15,3 @@
 
 INC_PATH += $(NEMU_HOME)/src/isa/$(GUEST_ISA)/include $(NEMU_HOME)/src/isa/$(GUEST_ISA)/local-include
 DIRS-y += src/isa/$(GUEST_ISA)
-
-ifeq ($(PLATFORM),npc)
-	DIRS-BLACKLIST-y += src/isa/$(GUEST_ISA)/nemu
-endif 
