@@ -12,7 +12,7 @@ module PC (
   reg [63:0] test1;
   reg [31:0] test2;
   initial begin 
-    test1 = 64'b01101110;
+    test1 = 64'habcd000012340000;
     test2 = 32'habcd1234;
     set_pc_inst_ptr(test1, test2);
   end
