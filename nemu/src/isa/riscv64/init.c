@@ -19,11 +19,9 @@
 // this is not consistent with uint8_t
 // but it is ok since we do not access the array directly
 static const uint32_t img [] = {
-  0x00300093,  // addi x1, x0, 3
-  0x00400013,  // addi x0, x0, 4
-  0x00000093,  // addi x1, x0, 0
-  0xff308113,  // addi x2, x1, -13
-  0x00f10113,  // addi x2, x2, 15
+  0x00000297,  // auipc t0,0
+  0x0002b823,  // sd  zero,16(t0)
+  0x0102b503,  // ld  a0,16(t0)
   0x00100073,  // ebreak (used as nemu_trap)
   0xdeadbeef,  // some data
 };
@@ -33,9 +31,7 @@ static void restart() {
   cpu.pc = RESET_VECTOR;
 
   /* The zero register is always 0. */
-#ifndef NPC
   cpu.gpr[0] = 0;
-#endif
 }
 
 void init_isa() {
