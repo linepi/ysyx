@@ -32,8 +32,10 @@ void init_alarm();
 
 void send_key(uint8_t, bool);
 void vga_update_screen();
+extern uint64_t g_nr_guest_inst;
 
 void device_update() {
+  if (g_nr_guest_inst & 0xff != 0) return;
   static uint64_t last = 0;
   uint64_t now = get_time();
   if (now - last < 1000000 / TIMER_HZ) {
@@ -43,7 +45,7 @@ void device_update() {
 
   IFDEF(CONFIG_HAS_VGA, vga_update_screen());
 
-#if !defined(CONFIG_TARGET_AM) || defined(CONFIG_HAS_VGA)
+#if !defined(CONFIG_TARGET_AM)
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
