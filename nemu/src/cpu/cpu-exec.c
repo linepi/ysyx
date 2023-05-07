@@ -112,14 +112,13 @@ static void execute(uint64_t n) {
   if (g_print_step && n)
     IFDEF(CONFIG_ITRACE, printf(ANSI_FMT("Lines executed:\n", ANSI_FG_GREEN)));
   for (;n > 0; n --) {
-    // before execute, synchonize with npc
-    // which is need to synchonize, how to synchonize, is a problem
-    // once this is done, nothing to do with ftrace or itrace or something, 
-    // because they are only defined by mem or cpu or s.
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
     trace_and_difftest(&s, cpu.pc);
     if (nemu_state.state != NEMU_RUNNING) break;
+    // update device only when every 0xfff instuctions have been executed.
+    // this is to improve performance, because get_time() consume so much.
+    if ((g_nr_guest_inst & 0xfff) != 0) continue;
     IFDEF(CONFIG_DEVICE, device_update());
   }
 }
