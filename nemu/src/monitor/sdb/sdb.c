@@ -257,10 +257,17 @@ static int cmd_list(char *args) {
   return 0;
 }
 
+int cmp(const void* a, const void* b) {
+  return ((struct func_t*)b)->cnt - ((struct func_t*)a)->cnt;
+}
+
 int cmd_analize() {
   IFNDEF(CONFIG_ITRACE, printf("ITRACE disabled, open it before backtrace\n"); return 0;);
-  printf("Function Name       Call Count:\n");
+  printf("Function Name                   Call Count:\n");
   int space = 30;
+  int num = 0;
+  for (int i = 0; !functbl[i].end; i++) num++;
+  qsort(functbl, num, sizeof(struct func_t), cmp);
   for (int i = 0; !functbl[i].end; i++) {
     printf("%s", functbl[i].name);
     int len = strlen(functbl[i].name);
