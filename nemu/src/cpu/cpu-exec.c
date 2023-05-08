@@ -118,7 +118,7 @@ static void execute(uint64_t n) {
     if (nemu_state.state != NEMU_RUNNING) break;
     // update device only when every 0xfff instuctions have been executed.
     // this is to improve performance, because get_time() consume so much.
-    if ((g_nr_guest_inst & 0xfff) != 0) continue;
+    if ((g_nr_guest_inst & 0xffff) != 0) continue;
     IFDEF(CONFIG_DEVICE, device_update());
   }
 }
