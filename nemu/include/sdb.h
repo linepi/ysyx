@@ -74,6 +74,7 @@ extern struct elfinfo_t elfinfo;
 struct func_t {
   bool end;
   word_t addr;
+  uint64_t cnt;
   char name[FUNC_LEN];
 };
 

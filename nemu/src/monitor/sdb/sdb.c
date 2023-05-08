@@ -17,6 +17,7 @@
 #include <utils.h>
 
 static int is_batch_mode = false;
+extern struct func_t *functbl;
 
 void init_regex();
 void init_wp_pool();
@@ -256,6 +257,26 @@ static int cmd_list(char *args) {
   return 0;
 }
 
+int cmp(const void* a, const void* b) {
+  return ((struct func_t*)b)->cnt - ((struct func_t*)a)->cnt;
+}
+
+int cmd_analize() {
+  IFNDEF(CONFIG_ITRACE, printf("ITRACE disabled, open it before backtrace\n"); return 0;);
+  printf("Function Name                 Call Count:\n");
+  int i;
+  for (i = 0; !functbl[i].end; i++);
+  qsort(functbl, i, sizeof(struct func_t), cmp);
+  int space = 30;
+  for (i = 0; !functbl[i].end; i++) {
+    printf("%s", functbl[i].name);
+    int len = strlen(functbl[i].name);
+    for (int j = 0; j < space - len; j++) putchar(' ');
+    printf("%ld\n", functbl[i].cnt);
+  }
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -264,19 +285,20 @@ static struct {
   int (*handler) (char *);
 } cmd_table [] = {
   { "help", "Display information about all supported commands", cmd_help },
-  { "c", "Continue the execution of the program", cmd_c },
-  { "q", "Exit NEMU", cmd_q },
-  { "si", "Usage: si [N]. Step N instruction, default 1. ", cmd_si },
+  { "c", "   Continue the execution of the program", cmd_c },
+  { "q", "   Exit NEMU", cmd_q },
+  { "si", "  Usage: si [N]. Step N instruction, default 1. ", cmd_si },
   { "info", "Usage: info <r|w>. r --> register, w --> watch points. ", cmd_info },
-  { "x", "Usage: x <number of bytes> <expression>. example: x 10 0x80000000 ", cmd_x },
-  { "p", "Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
-  { "p/x", "Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
-  { "w", "Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
-  { "b", "Usage: b <expression>. example: b 0x80000010", cmd_b },
-  { "bt", "Usage: bt", cmd_bt },
-  { "pt", "Usage: pt [N]. pc trace.", cmd_pt },
-  { "del", "Usage: del <watchpoint NO>. example: d 2", cmd_del },
+  { "x", "   Usage: x <number of bytes> <expression>. example: x 10 0x80000000 ", cmd_x },
+  { "p", "   Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
+  { "p/x", " Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
+  { "w", "   Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
+  { "b", "   Usage: b <expression>. example: b 0x80000010", cmd_b },
+  { "bt", "  Usage: bt", cmd_bt },
+  { "pt", "  Usage: pt [N]. pc trace.", cmd_pt },
+  { "del", " Usage: del <watchpoint NO>. example: d 2", cmd_del },
   { "list", "Usage list -i [N] or list -f. Show N instruction with default 1 or show functions", cmd_list},
+  { "analise", "analise the performance", cmd_analize},
 };
 
 

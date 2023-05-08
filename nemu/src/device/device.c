@@ -32,6 +32,7 @@ void init_alarm();
 
 void send_key(uint8_t, bool);
 void vga_update_screen();
+extern uint64_t g_nr_guest_inst;
 
 void device_update() {
   static uint64_t last = 0;
@@ -43,7 +44,7 @@ void device_update() {
 
   IFDEF(CONFIG_HAS_VGA, vga_update_screen());
 
-#ifndef CONFIG_TARGET_AM
+#if !defined(CONFIG_TARGET_AM)
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
