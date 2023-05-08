@@ -20,7 +20,7 @@ CXX := clang++
 else
 CXX := g++
 endif
-LD := g++
+LD := clang++
 INCLUDES = $(addprefix -I, $(INC_PATH))
 CFLAGS  := -O2 -MMD -Wall $(INCLUDES) $(CFLAGS)
 LDFLAGS := -O2 $(LDFLAGS) -fopenmp
