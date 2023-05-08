@@ -30,7 +30,6 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   int p_idx = 0;
   uint32_t *pixels = (uint32_t *)ctl->pixels;
   for (int j = ctl->y; j < ctl->y + ctl->h; j++) {
-// #pragma omp parallel for num_threads(4) 
     for (int i = ctl->x; i < ctl->x + ctl->w; i++) {
       outl(FB_ADDR + 4 * (j*w + i), pixels[p_idx++]);
     }
