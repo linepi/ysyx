@@ -1,9 +1,11 @@
+`include "defines.v"
 module testbench;
   reg clk;
-  reg [7:0] res;
-  random_8 random_8_ins(.clk(clk), .res(res));
-  integer i;
 
+  wire [63:0] res;
+  alu #(64) i0(64'hfffffffffffffff0, 64'h0000000000000000, `alu_sel_lt, res);
+
+  integer i;
   initial begin
     clk = 0;
     i = 0;
@@ -11,8 +13,8 @@ module testbench;
 
   always#10 clk = ~clk;
   always @(posedge clk) begin
-    if(res == 8'b10000101 && i != 0) $finish;
-    $display("%0.d: %b", i, res);
+    if(i == 1) $finish;
+    $display("%0d", res);
     i++;
   end
 endmodule
