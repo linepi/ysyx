@@ -9,6 +9,7 @@ extern "C" void set_gpr_ptr(const svOpenArrayHandle r) {
 }
 
 extern "C" void set_ptr(void *ptr, int flag) {
+	printf("there %d\n", flag);
 	switch (flag) {
 		case 0: pc = (vaddr_t *)ptr; break;
 		case 1: inst = (uint32_t *)ptr; break;
