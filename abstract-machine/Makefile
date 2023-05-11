@@ -13,7 +13,8 @@ else
 PLATFORM = $(word 2,$(ARCH_SPLIT))
 endif
 
-$(info $(PLATFORM) $(ARCH))
+$(info platform = $(PLATFORM))
+$(info ARCH = $(ARCH))
 
 ## 1. Basic Setup and Checks
 
