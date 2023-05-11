@@ -10,7 +10,7 @@ module PC(input clk, output reg [63:0] pc, output [31:0] inst);
   wire [63:0] snpc, dnpc;
   wire [31:0] nothing;
   // selects and flags
-  wire ebreak_flag, pc_sel;
+  wire ebreak_flag, pc_sel, alu_a_sel, alu_b_sel;
   wire [2:0] imm_sel;
   wire [3:0] alu_sel;
 
@@ -23,28 +23,38 @@ module PC(input clk, output reg [63:0] pc, output [31:0] inst);
   wire [63:0] reg1;
   wire [63:0] reg2;
   wire [63:0] regw;
-  wire [63:0] alu1;
-  wire [63:0] alu2;
+  wire [63:0] alu_a;
+  mux_key #(2, 1, 64) alu_a_mux(alu_a, alu_a_sel, {
+    `alu_a_sel_rs1, reg1,
+    `alu_a_sel_pc, pc
+  });
+  wire [63:0] alu_b;
+  mux_key #(2, 1, 64) alu_b_mux(alu_b, alu_b_sel, {
+    `alu_b_sel_rs2, reg2,
+    `alu_b_sel_imm, imm
+  });
   wire [63:0] alu_res;
 
-  assign alu1 = reg1;
-  assign alu2 = imm;
+  assign alu_a = reg1;
+  assign alu_b = imm;
   assign regw = alu_res;
   
-  control i_control(.clk(clk), .inst(inst), .ebreak_flag(ebreak_flag), .imm_sel(imm_sel),
-    .pc_sel(pc_sel), .alu_sel(alu_sel)
+  control i_control(
+    .clk(clk), .inst(inst), .ebreak_flag(ebreak_flag), 
+    .imm_sel(imm_sel), .pc_sel(pc_sel), .alu_sel(alu_sel),
+    .alu_a_sel(alu_a_sel), .alu_b_sel(alu_b_sel)
   );
   register_file #(5, 64) r_rf(clk, rs1, rs2, rd, wen, regw, reg1, reg2);
 
-  alu #(64) a(.A(alu1), .B(alu2), .sel(alu_sel), .res(alu_res));
+  alu #(64) a(.A(alu_a), .B(alu_b), .sel(alu_sel), .res(alu_res));
   memory m_pc(.addr(pc), .wdata(64'd0), .wen(1'b0), .wmask(8'h0f), .rdata({nothing, inst}));
 
   imm_gen i_imm_gen(inst, imm_sel, imm);
 
   alu #(64) a_snpc(.A(pc), .B(64'd4), .sel(4'd0), .res(snpc));
   mux_key_with_default #(2, 1, 64) pc_mux(dnpc, pc_sel, `PC_INIT, {
-    1'b0, snpc, 
-    1'b1, alu_res
+    `pc_sel_snpc, snpc, 
+    `pc_sel_alu, alu_res
   });
   always @(posedge clk) begin
     pc <= dnpc;
