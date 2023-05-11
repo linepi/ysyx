@@ -4,10 +4,10 @@ VERILATOR_FLAGS += -MMD --build -cc -O3 --timing --x-assign fast --x-initial fas
 # for verilator source file
 VERILATOR_INC_PATH = $(VERILATOR_ROOT)/include $(VERILATOR_ROOT)/include/vltstd .
 VERILATOR_CFLAGS = -MMD -O2 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 \
-	-faligned-new -fcf-protection=none \
+	-faligned-new -fcf-protection=none -fcoroutines \
 	-Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable \
 	-Wno-unused-parameter -Wno-unused-variable -Wno-shadow
-VERILATOR_CSRCS = verilated.cpp verilated_threads.cpp verilated_dpi.cpp
+VERILATOR_CSRCS = verilated.cpp verilated_dpi.cpp verilated_timing.cpp verilated_threads.cpp 
 VERILATOR_CSRCS := $(addprefix $(VERILATOR_ROOT)/, $(VERILATOR_CSRCS))
 VERILATOR_OBJS = $(patsubst %.cpp, %.o, $(addprefix $(NPC_OBJ_DIR)/, $(notdir $(VERILATOR_CSRCS))))
 VERILATOR_CFLAGS += $(addprefix -I, $(VERILATOR_INC_PATH))

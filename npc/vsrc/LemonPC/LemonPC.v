@@ -14,7 +14,7 @@ module PC(input clk);
     set_ptr(pc, 0);
     set_ptr({32'd0, inst}, 1);
     rst = 1;
-    #10
+    #10;
     rst = 0;
   end
 
