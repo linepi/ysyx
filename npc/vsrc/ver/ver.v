@@ -6,7 +6,6 @@ module ver (
     output c
 );
     initial begin
-        #10;
         chandle c_ptr = $sformatf("%p", c);
         set_ptr(c_ptr, 1);
     end
