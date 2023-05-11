@@ -11,6 +11,7 @@ module control (
   output reg [2:0] imm_sel,
   output reg [4:0] alu_sel,
   output reg [1:0] alu_a_sel,
+  output reg [2:0] mem_r_sel,
   output reg alu_b_sel,
   output reg reg_wen,
   output reg mem_wen,
@@ -284,6 +285,94 @@ module control (
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_alu;
       end
+      32'b000000z_zzzzz_zzzzz_001_zzzzz_0010011: begin // slli(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_sll;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_alu;
+      end
+      32'b000000z_zzzzz_zzzzz_101_zzzzz_0010011: begin // srli(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_srl;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_alu;
+      end
+      32'bzzzzzzz_zzzzz_zzzzz_100_zzzzz_0010011: begin // xori(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_xor;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_alu;
+      end
+      32'b010000z_zzzzz_zzzzz_101_zzzzz_0010011: begin // srai(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_sra;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_alu;
+      end
+      32'bzzzzzzz_zzzzz_zzzzz_110_zzzzz_0010011: begin // ori(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_or;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_alu;
+      end
+      32'bzzzzzzz_zzzzz_zzzzz_111_zzzzz_0010011: begin // andi(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_and;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_alu;
+      end
+      32'b0000000_zzzzz_zzzzz_001_zzzzz_0011011: begin // slliw(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_sllw;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_alu;
+      end
+      32'b0000000_zzzzz_zzzzz_101_zzzzz_0011011: begin // srliw(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_srlw;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_alu;
+      end
+      32'b0100000_zzzzz_zzzzz_101_zzzzz_0011011: begin // sraiw(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_sraw;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_alu;
+      end
+      32'bzzzzzzz_zzzzz_zzzzz_010_zzzzz_0010011: begin // slti(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_lt;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_alu;
+      end
+      32'bzzzzzzz_zzzzz_zzzzz_011_zzzzz_0010011: begin // sltiu(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_ltu;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_alu;
+      end
       32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_1100111: begin // jalr(I)
         imm_sel = `imm_sel_I;
         alu_sel = `alu_sel_add;
@@ -293,6 +382,77 @@ module control (
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_pc;
       end
+      32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_0000011: begin // lb(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_add;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        mem_ren = `true;
+        mem_r_sel = `mem_r_sel_b;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_mem;
+      end
+      32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_0000011: begin // lh(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_add;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        mem_ren = `true;
+        mem_r_sel = `mem_r_sel_h;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_mem;
+      end
+      32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_0000011: begin // lw(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_add;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        mem_ren = `true;
+        mem_r_sel = `mem_r_sel_w;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_mem;
+      end
+      32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_0000011: begin // ld(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_add;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        mem_ren = `true;
+        mem_r_sel = `mem_r_sel_d;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_mem;
+      end
+      32'bzzzzzzz_zzzzz_zzzzz_100_zzzzz_0000011: begin // lbu(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_add;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        mem_ren = `true;
+        mem_r_sel = `mem_r_sel_bu;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_mem;
+      end
+      32'bzzzzzzz_zzzzz_zzzzz_101_zzzzz_0000011: begin // lhu(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_add;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        mem_ren = `true;
+        mem_r_sel = `mem_r_sel_hu;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_mem;
+      end
+      32'bzzzzzzz_zzzzz_zzzzz_110_zzzzz_0000011: begin // lwu(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_add;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        mem_ren = `true;
+        mem_r_sel = `mem_r_sel_wu;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_mem;
+      end
+
       // =============== UJ and U ========================
       32'bzzzzzzz_zzzzz_zzzzz_zzz_zzzzz_1101111: begin // jal(UJ)
         imm_sel = `imm_sel_UJ;
