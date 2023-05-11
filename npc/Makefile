@@ -64,7 +64,7 @@ $(PCNAME): $(PC_VSRCS) $(PC_CSRCS)
 # just for testbench of verilator
 $(TESTNAME): $(VSRCS)
 	$(call git_commit, "build testbench") # DO NOT REMOVE THIS LINE!!!
-	$(VERILATOR) --binary --timing \
+	$(VERILATOR) --binary --timing -I. \
 		--top-module $(TESTNAME) $^ \
 		-o $(abspath $(TESTNAME))
 	$(abspath $(TESTNAME))
