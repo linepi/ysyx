@@ -27,8 +27,4 @@ module PC(input clk, output [63:0] pc, output [31:0] inst);
 
   memory m_pc(.addr(pc), .wdata(64'd0), .wen(1'b0), .wmask(8'h0f), .rdata({nothing, inst}));
 
-  initial begin 
-    #1000
-    rst = 0;
-  end
 endmodule
