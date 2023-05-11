@@ -5,7 +5,11 @@ module ver (
     input b,
     output c
 );
-    initial #10;
+    initial begin
+        #10;
+        chandle c_ptr = $sformatf("%p", c);
+        set_ptr(c_ptr, 1);
+    end
     assign c = a & b;
 	always @(*) $display("h");
 endmodule

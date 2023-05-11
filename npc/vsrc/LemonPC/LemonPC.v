@@ -6,13 +6,15 @@ import "DPI-C" function void npc_vmem_write(input longint waddr, input longint w
 import "DPI-C" function void set_ptr(chandle pc, int flag);
 
 module PC(input clk);
-  reg [31:0] inst;
-  reg [63:0] pc;
+  wire [31:0] inst;
+  wire [63:0] pc;
   wire [63:0] npc;
 
   initial begin
-    set_ptr(pc, 0);
-    set_ptr({32'd0, inst}, 1);
+    chandle pc_ptr = $sformatf("%p", pc);
+    chandle inst_ptr = $sformatf("%p", inst);
+    set_ptr(pc_ptr, 0);
+    set_ptr(inst_ptr, 1);
     rst = 1;
   end
 
