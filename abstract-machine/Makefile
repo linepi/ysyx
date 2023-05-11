@@ -90,7 +90,11 @@ LDFLAGS  += -z noexecstack
 ## 4. Arch-Specific Configurations
 
 ### Paste in arch-specific configurations (e.g., from `scripts/x86_64-qemu.mk`)
--include $(AM_HOME)/scripts/$(ARCH).mk
+ifneq ($(PLATFORM), npc)
+	-include $(AM_HOME)/scripts/$(ARCH).mk
+else 
+	-include $(AM_HOME)/scripts/riscv64-nemu.mk
+endif
 
 ### Fall back to native gcc/binutils if there is no cross compiler
 ifeq ($(wildcard $(shell which $(CC))),)
