@@ -24,7 +24,7 @@ module alu #(N) (
       5'd14: res = ($signed(A) >= $signed(B)) ? 64'd1 : 64'd0;
       5'd15: res = ($signed(A) < $signed(B)) ? 64'd1 : 64'd0;
       5'd16: res = A << B;
-      5'd17: res = $signed(A) >> B[5:0];
+      5'd17: res = $signed(A) >>> B[5:0];
       5'd18: res = A >>> B[5:0];
       5'd19: begin 
         tmp = A[31:0] + B[31:0];
@@ -41,7 +41,6 @@ module alu #(N) (
       5'd22: begin
         tmp = $signed(A[31:0]) >>> B[4:0];
         res = {{32{tmp[31]}}, tmp[31:0]};
-        $display("%0x >> %0x = %0x, res = %0x", A[31:0], B[4:0], tmp, res);
       end
       5'd23: begin
         tmp = A[31:0] >>> B[4:0];
