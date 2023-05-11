@@ -129,7 +129,7 @@ module control (
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_alu;
       end
-      32'b0100000_zzzzz_zzzzz_101_zzzzz_0110011: begin // sraw(R)
+      32'b0100000_zzzzz_zzzzz_101_zzzzz_0111011: begin // sraw(R)
         alu_sel = `alu_sel_sraw;
         alu_a_sel = `alu_a_sel_rs1;
         alu_b_sel = `alu_b_sel_rs2;
