@@ -5,6 +5,7 @@ html:
 	cat Makefile | sed 's/^\([^#]\)/    \1/g' | markdown_py > Makefile.html
 .PHONY: html
 
+# 特例情况————npc，这种情况下平台还是nemu
 ifeq ($(ARCH),riscv64-npc)
 PLATFORM = nemu
 NPC = true
@@ -96,7 +97,7 @@ LDFLAGS  += -z noexecstack
 ## 4. Arch-Specific Configurations
 
 ### Paste in arch-specific configurations (e.g., from `scripts/x86_64-qemu.mk`)
--include $(AM_HOME)/scripts/$(ARCH).mk
+-include $(AM_HOME)/scripts/$(ISA)-$(PLATFORM).mk
 
 ### Fall back to native gcc/binutils if there is no cross compiler
 ifeq ($(wildcard $(shell which $(CC))),)

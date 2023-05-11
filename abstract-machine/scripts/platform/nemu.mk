@@ -25,7 +25,7 @@ exec: image
 	$(MAKE) -C $(NEMU_HOME) NPC=$(NPC) ISA=$(ISA) run ARGS="$(NEMUFLAGS) -b" IMG=$(IMAGE).bin
 
 run: image
-# $(MAKE) -C $(NEMU_HOME) NPC=$(NPC) ISA=$(ISA) run ARGS="$(NEMUFLAGS) -e $(IMAGE).elf" IMG=$(IMAGE).bin 
+	$(MAKE) -C $(NEMU_HOME) NPC=$(NPC) ISA=$(ISA) run ARGS="$(NEMUFLAGS) -e $(IMAGE).elf" IMG=$(IMAGE).bin 
 
 gdb: image
 	$(MAKE) -C $(NEMU_HOME) NPC=$(NPC) ISA=$(ISA) gdb ARGS="$(NEMUFLAGS) -e $(IMAGE).elf" IMG=$(IMAGE).bin 
