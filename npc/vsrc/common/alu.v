@@ -19,6 +19,7 @@ module alu #(N) (
       4'd10: res = (A != B) ? 64'd1 : 64'd0;
       4'd11: res = A << B;
       4'd12: res = A >> B;
+      4'd13: res = A >>> B;
       default: res = 0; 
     endcase
   end
