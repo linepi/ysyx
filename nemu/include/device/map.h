@@ -18,6 +18,10 @@
 
 #include <cpu/difftest.h>
 
+#ifdef __cpluspluc
+extern "C" {
+#endif
+
 typedef void(*io_callback_t)(uint32_t, int, bool);
 uint8_t* new_space(int size);
 
@@ -52,5 +56,9 @@ void add_mmio_map(const char *name, paddr_t addr,
 
 word_t map_read(paddr_t addr, int len, IOMap *map);
 void map_write(paddr_t addr, int len, word_t data, IOMap *map);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
