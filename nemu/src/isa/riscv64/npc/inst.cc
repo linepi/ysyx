@@ -14,13 +14,14 @@ void single_cycle() {
 int isa_exec_once(Decode *s) {
   if (!inited) {
     PC = new VPC;
+    single_cycle();
     inited = true; 
   }
 
   s->snpc += 4;
-  // s->isa.inst.val = getinst();
+  s->isa.inst.val = *inst;
   single_cycle();
-  // s->dnpc = getpc();
+  s->dnpc = *pc;
 
   if (npc_end) {
     NEMUTRAP(cpu.pc, R(10));
