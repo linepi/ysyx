@@ -11,7 +11,7 @@ module control (
         ebreak_flag = 1;
       end
       32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_0010011: begin // addi
-        imm_sel = 3'b000;
+        imm_sel = 3'b001;
       end
       32'bzzzzzzz_zzzzz_zzzzz_zzz_zzzzz_0010111: begin // auipc
         imm_sel = 3'b011;
