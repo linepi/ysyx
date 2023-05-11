@@ -1,12 +1,14 @@
 module control (
   input clk,
   input [31:0] inst,
-  output reg [2:0] imm_sel
+  output reg [2:0] imm_sel,
+  output reg ebreak_flag
 );
   always @(*) begin
+    ebreak_flag = 0;
     casez (inst)
       32'b0000000_00001_00000_000_00000_1110011: begin // ebreak
-        ebreak(); 
+        ebreak_flag = 1;
       end
       32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_0010011: begin // addi
         imm_sel = 3'b000;

@@ -15,13 +15,14 @@ module PC(input clk, output reg [63:0] pc, output [31:0] inst);
   wire [4:0] rd = inst[11:7];
   wire [63:0] imm; 
   wire wen = 1;
+  wire ebreak_flag;
   reg rst = 1;
   wire [63:0] data1;
   wire [63:0] data2;
   wire [63:0] dataD;
   
   
-  control i_control(.clk(clk), .inst(inst), .imm_sel(imm_sel));
+  control i_control(.clk(clk), .inst(inst), .ebreak_flag(ebreak_flag), .imm_sel(imm_sel));
   register_file #(5, 64) r_rf(clk, rs1, rs2, rd, wen, dataD, data1, data2);
 
   alu #(64) a(.A(data1), .B(imm), .sel(4'd0), .res(dataD));
@@ -35,5 +36,6 @@ module PC(input clk, output reg [63:0] pc, output [31:0] inst);
   end
   always @(posedge clk) begin
     pc <= npc;
+    if (ebreak_flag) ebreak();
   end
 endmodule
