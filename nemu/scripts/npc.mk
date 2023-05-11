@@ -32,4 +32,4 @@ $(NPC_OBJS):$(NPC_OBJ_DIR)/%.o:$(NEMU_HOME)/src/isa/riscv64/npc/%.cc
 
 $(VERILATOR_OBJS):$(NPC_OBJ_DIR)/%.o:$(VERILATOR_ROOT)/include/%.cpp
 	@echo "+ CC $(notdir $@)"
-	@$(CXX) $(VERILATOR_CFLAGS) -c -o $@ $<
+	@g++ $(VERILATOR_CFLAGS) -c -o $@ $<
