@@ -1,4 +1,4 @@
-`include "defines.v"
+`include "LemonPC/defines.v"
 module testbench;
   reg clk;
 
