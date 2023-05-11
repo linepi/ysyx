@@ -39,9 +39,9 @@ module alu #(N) (
         res = {{32{tmp[31]}}, tmp[31:0]};
       end
       5'd22: begin
-        tmp = $signed(A[31:0]) >> B[4:0];
-        $display("%0x >> %0x = %0x, res = %0x", A[31:0], B[4:0], tmp, res);
+        tmp = $signed(A[31:0]) >>> B[4:0];
         res = {{32{tmp[31]}}, tmp[31:0]};
+        $display("%0x >> %0x = %0x, res = %0x", A[31:0], B[4:0], tmp, res);
       end
       5'd23: begin
         tmp = A[31:0] >>> B[4:0];
