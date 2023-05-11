@@ -48,7 +48,7 @@ extern "C" void npc_vmem_write(long long waddr, long long wdata, char wmask) {
 		paddr_write((vaddr_t)waddr, 8, (word_t)wdata);
 		break;
 	default:
-		Error("wmask not implemented\n");
+		printf("wmask not implemented\n");
 	}
 }
 
