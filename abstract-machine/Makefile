@@ -7,8 +7,8 @@ html:
 
 # 特例情况————npc，这种情况下还是nemu
 ifeq ($(ARCH),riscv64-npc)
-ARCH = riscv64-nemu
-NPC = true
+	ARCH = riscv64-nemu
+	NPC = true
 endif
 
 ## 1. Basic Setup and Checks
