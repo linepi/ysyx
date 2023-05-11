@@ -25,6 +25,6 @@ module PC(input clk, output [63:0] pc, output [31:0] inst);
   alu #(64) a(.A(data1), .B(imm), .sel(4'd0), .res(dataD));
   alu #(64) a_pc(.A(pc), .B(64'd4), .sel(4'd0), .res(npc));
 
-  memory m_pc(.addr(pc), .wdata(64'd0), .wen(1'b0), .wmask(8'h0f), .rdata({nothing, inst}));
+  // memory m_pc(.addr(pc), .wdata(64'd0), .wen(1'b0), .wmask(8'h0f), .rdata({nothing, inst}));
 
 endmodule
