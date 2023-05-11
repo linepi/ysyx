@@ -154,7 +154,7 @@ void pc_trace_dump(int n) {
 
 void backtrace() {
   if (!functbl) {
-    Error("No functbl specified");
+    Error("No functbl specified\n");
     return;
   }
   printf(ANSI_FMT("Backtrace:\n", ANSI_FG_GREEN));
