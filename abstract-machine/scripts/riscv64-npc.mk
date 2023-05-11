@@ -1,4 +1,5 @@
 include $(AM_HOME)/scripts/isa/riscv64.mk
+$(info ininifndsalgjdsalkl dsaf)
 
 AM_SRCS := riscv/npc/start.S \
            riscv/npc/trm.c \
