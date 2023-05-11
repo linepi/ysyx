@@ -24,6 +24,7 @@ module control (
         ebreak_flag = `true;
       end
       32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_0010011: begin // addi(I)
+        $display("HERE");
         imm_sel = `imm_sel_I;
         alu_sel = `alu_sel_add;
         alu_a_sel = `alu_a_sel_rs1;
