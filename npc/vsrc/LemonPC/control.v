@@ -55,7 +55,7 @@ module control (
       32'bzzzzzzz_zzzzz_zzzzz_zzz_zzzzz_0010111: begin // auipc(U)
         imm_sel = `imm_sel_U;
         alu_sel = `alu_sel_add;
-        alu_a_sel = `alu_a_sel_pc;
+        alu_a_sel = `alu_a_sel_rs1;
         alu_b_sel = `alu_b_sel_imm;
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_alu;
