@@ -5,7 +5,7 @@ html:
 	cat Makefile | sed 's/^\([^#]\)/    \1/g' | markdown_py > Makefile.html
 .PHONY: html
 
-ifeq ($(ARCH), riscv64-npc)
+ifeq ($(ARCH),riscv64-npc)
 	PLATFORM = nemu
 	NPC = true
 else 
