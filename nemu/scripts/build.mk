@@ -53,7 +53,7 @@ $(OBJ_DIR)/%.o: %.cc
 app: $(BINARY)
 
 # Include rules for npc
-ifeq ($(PLATFORM),npc)
+ifeq ($(NPC),true)
   OBJS += $(NPC_OBJ_DIR)/VPC__ALL.o $(VERILATOR_OBJS) $(NPC_OBJS) 
 	LDFLAGS += -pthread -lpthread -latomic
 endif

@@ -5,6 +5,11 @@ html:
 	cat Makefile | sed 's/^\([^#]\)/    \1/g' | markdown_py > Makefile.html
 .PHONY: html
 
+ifeq ($(PLATFORM), npc)
+	PLATFORM = nemu
+	NPC = true
+endif
+
 ## 1. Basic Setup and Checks
 
 ### Default to create a bare-metal kernel image
@@ -90,11 +95,7 @@ LDFLAGS  += -z noexecstack
 ## 4. Arch-Specific Configurations
 
 ### Paste in arch-specific configurations (e.g., from `scripts/x86_64-qemu.mk`)
-ifneq ($(PLATFORM), npc)
-	-include $(AM_HOME)/scripts/$(ARCH).mk
-else 
-	-include $(AM_HOME)/scripts/riscv64-nemu.mk
-endif
+-include $(AM_HOME)/scripts/$(ARCH).mk
 
 ### Fall back to native gcc/binutils if there is no cross compiler
 ifeq ($(wildcard $(shell which $(CC))),)
