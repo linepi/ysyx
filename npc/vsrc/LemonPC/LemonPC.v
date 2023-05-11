@@ -60,7 +60,7 @@ module PC(input clk, output reg [63:0] pc, output [31:0] inst);
     `pc_sel_alu, alu_res
   });
   always @(posedge clk) begin
-    $display("imm = %0d", imm);
+    $display("imm = %0d", $signed(imm));
     pc <= dnpc;
     if (ebreak_flag) ebreak();
   end
