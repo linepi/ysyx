@@ -54,6 +54,7 @@ void init_map() {
 }
 
 word_t map_read(paddr_t addr, int len, IOMap *map) {
+  printf("there");
   IFDEF(CONFIG_DTRACE, printf("Try to read from %s device: %d byte from 0x%08x, ", map->name, len, addr));
   assert(len >= 1 && len <= 8);
   check_bound(map, addr);
