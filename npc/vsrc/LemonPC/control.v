@@ -3,22 +3,23 @@
 module control (
   input clk,
   input [31:0] inst,
+  output reg pc_sel,
+  output reg ebreak_flag,
   output reg [2:0] imm_sel,
   output reg [3:0] alu_sel,
   output reg alu_a_sel,
   output reg alu_b_sel,
-  output reg pc_sel,
-  output reg ebreak_flag,
   output reg reg_wen,
   output reg mem_wen,
   output reg [7:0] mem_mask,
   output reg [1:0] reg_w_sel
 );
   always @(*) begin
+    pc_sel = `pc_sel_snpc;
     ebreak_flag = `false;
+
     reg_wen = `false;
     mem_wen = `false;
-    pc_sel = `pc_sel_snpc;
     casez (inst)
       32'b0000000_00001_00000_000_00000_1110011: begin // ebreak
         ebreak_flag = `true;
