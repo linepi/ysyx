@@ -41,6 +41,8 @@ else
 PLATFORM = $(word 2,$(ARCH_SPLIT))
 endif
 
+$(info $(PLATFORM))
+
 ### Check if there is something to build
 ifeq ($(flavor SRCS), undefined)
   $(error Nothing to build)
