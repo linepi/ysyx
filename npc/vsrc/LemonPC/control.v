@@ -43,7 +43,7 @@ module control (
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_pc;
       end
-      32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_1101111: begin // jal(UJ)
+      32'bzzzzzzz_zzzzz_zzzzz_zzz_zzzzz_1101111: begin // jal(UJ)
         imm_sel = `imm_sel_UJ;
         alu_sel = `alu_sel_add;
         alu_a_sel = `alu_a_sel_pc;
