@@ -392,7 +392,7 @@ module control (
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_mem;
       end
-      32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_0000011: begin // lh(I)
+      32'bzzzzzzz_zzzzz_zzzzz_001_zzzzz_0000011: begin // lh(I)
         imm_sel = `imm_sel_I;
         alu_sel = `alu_sel_add;
         alu_a_sel = `alu_a_sel_rs1;
@@ -402,7 +402,7 @@ module control (
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_mem;
       end
-      32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_0000011: begin // lw(I)
+      32'bzzzzzzz_zzzzz_zzzzz_010_zzzzz_0000011: begin // lw(I)
         imm_sel = `imm_sel_I;
         alu_sel = `alu_sel_add;
         alu_a_sel = `alu_a_sel_rs1;
@@ -412,7 +412,7 @@ module control (
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_mem;
       end
-      32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_0000011: begin // ld(I)
+      32'bzzzzzzz_zzzzz_zzzzz_011_zzzzz_0000011: begin // ld(I)
         imm_sel = `imm_sel_I;
         alu_sel = `alu_sel_add;
         alu_a_sel = `alu_a_sel_rs1;
