@@ -8,7 +8,7 @@ html:
 # 特例情况————npc，这种情况下平台还是nemu
 ifeq ($(ARCH),riscv64-npc)
 PLATFORM = nemu
-NPC = true
+	NPC = true
 else 
 PLATFORM = $(word 2,$(ARCH_SPLIT))
 endif
