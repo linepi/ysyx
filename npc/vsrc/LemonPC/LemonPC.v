@@ -27,9 +27,8 @@ module PC(input clk, output [63:0] pc, output [31:0] inst);
 
   memory m_pc(.addr(pc), .wdata(64'd0), .wen(1'b0), .wmask(8'h0f), .rdata({nothing, inst}));
 
-  integer i = 0;
-  always @(posedge clk) begin
-    if (i == 1) rst = 0;
-    i++;
+  initial begin 
+    #1
+    rst = 0;
   end
 endmodule
