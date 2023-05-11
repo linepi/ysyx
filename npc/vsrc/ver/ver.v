@@ -5,9 +5,7 @@ module ver (
     input b,
     output c
 );
-    initial begin
-        #10
-    end
+    initial #10
     assign c = a & b;
 	always @(*) $display("h");
 endmodule
