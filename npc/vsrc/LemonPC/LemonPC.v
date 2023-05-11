@@ -2,15 +2,18 @@ import "DPI-C" function void ebreak ();
 import "DPI-C" function void set_gpr_ptr(input logic [63:0] a []);
 import "DPI-C" function void npc_vmem_read(input longint raddr, output longint rdata);
 import "DPI-C" function void npc_vmem_write(input longint waddr, input longint wdata, input byte wmask);
-import "DPI-C" function void getpc(input longint pc);
-import "DPI-C" function void getinst(input int inst);
+
+import "DPI-C" function void getpc(reg [63:0] *pc);
 
 module PC (
   input clk
 );
   wire [31:0] inst;
   reg [63:0] pc;
-  initial pc = 64'h0000000080000000;
+  initial begin
+    pc = 64'h0000000080000000;
+    getpc(&pc);
+  end
 
   wire [4:0] rs1 = inst[19:15];
   wire [4:0] rs2 = 0;
@@ -29,9 +32,4 @@ module PC (
 
   wire [31:0] nothing;
   memory m_pc(.addr(pc), .wdata(64'd0), .wen(1'b0), .wmask(8'h0f), .rdata({nothing, inst}));
-
-  always @(posedge clk) begin 
-    getpc(pc);
-    getinst(inst);
-  end
 endmodule
