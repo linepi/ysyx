@@ -24,6 +24,7 @@ NB_CSRCS = $(filter-out %ver.cpp $(PC_CSRCS), $(CSRCS))
 NB_VSRCS = $(shell find $(abspath ./vsrc/nb) $(abspath ./vsrc/common) -name "*.v")
 VER_CSRCS = $(filter-out %nb.cpp $(PC_CSRCS) %$(SRC_AUTO_BIND), $(CSRCS))
 VER_VSRCS = $(shell find $(abspath ./vsrc/ver) $(abspath ./vsrc/common) -name "*.v")
+TEST_VSRCS = $(shell find $(abspath ./vsrc/common) -name "*.v") vsrc/$(TESTNAME).v
 CSRCS += $(SRC_AUTO_BIND)
 
 # rules for NVBoard
@@ -62,7 +63,7 @@ $(PCNAME): $(PC_VSRCS) $(PC_CSRCS)
 	$(abspath $(PCNAME))
 
 # just for testbench of verilator
-$(TESTNAME): $(VSRCS)
+$(TESTNAME): $(TEST_VSRCS)
 	$(call git_commit, "build testbench") # DO NOT REMOVE THIS LINE!!!
 	$(VERILATOR) --binary --timing -I. \
 		--top-module $(TESTNAME) $^ \
