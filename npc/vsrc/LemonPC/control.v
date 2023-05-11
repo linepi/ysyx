@@ -285,6 +285,14 @@ module control (
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_alu;
       end
+      32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_0011011: begin // addiw(I)
+        imm_sel = `imm_sel_I;
+        alu_sel = `alu_sel_addw;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_alu;
+      end
       32'b000000z_zzzzz_zzzzz_001_zzzzz_0010011: begin // slli(I)
         imm_sel = `imm_sel_I;
         alu_sel = `alu_sel_sll;
