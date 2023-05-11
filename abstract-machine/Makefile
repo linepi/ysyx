@@ -42,6 +42,7 @@ PLATFORM = $(word 2,$(ARCH_SPLIT))
 endif
 
 $(info $(PLATFORM))
+$(info $(ISA))
 
 ### Check if there is something to build
 ifeq ($(flavor SRCS), undefined)
