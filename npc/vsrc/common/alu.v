@@ -8,7 +8,7 @@ module alu #(N) (
     case(sel)
       4'd0: begin
         res = A + B; 
-        $display("%0x + %0x = %0x", A, B, res);
+        // $display("%0x + %0x = %0x", A, B, res);
       end
       4'd1: res = A - B;
       4'd2: res = A * B;
