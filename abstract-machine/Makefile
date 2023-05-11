@@ -6,10 +6,10 @@ html:
 .PHONY: html
 
 ifeq ($(ARCH),riscv64-npc)
-	PLATFORM = nemu
-	NPC = true
+PLATFORM = nemu
+NPC = true
 else 
-	PLATFORM = $(word 2,$(ARCH_SPLIT))
+PLATFORM = $(word 2,$(ARCH_SPLIT))
 endif
 
 $(info PLATFORM = $(PLATFORM))
