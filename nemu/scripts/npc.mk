@@ -1,5 +1,6 @@
 VERILATOR = verilator
 VERILATOR_FLAGS += -MMD --build -cc -O3 --timing --x-assign fast --x-initial fast --noassert
+VERILATOR_FLAGS += -I$(NPC_HOME)/vsrc/LemonPC
 
 # for verilator source file
 VERILATOR_INC_PATH = $(VERILATOR_ROOT)/include $(VERILATOR_ROOT)/include/vltstd .
