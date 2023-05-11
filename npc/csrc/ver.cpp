@@ -3,6 +3,10 @@
 #include <assert.h>
 #include <Vver.h>  
 #include <time.h>
+#include "svdpi.h"
+#include "verilated_dpi.h"
+#include "Vver__Dpi.h"
+#include <Vver.h> 
 
 #include <common.h>
 #include <defs.h>
@@ -20,7 +24,14 @@ void reset(int n) {
   ver->rst = 0;
 }
 #endif
- 
+
+extern "C" void set_ptr(void *ptr, int flag) {
+	switch (flag) {
+		case 0: pc = (vaddr_t *)ptr; break;
+		case 1: inst = (uint32_t *)ptr; break;
+		default: assert(0);
+	}	
+} 
  
 int main(int argc, char** argv, char** env) {
   VerilatedContext* contextp = new VerilatedContext;

@@ -1,3 +1,5 @@
+import "DPI-C" function void set_ptr(chandle pc, int flag);
+
 module ver (
     input a,
     input b,
