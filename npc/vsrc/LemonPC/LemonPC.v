@@ -3,17 +3,15 @@ import "DPI-C" function void set_gpr_ptr(input logic [63:0] a []);
 import "DPI-C" function void npc_vmem_read(input longint raddr, output longint rdata);
 import "DPI-C" function void npc_vmem_write(input longint waddr, input longint wdata, input byte wmask);
 
-import "DPI-C" function void getpc(chandle pc);
+import "DPI-C" function void set_ptr(chandle pc, int flag);
 
-module PC (
-  input clk
-);
+module PC(input clk);
   wire [31:0] inst;
   wire [63:0] pc;
   wire [63:0] npc;
 
   initial begin
-    getpc(pc);
+    set_ptr(pc, 0);
   end
 
   wire [4:0] rs1 = inst[19:15];
@@ -21,6 +19,7 @@ module PC (
   wire [4:0] rd = inst[11:7];
   wire [63:0] imm = {{52{inst[31]}}, inst[31:20]}; // signed extend 
   wire wen = 1;
+  wire rst = 1;
   wire [63:0] data1;
   wire [63:0] data2;
   wire [63:0] dataD;

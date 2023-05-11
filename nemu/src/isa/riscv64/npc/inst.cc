@@ -3,6 +3,8 @@
 VPC *PC;
 static bool inited = false;
 bool npc_end = false;
+vaddr_t *pc;
+uint32_t *inst;
 
 void single_cycle() {
   PC->clk = 0; PC->eval();

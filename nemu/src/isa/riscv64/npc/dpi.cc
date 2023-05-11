@@ -8,8 +8,12 @@ extern "C" void set_gpr_ptr(const svOpenArrayHandle r) {
   cpu.gpr = (uint64_t *)(((VerilatedDpiOpenVar*)r)->datap());
 }
 
-extern "C" void getpc(void *pc) {
-	
+extern "C" void set_ptr(void *ptr, int flag) {
+	switch (flag) {
+		case 0: pc = (vaddr_t *)ptr; break;
+		case 1: inst = (uint32_t *)ptr; break;
+		default: assert(0);
+	}	
 }
 
 extern "C" void npc_vmem_read(long long raddr, long long *rdata) {
