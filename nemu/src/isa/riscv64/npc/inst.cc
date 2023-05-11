@@ -15,6 +15,7 @@ int isa_exec_once(Decode *s) {
   if (!inited) {
     PC = new VPC;
     single_cycle();
+    printf("h\n");
     inited = true; 
   }
 
