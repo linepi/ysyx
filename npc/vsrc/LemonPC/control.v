@@ -94,7 +94,7 @@ module control (
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_alu;
       end
-      32'b0000000_zzzzz_zzzzz_100_zzzzz_0110011: begin // sltu(R)
+      32'b0000000_zzzzz_zzzzz_011_zzzzz_0110011: begin // sltu(R)
         alu_sel = `alu_sel_ltu;
         alu_a_sel = `alu_a_sel_rs1;
         alu_b_sel = `alu_b_sel_rs2;
