@@ -6,10 +6,7 @@ module alu #(N) (
 );
   always @(*) begin
     case(sel)
-      4'd0: begin
-        res = A + B; 
-        // $display("%0x + %0x = %0x", A, B, res);
-      end
+      4'd0: res = A + B; 
       4'd1: res = A - B;
       4'd2: res = A * B;
       4'd3: res = A / B;
@@ -20,6 +17,8 @@ module alu #(N) (
       4'd8: res = (A < B) ? 64'd1 : 64'd0;
       4'd9: res = (A == B) ? 64'd1 : 64'd0;
       4'd10: res = (A != B) ? 64'd1 : 64'd0;
+      4'd11: res = A << B;
+      4'd12: res = A >> B;
       default: res = 0; 
     endcase
   end

@@ -26,6 +26,13 @@ module control (
       32'b0000000_00001_00000_000_00000_1110011: begin // ebreak
         ebreak_flag = `true;
       end
+      32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_0010011: begin // add(R)
+        alu_sel = `alu_sel_add;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_rs2;
+        reg_wen = `true;
+        reg_w_sel = `reg_w_sel_alu;
+      end
       32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_0010011: begin // addi(I)
         imm_sel = `imm_sel_I;
         alu_sel = `alu_sel_add;
