@@ -209,36 +209,42 @@ module control (
       // ================= SB ======================
       32'bzzzzzzz_zzzzz_zzzzz_100_zzzzz_1100011: begin // blt(SB)
         imm_sel = `imm_sel_SB;
+        alu_sel = `alu_sel_add;
         alu_a_sel = `alu_a_sel_pc;
         alu_b_sel = `alu_b_sel_imm;
         pc_sel = `pc_sel_alu & b_lt;
       end
       32'bzzzzzzz_zzzzz_zzzzz_101_zzzzz_1100011: begin // bge(SB)
         imm_sel = `imm_sel_SB;
+        alu_sel = `alu_sel_add;
         alu_a_sel = `alu_a_sel_pc;
         alu_b_sel = `alu_b_sel_imm;
         pc_sel = `pc_sel_alu & (~b_lt);
       end
       32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_1100011: begin // beq(SB)
         imm_sel = `imm_sel_SB;
+        alu_sel = `alu_sel_add;
         alu_a_sel = `alu_a_sel_pc;
         alu_b_sel = `alu_b_sel_imm;
         pc_sel = `pc_sel_alu & b_eq;
       end
       32'bzzzzzzz_zzzzz_zzzzz_001_zzzzz_1100011: begin // bne(SB)
         imm_sel = `imm_sel_SB;
+        alu_sel = `alu_sel_add;
         alu_a_sel = `alu_a_sel_pc;
         alu_b_sel = `alu_b_sel_imm;
         pc_sel = `pc_sel_alu & (~b_eq);
       end
       32'bzzzzzzz_zzzzz_zzzzz_110_zzzzz_1100011: begin // bltu(SB)
         imm_sel = `imm_sel_SB;
+        alu_sel = `alu_sel_add;
         alu_a_sel = `alu_a_sel_pc;
         alu_b_sel = `alu_b_sel_imm;
         pc_sel = `pc_sel_alu & b_ltu;
       end
       32'bzzzzzzz_zzzzz_zzzzz_111_zzzzz_1100011: begin // bgeu(SB)
         imm_sel = `imm_sel_SB;
+        alu_sel = `alu_sel_add;
         alu_a_sel = `alu_a_sel_pc;
         alu_b_sel = `alu_b_sel_imm;
         pc_sel = `pc_sel_alu & (~b_ltu);
