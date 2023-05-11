@@ -5,8 +5,6 @@ import "DPI-C" function void npc_vmem_write(input longint waddr, input longint w
 
 
 module PC(input clk, output [63:0] pc, output [31:0] inst);
-  // wire [31:0] inst;
-  // wire [63:0] pc;
   wire [63:0] npc;
 
   wire [4:0] rs1 = inst[19:15];
@@ -29,7 +27,10 @@ module PC(input clk, output [63:0] pc, output [31:0] inst);
 
   memory m_pc(.addr(pc), .wdata(64'd0), .wen(1'b0), .wmask(8'h0f), .rdata({nothing, inst}));
 
-  always @(*) begin
-    rst = 0;
+  integer i = 0;
+  always @(posedge clk) begin
+    if (i == 0) rst = 1;
+    if (i == 1) rst = 0;
+    i++;
   end
 endmodule
