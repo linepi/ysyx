@@ -4,7 +4,7 @@ VERILATOR_FLAGS += -I$(NPC_HOME)/vsrc/LemonPC
 
 # for verilator source file
 VERILATOR_INC_PATH = $(VERILATOR_ROOT)/include $(VERILATOR_ROOT)/include/vltstd .
-VERILATOR_CFLAGS = -MMD -O2 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 \
+VERILATOR_CFLAGS = -MMD -O2 -g -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 \
 	-faligned-new -fcf-protection=none -fcoroutines \
 	-Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable \
 	-Wno-unused-parameter -Wno-unused-variable -Wno-shadow
