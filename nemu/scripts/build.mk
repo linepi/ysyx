@@ -55,6 +55,7 @@ app: $(BINARY)
 # Include rules for npc
 ifeq ($(PLATFORM),npc)
   OBJS += $(NPC_OBJ_DIR)/VPC__ALL.o $(VERILATOR_OBJS) $(NPC_OBJS) 
+	LDFLAGS += -pthread -lpthread -latomic
 endif
 
 $(BINARY): $(OBJS) $(ARCHIVES)
