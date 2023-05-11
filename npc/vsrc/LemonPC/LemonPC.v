@@ -4,7 +4,7 @@ import "DPI-C" function void npc_vmem_read(input longint raddr, output longint r
 import "DPI-C" function void npc_vmem_write(input longint waddr, input longint wdata, input byte wmask);
 
 
-module PC(input clk, output [63:0] pc, output [31:0] inst);
+module PC(input clk, output reg [63:0] pc, output [31:0] inst);
   wire [63:0] npc;
 
   wire [4:0] rs1 = inst[19:15];
@@ -19,12 +19,18 @@ module PC(input clk, output [63:0] pc, output [31:0] inst);
   wire [31:0] nothing;
   
   control i_control(clk, inst);
-  register #(64, 64'h0000000080000000) r_pc(clk, rst, npc, pc, wen);
   register_file #(5, 64) r_rf(clk, rs1, rs2, rd, wen, dataD, data1, data2);
 
   alu #(64) a(.A(data1), .B(imm), .sel(4'd0), .res(dataD));
   alu #(64) a_pc(.A(pc), .B(64'd4), .sel(4'd0), .res(npc));
 
-  // memory m_pc(.addr(pc), .wdata(64'd0), .wen(1'b0), .wmask(8'h0f), .rdata({nothing, inst}));
+  memory m_pc(.addr(pc), .wdata(64'd0), .wen(1'b0), .wmask(8'h0f), .rdata({nothing, inst}));
 
+  initial begin
+    pc = 64'h0000000080000000;
+  end
+
+  always @(posedge clk) begin
+    pc <= npc;
+  end
 endmodule
