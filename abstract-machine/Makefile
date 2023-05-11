@@ -13,6 +13,8 @@ else
 PLATFORM = $(word 2,$(ARCH_SPLIT))
 endif
 
+$(info $(PLATFORM) $(ARCH))
+
 ## 1. Basic Setup and Checks
 
 ### Default to create a bare-metal kernel image
