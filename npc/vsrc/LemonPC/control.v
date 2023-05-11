@@ -11,6 +11,7 @@ module control (
   output reg alu_b_sel,
   output reg reg_wen,
   output reg mem_wen,
+  output reg mem_ren,
   output reg [7:0] mem_mask,
   output reg [1:0] reg_w_sel
 );
@@ -20,6 +21,7 @@ module control (
 
     reg_wen = `false;
     mem_wen = `false;
+    mem_ren = `false;
     casez (inst)
       32'b0000000_00001_00000_000_00000_1110011: begin // ebreak
         ebreak_flag = `true;
