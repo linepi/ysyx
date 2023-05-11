@@ -5,10 +5,12 @@ html:
 	cat Makefile | sed 's/^\([^#]\)/    \1/g' | markdown_py > Makefile.html
 .PHONY: html
 
-# 特例情况————npc，这种情况下还是nemu
+# 特例情况————npc，这种情况下平台还是nemu
 ifeq ($(ARCH),riscv64-npc)
-	ARCH = riscv64-nemu
-	NPC = true
+PLATFORM = nemu
+NPC = true
+else 
+PLATFORM = $(word 2,$(ARCH_SPLIT))
 endif
 
 ## 1. Basic Setup and Checks
@@ -39,7 +41,6 @@ endif
 ### Extract instruction set architecture (`ISA`) and platform from `$ARCH`. Example: `ARCH=x86_64-qemu -> ISA=x86_64; PLATFORM=qemu`
 ARCH_SPLIT = $(subst -, ,$(ARCH))
 ISA        = $(word 1,$(ARCH_SPLIT))
-PLATFORM = $(word 2,$(ARCH_SPLIT))
 
 ### Check if there is something to build
 ifeq ($(flavor SRCS), undefined)
