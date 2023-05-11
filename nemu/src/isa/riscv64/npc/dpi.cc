@@ -8,15 +8,6 @@ extern "C" void set_gpr_ptr(const svOpenArrayHandle r) {
   cpu.gpr = (uint64_t *)(((VerilatedDpiOpenVar*)r)->datap());
 }
 
-extern "C" void set_ptr(void *ptr, int flag) {
-	printf("there %d %p\n", flag, ptr);
-	switch (flag) {
-		case 0: pc = (vaddr_t *)ptr; break;
-		case 1: inst = (uint32_t *)ptr; break;
-		default: assert(0);
-	}	
-}
-
 extern "C" void npc_vmem_read(long long raddr, long long *rdata) {
   // 总是读取地址为`raddr & ~0x7ull`的8字节返回给`rdata`
 	*rdata = paddr_read((vaddr_t)raddr, 8);
