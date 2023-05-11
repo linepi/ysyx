@@ -6,8 +6,8 @@ import "DPI-C" function void npc_vmem_write(input longint waddr, input longint w
 import "DPI-C" function void set_ptr(chandle pc, int flag);
 
 module PC(input clk);
-  wire [31:0] inst;
-  wire [63:0] pc;
+  reg [31:0] inst;
+  reg [63:0] pc;
   wire [63:0] npc;
 
   initial begin
