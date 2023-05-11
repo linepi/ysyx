@@ -9,8 +9,8 @@ module control (
   output reg pc_sel,
   output reg ebreak_flag,
   output reg [2:0] imm_sel,
-  output reg [3:0] alu_sel,
-  output reg alu_a_sel,
+  output reg [4:0] alu_sel,
+  output reg [1:0] alu_a_sel,
   output reg alu_b_sel,
   output reg reg_wen,
   output reg mem_wen,
@@ -245,11 +245,37 @@ module control (
       // ================= S =======================
       32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_0100011: begin // sb
         imm_sel = `imm_sel_S;
+        alu_sel = `alu_sel_add;
         alu_a_sel = `alu_a_sel_rs1;
         alu_b_sel = `alu_b_sel_imm;
-        
+        mem_wen = `true;
+        mem_mask = `mem_mask_b;
       end
-
+      32'bzzzzzzz_zzzzz_zzzzz_001_zzzzz_0100011: begin // sh
+        imm_sel = `imm_sel_S;
+        alu_sel = `alu_sel_add;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        mem_wen = `true;
+        mem_mask = `mem_mask_h;
+      end
+      32'bzzzzzzz_zzzzz_zzzzz_010_zzzzz_0100011: begin // sw
+        imm_sel = `imm_sel_S;
+        alu_sel = `alu_sel_add;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        mem_wen = `true;
+        mem_mask = `mem_mask_w;
+      end
+      32'bzzzzzzz_zzzzz_zzzzz_011_zzzzz_0100011: begin // sd
+        imm_sel = `imm_sel_S;
+        alu_sel = `alu_sel_add;
+        alu_a_sel = `alu_a_sel_rs1;
+        alu_b_sel = `alu_b_sel_imm;
+        mem_wen = `true;
+        mem_mask = `mem_mask_d;
+      end
+      // =============== I =============================
       32'bzzzzzzz_zzzzz_zzzzz_000_zzzzz_0010011: begin // addi(I)
         imm_sel = `imm_sel_I;
         alu_sel = `alu_sel_add;
@@ -267,6 +293,7 @@ module control (
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_pc;
       end
+      // =============== UJ and U ========================
       32'bzzzzzzz_zzzzz_zzzzz_zzz_zzzzz_1101111: begin // jal(UJ)
         imm_sel = `imm_sel_UJ;
         alu_sel = `alu_sel_add;
@@ -286,17 +313,12 @@ module control (
       end
       32'bzzzzzzz_zzzzz_zzzzz_zzz_zzzzz_0110111: begin // lui(U)
         imm_sel = `imm_sel_U;
+        alu_sel = `alu_sel_add;
+        alu_a_sel = `alu_a_sel_zero;
+        alu_b_sel = `alu_b_sel_imm;
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_alu;
-      end
-      32'bzzzzzzz_zzzzz_zzzzz_011_zzzzz_0100011: begin // sd(S)
-        imm_sel = `imm_sel_S;  
-        alu_sel = `alu_sel_add;
-        alu_a_sel = `alu_a_sel_rs1;
-        alu_b_sel = `alu_b_sel_imm;
-        mem_wen = `true;
-        mem_mask = `mem_mask_d;
-      end
+      end            
       default: begin
         ebreak_flag = `true;
         $display("Unspecified control case!");

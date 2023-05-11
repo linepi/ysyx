@@ -9,12 +9,12 @@ import "DPI-C" function void npc_vmem_write(input longint waddr, input longint w
 module PC(input clk, output reg [63:0] pc, output [31:0] inst);
   wire [31:0] nothing;
   // selects and flags
-  wire ebreak_flag, pc_sel, alu_a_sel, alu_b_sel, 
+  wire ebreak_flag, pc_sel, alu_b_sel, 
     reg_wen, mem_wen, mem_ren,
     b_eq, b_lt, b_ltu; 
-  wire [1:0] reg_w_sel;
+  wire [1:0] reg_w_sel, alu_a_sel;
   wire [2:0] imm_sel;
-  wire [3:0] alu_sel;
+  wire [4:0] alu_sel;
   wire [7:0] mem_mask;
 
   wire [4:0] rs1 = inst[19:15];
@@ -25,9 +25,10 @@ module PC(input clk, output reg [63:0] pc, output [31:0] inst);
   wire [63:0] mem_data;
 
   wire [63:0] alu_a, alu_b, alu_res;
-  mux_key #(2, 1, 64) alu_a_mux(alu_a, alu_a_sel, {
+  mux_key #(3, 2, 64) alu_a_mux(alu_a, alu_a_sel, {
     `alu_a_sel_rs1, reg1,
-    `alu_a_sel_pc, pc
+    `alu_a_sel_pc, pc,
+    `alu_a_sel_zero, 64'd0
   });
   mux_key #(2, 1, 64) alu_b_mux(alu_b, alu_b_sel, {
     `alu_b_sel_rs2, reg2,
@@ -50,7 +51,7 @@ module PC(input clk, output reg [63:0] pc, output [31:0] inst);
   register_file #(5, 64) r_rf(clk, rs1, rs2, rd, reg_wen, regw, reg1, reg2);
 
   alu #(64) a(.A(alu_a), .B(alu_b), .sel(alu_sel), .res(alu_res));
-  branch_comp i_bc(.A(reg1), .B(reg2), .b_eq(b_eq), .b_lt(b_lt), .b_ltu(b_ltu));
+  branch_comp i_bc(reg1, reg2, b_eq, b_lt, b_ltu);
   imm_gen i_imm_gen(inst, imm_sel, imm);
   memory m_mem(.addr(alu_res), .wdata(reg2), .wen(mem_wen), .ren(mem_ren), .wmask(mem_mask), .rdata(mem_data));
 

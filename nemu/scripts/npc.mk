@@ -1,5 +1,6 @@
 VERILATOR = verilator
 VERILATOR_FLAGS += -MMD --build -cc -O2 --timing --x-assign fast --x-initial fast --noassert
+VERILATOR_FLAGS += -Wall -Wno-latch -Wno-eofnewline -Wno-declfilename -Wno-unusedsignal
 VERILATOR_FLAGS += -I$(NPC_HOME)/vsrc/LemonPC
 
 # for verilator source file
