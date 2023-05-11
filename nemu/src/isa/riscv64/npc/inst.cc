@@ -16,9 +16,9 @@ int isa_exec_once(Decode *s) {
   }
 
   s->snpc += 4;
-  s->isa.inst.val = getinst();
+  // s->isa.inst.val = getinst();
   single_cycle();
-  s->dnpc = getpc();
+  // s->dnpc = getpc();
 
   if (npc_end) {
     NEMUTRAP(cpu.pc, R(10));
