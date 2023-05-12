@@ -26,7 +26,7 @@ NPC_CFLAGS += $(NPC_INCFLAGS) $(CFLAGS)
 $(NPC_OBJ_DIR)/VPC__ALL.o: $(NPC_VSRCS)
 	@echo "+ CC $(notdir $@)"
 	$(VERILATOR) $(VERILATOR_FLAGS) --top-module PC $^ \
-	--Mdir $(NPC_OBJ_DIR) $(addprefix -CFLAGS , $(CFLAGS))
+	--Mdir $(NPC_OBJ_DIR)
 
 $(NPC_OBJS):$(NPC_OBJ_DIR)/%.o:$(NEMU_HOME)/src/isa/riscv64/npc/%.cc
 	@echo "+ CC $(notdir $@)"
