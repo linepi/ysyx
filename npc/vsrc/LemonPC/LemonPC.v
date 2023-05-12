@@ -75,7 +75,7 @@ module PC(input clk, output reg [63:0] pc, output [31:0] inst);
   });
   always @(posedge clk) begin
     pc <= dnpc;
-    if (ebreak_flag) ebreak();
+    // if (ebreak_flag) ebreak();
   end
   initial begin
     pc = `PC_INIT;
