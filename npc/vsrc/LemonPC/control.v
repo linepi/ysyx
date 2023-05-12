@@ -31,7 +31,7 @@ module control (
         ebreak_flag = `true;
       end
       // ===================== R ==========================
-      32'b0000000_zz1zz_zzzzz_000_zzzzz_0110011: begin // add(R)
+      32'b0000000_zzzzz_zzzzz_000_zzzzz_0110011: begin // add(R)
         alu_sel = `alu_sel_add;
         alu_a_sel = `alu_a_sel_rs1;
         alu_b_sel = `alu_b_sel_rs2;
