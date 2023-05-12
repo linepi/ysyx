@@ -1,15 +1,15 @@
 VERILATOR = verilator
 VERILATOR_FLAGS += -MMD --build -cc -O2 --timing --x-assign fast --x-initial fast --noassert
 VERILATOR_FLAGS += -Wall -Wno-latch -Wno-eofnewline -Wno-declfilename -Wno-unusedsignal
-VERILATOR_FLAGS += -I$(NPC_HOME)/vsrc/LemonPC
+VERILATOR_FLAGS += -I$(NPC_HOME)/vsrc/LemonPC --compiler $(CC)
 
 # for verilator source file
 VERILATOR_INC_PATH = $(VERILATOR_ROOT)/include $(VERILATOR_ROOT)/include/vltstd .
 VERILATOR_CFLAGS = -MMD -O2 -g -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 \
-	-faligned-new -fcf-protection=none -fcoroutines \
+	-faligned-new -fcf-protection=none \
 	-Wno-bool-operation -Wno-sign-compare -Wno-uninitialized -Wno-unused-but-set-variable \
 	-Wno-unused-parameter -Wno-unused-variable -Wno-shadow
-VERILATOR_CSRCS = verilated.cpp verilated_dpi.cpp verilated_timing.cpp verilated_threads.cpp 
+VERILATOR_CSRCS = verilated.cpp verilated_dpi.cpp verilated_threads.cpp 
 VERILATOR_CSRCS := $(addprefix $(VERILATOR_ROOT)/, $(VERILATOR_CSRCS))
 VERILATOR_OBJS = $(patsubst %.cpp, %.o, $(addprefix $(NPC_OBJ_DIR)/, $(notdir $(VERILATOR_CSRCS))))
 VERILATOR_CFLAGS += $(addprefix -I, $(VERILATOR_INC_PATH))
@@ -34,4 +34,4 @@ $(NPC_OBJS):$(NPC_OBJ_DIR)/%.o:$(NEMU_HOME)/src/isa/riscv64/npc/%.cc
 
 $(VERILATOR_OBJS):$(NPC_OBJ_DIR)/%.o:$(VERILATOR_ROOT)/include/%.cpp
 	@echo "+ CC $(notdir $@)"
-	@g++ $(VERILATOR_CFLAGS) -c -o $@ $<
+	@$(CXX) $(VERILATOR_CFLAGS) -c -o $@ $<
