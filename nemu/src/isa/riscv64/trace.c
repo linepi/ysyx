@@ -55,7 +55,7 @@ void ftrace(vaddr_t pc) {
     if (g_print_step) 
       printf(ANSI_FMT("ret from %s\n", ANSI_FG_BLUE), func_stack_top->pre->func->name);
     func_stack_top = func_stack_top->pre;
-    cur_func = func_stack_top->func;
+    cur_func = func_stack_top->pre->func;
     return;
   }
 
