@@ -157,7 +157,7 @@ config ITRACE_COND
 config DTRACE
   depends on TRACE
   bool "Enable divice tracer"
-  default y
+  default n
 
 config DIFFTEST
   depends on TARGET_NATIVE_ELF
