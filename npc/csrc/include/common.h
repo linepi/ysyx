@@ -19,6 +19,7 @@
 
 typedef uint32_t paddr_t;
 typedef uint64_t word_t;
+typedef uint64_t word_t;
 typedef int64_t sword_t;
 
 #endif

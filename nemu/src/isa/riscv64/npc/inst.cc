@@ -3,6 +3,8 @@
 VPC *PC;
 static bool inited = false;
 bool npc_end = false;
+vaddr_t *pc;
+uint32_t *inst;
 
 void single_cycle() {
   PC->clk = 0; PC->eval();
@@ -16,9 +18,9 @@ int isa_exec_once(Decode *s) {
   }
 
   s->snpc += 4;
-  s->isa.inst.val = getinst();
+  s->isa.inst.val = PC->inst;
   single_cycle();
-  s->dnpc = getpc();
+  s->dnpc = PC->pc;
 
   if (npc_end) {
     NEMUTRAP(cpu.pc, R(10));

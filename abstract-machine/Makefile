@@ -33,7 +33,13 @@ endif
 ### Extract instruction set architecture (`ISA`) and platform from `$ARCH`. Example: `ARCH=x86_64-qemu -> ISA=x86_64; PLATFORM=qemu`
 ARCH_SPLIT = $(subst -, ,$(ARCH))
 ISA        = $(word 1,$(ARCH_SPLIT))
-PLATFORM   = $(word 2,$(ARCH_SPLIT))
+# 特例情况————npc，这种情况下平台还是nemu
+ifeq ($(ARCH),riscv64-npc)
+PLATFORM = nemu
+NPC = true
+else 
+PLATFORM = $(word 2,$(ARCH_SPLIT))
+endif
 
 ### Check if there is something to build
 ifeq ($(flavor SRCS), undefined)
@@ -90,7 +96,7 @@ LDFLAGS  += -z noexecstack
 ## 4. Arch-Specific Configurations
 
 ### Paste in arch-specific configurations (e.g., from `scripts/x86_64-qemu.mk`)
--include $(AM_HOME)/scripts/$(ARCH).mk
+-include $(AM_HOME)/scripts/$(ISA)-$(PLATFORM).mk
 
 ### Fall back to native gcc/binutils if there is no cross compiler
 ifeq ($(wildcard $(shell which $(CC))),)

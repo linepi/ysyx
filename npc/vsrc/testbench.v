@@ -1,9 +1,12 @@
 module testbench;
   reg clk;
-  reg [7:0] res;
-  random_8 random_8_ins(.clk(clk), .res(res));
-  integer i;
 
+  wire [63:0] res1;
+  wire [63:0] res2;
+  alu #(64) i0(64'hfffffffffffffff0, 64'h0000000000000000, 4'd8, res1);
+  alu #(64) i1(64'hfffffffffffffff0, 64'h0000000000000000, 4'd15, res2);
+
+  integer i;
   initial begin
     clk = 0;
     i = 0;
@@ -11,8 +14,9 @@ module testbench;
 
   always#10 clk = ~clk;
   always @(posedge clk) begin
-    if(res == 8'b10000101 && i != 0) $finish;
-    $display("%0.d: %b", i, res);
+    if(i == 1) $finish;
+    $display("%0d", res1);
+    $display("%0d", res2);
     i++;
   end
 endmodule

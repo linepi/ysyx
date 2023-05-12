@@ -27,7 +27,7 @@ remove_quote = $(patsubst "%",%,$(1))
 # Extract variabls from menuconfig
 GUEST_ISA ?= $(call remove_quote, $(CONFIG_ISA))
 ENGINE ?= $(call remove_quote, $(CONFIG_ENGINE))
-NAME    = $(GUEST_ISA)-nemu-$(ENGINE)
+NAME    = $(GUEST_ISA)-nemu-$(ENGINE)-$(NPC)
 
 # Include all filelist.mk to merge file lists
 FILELIST_MK = $(shell find ./src -name "filelist.mk")
@@ -54,7 +54,7 @@ include $(NEMU_HOME)/scripts/config.mk
 include $(NEMU_HOME)/scripts/count.mk
 
 # Include rules for npc
-ifeq ($(PLATFORM),npc)
+ifeq ($(NPC),true)
   CFLAGS += -DNPC
   include $(NEMU_HOME)/scripts/npc.mk
 endif

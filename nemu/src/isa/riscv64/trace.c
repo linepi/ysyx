@@ -55,7 +55,7 @@ void ftrace(vaddr_t pc) {
     if (g_print_step) 
       printf(ANSI_FMT("ret from %s\n", ANSI_FG_BLUE), func_stack_top->pre->func->name);
     func_stack_top = func_stack_top->pre;
-    cur_func = func_stack_top->func;
+    cur_func = func_stack_top->pre->func;
     return;
   }
 
@@ -154,7 +154,7 @@ void pc_trace_dump(int n) {
 
 void backtrace() {
   if (!functbl) {
-    Error("No functbl specified");
+    Error("No functbl specified\n");
     return;
   }
   printf(ANSI_FMT("Backtrace:\n", ANSI_FG_GREEN));
