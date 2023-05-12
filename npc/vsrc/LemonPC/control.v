@@ -495,7 +495,7 @@ module control (
       end            
       default: begin
         ebreak_flag = `true;
-        $display("Unspecified control case: %b!", inst);
+        $display(`ANSI_FMT("Unspecified control case: %b", `ANSI_FG_RED), inst);
       end
     endcase
   end
