@@ -22,8 +22,8 @@ CXX := g++
 endif
 LD := $(CXX)
 INCLUDES = $(addprefix -I, $(INC_PATH))
-CFLAGS  := -O2 -MMD -Wall $(INCLUDES) $(CFLAGS)
-LDFLAGS := -O2 $(LDFLAGS) 
+CFLAGS  := -O2 -MMD -Wall $(INCLUDES) $(CFLAGS) -pg
+LDFLAGS := -O2 $(LDFLAGS) -pg
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
 
