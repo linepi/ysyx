@@ -11,7 +11,6 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
   uint32_t reg_screensize = inl(VGACTL_ADDR);
   uint32_t width = reg_screensize >> 16;
   uint32_t height = reg_screensize & 0xffff;
-  printf("width = %u, height = %u\n", width, height);
   uint32_t size = width * height * sizeof(uint32_t);
   *cfg = (AM_GPU_CONFIG_T) {
     .present = true, .has_accel = false,
