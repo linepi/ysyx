@@ -16,6 +16,7 @@
 #include <common.h>
 #include <device/map.h>
 #include <SDL2/SDL.h>
+#include <macro.h>
 
 enum {
   reg_freq,
@@ -57,7 +58,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
       audio_base[SBUF_SIZE_OFFSET / OFFSET_DIV] = CONFIG_SB_ADDR;
       break;
     case INIT_OFFSET:
-      audio_base[INIT_OFFSET / OFFSET_DIV] = defined(CONFIG_HAS_AUDIO);
+      audio_base[INIT_OFFSET / OFFSET_DIV] = MUXDEF(CONFIG_HAS_AUDIO, 1, 0);
       break;
     case COUNT_OFFSET:
       audio_base[COUNT_OFFSET / OFFSET_DIV] = 0;
@@ -66,7 +67,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   }
 }
 
-void audioCallback(void* userdata, Uint8* stream, int len) {
+static void audioCallback(void* userdata, Uint8* stream, int len) {
     // 生成音频样本，并将其写入stream中
 }
 
