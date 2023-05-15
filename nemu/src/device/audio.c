@@ -28,11 +28,11 @@ enum {
 };
 
 #define FREQ_OFFSET 0
-#define CHANNELS_OFFSET 4
-#define SAMPLES_OFFSET 8
-#define SBUF_SIZE_OFFSET 12
-#define INIT_OFFSET 16
-#define COUNT_OFFSET 20
+#define CHANNELS_OFFSET 1
+#define SAMPLES_OFFSET 2
+#define SBUF_SIZE_OFFSET 3
+#define INIT_OFFSET 4
+#define COUNT_OFFSET 5
 
 static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
@@ -40,13 +40,13 @@ static uint32_t *audio_base = NULL;
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   switch (offset) {
     case FREQ_OFFSET:
-      printf("device register -- freq writed with %d", audio_base[FREQ_OFFSET]);
+      printf("device register -- freq writed with %d\n", audio_base[FREQ_OFFSET]);
       break;
     case CHANNELS_OFFSET:
-      printf("device register -- channels writed with %d", audio_base[CHANNELS_OFFSET]);
+      printf("device register -- channels writed with %d\n", audio_base[CHANNELS_OFFSET]);
       break;
     case SAMPLES_OFFSET:
-      printf("device register -- samples writed with %d", audio_base[SAMPLES_OFFSET]);
+      printf("device register -- samples writed with %d\n", audio_base[SAMPLES_OFFSET]);
       break;
     case SBUF_SIZE_OFFSET:
       audio_base[SBUF_SIZE_OFFSET] = CONFIG_SB_ADDR;
