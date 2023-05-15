@@ -41,16 +41,16 @@ static uint32_t sbuf_l, sbuf_r, sbuf_count;
 static uint32_t *audio_base = NULL;
 static SDL_AudioSpec s = {};
 
-#define R_SBUF ({
-  uint8_t res;
-  if (sbuf_count > 0) {
-    res = sbuf[sbuf_l];
-    sbuf_l = (sbuf_l + 1) & (CONFIG_SB_SIZE - 1);
-    sbuf_count--;
-  } else {
-    res = 0;
-  }
-  res;
+#define R_SBUF ({ \
+  uint8_t res; \
+  if (sbuf_count > 0) { \
+    res = sbuf[sbuf_l]; \
+    sbuf_l = (sbuf_l + 1) & (CONFIG_SB_SIZE - 1); \
+    sbuf_count--; \
+  } else { \
+    res = 0; \
+  } \
+  res; \
 })
 
 #define W_SBUF(byte) do { \
