@@ -76,7 +76,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
       s.samples = audio_base[SAMPLES_OFFSET / OFFSET_DIV];
       break;
     case SBUF_SIZE_OFFSET:
-      audio_base[SBUF_SIZE_OFFSET / OFFSET_DIV] = CONFIG_SB_ADDR;
+      audio_base[SBUF_SIZE_OFFSET / OFFSET_DIV] = CONFIG_SB_SIZE;
       break;
     case INIT_OFFSET:
       audio_base[INIT_OFFSET / OFFSET_DIV] = MUXDEF(CONFIG_HAS_AUDIO, 1, 0);
