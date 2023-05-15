@@ -37,8 +37,29 @@ enum {
 #define OFFSET_DIV 4
 
 static uint8_t *sbuf = NULL;
+static uint32_t sbuf_l, sbuf_r, sbuf_count;
 static uint32_t *audio_base = NULL;
 static SDL_AudioSpec s = {};
+
+#define R_SBUF ({
+  uint8_t res;
+  if (sbuf_count > 0) {
+    res = sbuf[sbuf_l];
+    sbuf_l = (sbuf_l + 1) & (CONFIG_SB_SIZE - 1);
+    sbuf_count--;
+  } else {
+    res = 0;
+  }
+  res;
+})
+
+#define W_SBUF(byte) do { \
+  if (sbuf_count <= CONFIG_SB_SIZE) { \
+    sbuf[sbuf_r] = byte; \
+    sbuf_r = (sbuf_r + 1) & (CONFIG_SB_SIZE - 1); \
+    sbuf_count++; \
+  } \
+} while(0)
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   switch (offset) {
@@ -61,14 +82,21 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
       audio_base[INIT_OFFSET / OFFSET_DIV] = MUXDEF(CONFIG_HAS_AUDIO, 1, 0);
       break;
     case COUNT_OFFSET:
-      audio_base[COUNT_OFFSET / OFFSET_DIV] = 0;
+      audio_base[COUNT_OFFSET / OFFSET_DIV] = sbuf_count;
       break;
     default: panic("device/Audio.c: do not support offset = %d", offset);
   }
 }
 
+static void audio_sbuf_io_handler(uint32_t offset, int len, bool is_write) {
+  assert(is_write == 1);
+  sbuf_count++;
+}
+
 static void audioCallback(void* userdata, Uint8* stream, int len) {
-    // 生成音频样本，并将其写入stream中
+  for (int i = 0; i < len; i++) {
+    stream[i] = R_SBUF;
+  }
 }
 
 static void init_SDL_AudioSpec() {
@@ -90,6 +118,7 @@ void init_audio() {
 #endif
 
   sbuf = (uint8_t *)new_space(CONFIG_SB_SIZE);
-  add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
+  add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, audio_sbuf_io_handler);
+
   init_SDL_AudioSpec();
 }

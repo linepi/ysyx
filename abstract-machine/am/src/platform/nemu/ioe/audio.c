@@ -8,7 +8,11 @@
 #define AUDIO_INIT_ADDR      (AUDIO_ADDR + 0x10)
 #define AUDIO_COUNT_ADDR     (AUDIO_ADDR + 0x14)
 
+static int sbufsize;
+static int sbuf_r;
+
 void __am_audio_init() {
+  sbufsize = inl(AUDIO_SBUF_SIZE_ADDR);
 }
 
 void __am_audio_config(AM_AUDIO_CONFIG_T *cfg) {
@@ -27,5 +31,15 @@ void __am_audio_status(AM_AUDIO_STATUS_T *stat) {
 }
 
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
-
+  uint8_t *start = ctl->buf.start;
+  uint8_t *end = ctl->buf.end;
+  int len = end - start;
+  // 若当前流缓冲区的空闲空间少于即将写入的音频数据, 此次写入将会一直等待
+  // 直到有足够的空闲空间将音频数据完全写入流缓冲区才会返回.
+  while (sbufsize - inl(AUDIO_COUNT_ADDR) < len);
+  while (start <= end) {
+    outb(AUDIO_SBUF_ADDR + sbuf_r, *start);
+    sbuf_r = (sbuf_r + 1) & (sbufsize - 1);
+    start++;
+  } 
 }
