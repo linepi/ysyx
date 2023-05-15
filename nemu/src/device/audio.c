@@ -96,7 +96,7 @@ static void audio_sbuf_io_handler(uint32_t offset, int len, bool is_write) {
 
 static void audioCallback(void* userdata, Uint8* stream, int len) {
   for (int i = 0; i < len; i++) {
-    stream[i] = 0;
+    stream[i] = R_SBUF;
   }
 }
 
@@ -122,4 +122,5 @@ void init_audio() {
   add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, audio_sbuf_io_handler);
 
   init_SDL_AudioSpec();
+  printf("%u %u %u\n", sbuf_l, sbuf_r, sbuf_count);
 }
