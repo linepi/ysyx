@@ -27,10 +27,37 @@ enum {
   nr_reg
 };
 
+#define FREQ_OFFSET 0
+#define CHANNELS_OFFSET 4
+#define SAMPLES_OFFSET 8
+#define SBUF_SIZE_OFFSET 12
+#define INIT_OFFSET 16
+#define COUNT_OFFSET 20
+
 static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
+  switch (offset) {
+    case FREQ_OFFSET:
+      printf("device register -- freq writed with %d", audio_base[FREQ_OFFSET]);
+      break;
+    case CHANNELS_OFFSET:
+      printf("device register -- channels writed with %d", audio_base[CHANNELS_OFFSET]);
+      break;
+    case SAMPLES_OFFSET:
+      printf("device register -- samples writed with %d", audio_base[SAMPLES_OFFSET]);
+      break;
+    case SBUF_SIZE_OFFSET:
+      audio_base[SBUF_SIZE_OFFSET] = CONFIG_SB_ADDR;
+      break;
+    case INIT_OFFSET:
+      break;
+    case COUNT_OFFSET:
+      audio_base[COUNT_OFFSET] = 0;
+      break;
+    default: panic("device/Audio.c: do not support offset = %d", offset);
+  }
 }
 
 void init_audio() {
