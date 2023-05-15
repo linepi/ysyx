@@ -37,28 +37,46 @@ enum {
 
 static uint8_t *sbuf = NULL;
 static uint32_t *audio_base = NULL;
+static SDL_AudioSpec s = {};
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   switch (offset) {
     case FREQ_OFFSET:
       printf("device register -- freq writed with %d\n", audio_base[FREQ_OFFSET / OFFSET_DIV]);
+      s.freq = audio_base[FREQ_OFFSET / OFFSET_DIV];
       break;
     case CHANNELS_OFFSET:
       printf("device register -- channels writed with %d\n", audio_base[CHANNELS_OFFSET / OFFSET_DIV]);
+      s.channels = audio_base[CHANNELS_OFFSET / OFFSET_DIV];
       break;
     case SAMPLES_OFFSET:
       printf("device register -- samples writed with %d\n", audio_base[SAMPLES_OFFSET / OFFSET_DIV]);
+      s.samples = audio_base[SAMPLES_OFFSET / OFFSET_DIV];
       break;
     case SBUF_SIZE_OFFSET:
       audio_base[SBUF_SIZE_OFFSET / OFFSET_DIV] = CONFIG_SB_ADDR;
       break;
     case INIT_OFFSET:
+      audio_base[INIT_OFFSET / OFFSET_DIV] = defined(CONFIG_HAS_AUDIO);
       break;
     case COUNT_OFFSET:
       audio_base[COUNT_OFFSET / OFFSET_DIV] = 0;
       break;
     default: panic("device/Audio.c: do not support offset = %d", offset);
   }
+}
+
+void audioCallback(void* userdata, Uint8* stream, int len) {
+    // 生成音频样本，并将其写入stream中
+}
+
+static void init_SDL_AudioSpec() {
+  s.format = AUDIO_S16SYS;  // 假设系统中音频数据的格式总是使用16位有符号数来表示
+  s.userdata = NULL;        // 不使用
+  s.callback = audioCallback;
+  SDL_InitSubSystem(SDL_INIT_AUDIO);
+  SDL_OpenAudio(&s, NULL);
+  SDL_PauseAudio(0);
 }
 
 void init_audio() {
@@ -72,4 +90,5 @@ void init_audio() {
 
   sbuf = (uint8_t *)new_space(CONFIG_SB_SIZE);
   add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, NULL);
+  init_SDL_AudioSpec();
 }

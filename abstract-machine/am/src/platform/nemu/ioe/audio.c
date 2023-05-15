@@ -9,11 +9,10 @@
 #define AUDIO_COUNT_ADDR     (AUDIO_ADDR + 0x14)
 
 void __am_audio_init() {
-
 }
 
 void __am_audio_config(AM_AUDIO_CONFIG_T *cfg) {
-  cfg->present = true;
+  cfg->present = inl(AUDIO_INIT_ADDR);
   cfg->bufsize = inl(AUDIO_SBUF_SIZE_ADDR);
 }
 
