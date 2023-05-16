@@ -40,6 +40,7 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
   while (start <= end) {
     outb(AUDIO_SBUF_ADDR + sbuf_r, *start);
     sbuf_r = (sbuf_r + 1) & (sbufsize - 1);
+    printf("sbuf_r = %d\n", sbuf_r);
     start++;
   } 
 }
