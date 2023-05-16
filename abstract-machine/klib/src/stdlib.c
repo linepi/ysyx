@@ -53,10 +53,10 @@ int itoa(int num, char *str, int base) {
 
 int utoa(unsigned int num, char *str, int base) {
   if (base != 10 && base != 16) return -1;
-  printf("base = %d ", base);
   int digit;
   int i;
   for (i = 0; num || i == 0; num /= base, i++) {
+    printf("%d ", num);
     digit = num % base;
 		if (digit < 0xA)
 			str[i] = '0' + digit;
