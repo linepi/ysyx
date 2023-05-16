@@ -68,7 +68,7 @@ uint8_t read_sbuf() {
 	} else { 
 		res = 0; 
 	} 
-	res; 
+	return res; 
 }
 
 #define W_SBUF(byte) do { \
