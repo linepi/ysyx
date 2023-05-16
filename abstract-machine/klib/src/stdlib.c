@@ -96,6 +96,7 @@ int ultoa(unsigned long num, char *str, int base) {
   int i;
   for (i = 0; num || i == 0; num /= base, i++) {
     digit = num % base;
+    if (digit < 0) digit = -digit;
 		if (digit < 0xA)
 			str[i] = '0' + digit;
 		else
