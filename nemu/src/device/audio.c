@@ -123,6 +123,7 @@ static void audio_sbuf_io_handler(uint32_t offset, int len, bool is_write) {
   assert(offset < CONFIG_SB_SIZE);
   pthread_mutex_lock(&lock); \
   sbuf_count++;
+  if (sbuf_count & 0x1000 = 0) printf("sbuf_count = %u\n", sbuf_count);
   pthread_mutex_unlock(&lock); \
 }
 
