@@ -130,7 +130,7 @@ static void audioCallback(void* userdata, Uint8* stream, int len) {
   for (int i = 0; i < len; i++) {
     uint8_t t = R_SBUF;
     stream[i] = t;
-    if (t == 0) printf("0");
+    if (t == 1) printf("1");
   }
 }
 
