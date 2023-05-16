@@ -57,7 +57,7 @@ int utoa(unsigned int num, char *str, int base) {
   int i;
   for (i = 0; num || i == 0; num /= base, i++) {
     digit = num % base;
-    printf("%d ", digit);
+    printf("%u ", digit);
 		if (digit < 0xA)
 			str[i] = '0' + digit;
 		else
