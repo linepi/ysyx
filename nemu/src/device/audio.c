@@ -49,15 +49,15 @@ static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 #define R_SBUF ({ \
   uint8_t res; \
+  pthread_mutex_lock(&lock); \
   if (sbuf_count > 0) { \
     res = sbuf[sbuf_l]; \
     sbuf_l = (sbuf_l + 1) & (CONFIG_SB_SIZE - 1); \
-    pthread_mutex_lock(&lock); \
     sbuf_count--; \
-    pthread_mutex_unlock(&lock); \
   } else { \
-    res = 1; \
+    res = 0; \
   } \
+  pthread_mutex_unlock(&lock); \
   res; \
 })
 
@@ -121,16 +121,15 @@ static void audio_sbuf_io_handler(uint32_t offset, int len, bool is_write) {
   assert(is_write == 1);
   assert(len == 1);
   assert(offset < CONFIG_SB_SIZE);
-  pthread_mutex_lock(&lock); \
+  pthread_mutex_lock(&lock);
   sbuf_count++;
-  pthread_mutex_unlock(&lock); \
+  pthread_mutex_unlock(&lock);
 }
 
 static void audioCallback(void* userdata, Uint8* stream, int len) {
   for (int i = 0; i < len; i++) {
     uint8_t t = R_SBUF;
     stream[i] = t;
-    if (t == 1) printf("1");
   }
 }
 
