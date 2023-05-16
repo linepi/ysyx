@@ -39,7 +39,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
   IFDEF(CONFIG_ITRACE_COND, if (g_print_step) puts(_this->logbuf));
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
-  // IFDEF(CONFIG_ITRACE, if (elf_fp) ftrace(_this->pc));
+  IFDEF(CONFIG_ITRACE, if (elf_fp) ftrace(_this->pc));
   IFDEF(CONFIG_ITRACE, pc_trace(_this->pc));
 #ifdef CONFIG_WATCHPOINT
   // watch point check
