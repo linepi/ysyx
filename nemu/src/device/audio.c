@@ -52,7 +52,7 @@ static SDL_AudioSpec s = {};
     sbuf_l = (sbuf_l + 1) & (CONFIG_SB_SIZE - 1); \
     sbuf_count--; \
   } else { \
-    res = 5; \
+    res = 0xf4; \
   } \
   res; \
 })
