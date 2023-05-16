@@ -96,14 +96,20 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
       audio_base[SBUF_SIZE_OFFSET / OFFSET_DIV] = CONFIG_SB_SIZE;
       break;
     case INIT_OFFSET:
-      assert(is_write == 1);
-      init_SDL_AudioSpec();
+      if (is_write == 1) {
+        if (audio_base[INIT_OFFSET / OFFSET_DIV] == true)
+          init_SDL_AudioSpec();
+        else
+          panic("device/audio.c: Unknown init value");
+      } else {
+        audio_base[INIT_OFFSET / OFFSET_DIV] = MUXDEF(CONFIG_HAS_AUDIO, true, false);
+      }
       break;
     case COUNT_OFFSET:
       assert(is_write == 0);
       audio_base[COUNT_OFFSET / OFFSET_DIV] = sbuf_count;
       break;
-    default: panic("device/Audio.c: do not support offset = %d", offset);
+    default: panic("device/audio.c: do not support offset = %d", offset);
   }
 }
 
