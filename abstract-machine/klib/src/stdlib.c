@@ -51,9 +51,9 @@ int itoa(int num, char *str, int base) {
   return i;
 }
 
-int utoa(unsigned int num, char *str, int base) {
+int utoa(unsigned int num, char *str, unsigned int base) {
   if (base != 10 && base != 16) return -1;
-  unsigned int digit;
+  int digit;
   int i;
   for (i = 0; num || i == 0; num /= base, i++) {
     digit = num % base;
