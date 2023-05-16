@@ -91,6 +91,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 static void audio_sbuf_io_handler(uint32_t offset, int len, bool is_write) {
   assert(is_write == 1);
   assert(len == 1);
+  assert(offset < CONFIG_SB_SIZE);
   sbuf_count++;
 }
 
