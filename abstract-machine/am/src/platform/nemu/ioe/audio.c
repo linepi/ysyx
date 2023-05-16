@@ -42,7 +42,6 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
   // 直到有足够的空闲空间将音频数据完全写入流缓冲区才会返回.
   while ((int)sbufsize - (int)inl(AUDIO_COUNT_ADDR) < len) {}; 
   while (start <= end) {
-    printf("outb to %x\n", AUDIO_SBUF_ADDR + sbuf_r);
     outb(AUDIO_SBUF_ADDR + sbuf_r, *start);
     sbuf_r = (sbuf_r + 1) & (sbufsize - 1);
     start++;
