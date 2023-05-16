@@ -37,11 +37,10 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
   uint8_t *start = ctl->buf.start;
   uint8_t *end = ctl->buf.end;
   int len = end - start;
+  if (len < 0) return;
   // 若当前流缓冲区的空闲空间少于即将写入的音频数据, 此次写入将会一直等待
   // 直到有足够的空闲空间将音频数据完全写入流缓冲区才会返回.
-  while (sbufsize - (int)inl(AUDIO_COUNT_ADDR) < len) {
-    printf("1");
-  }; 
+  while ((int)sbufsize - (int)inl(AUDIO_COUNT_ADDR) < len) {}; 
   while (start <= end) {
     printf("outb to %x\n", AUDIO_SBUF_ADDR + sbuf_r);
     outb(AUDIO_SBUF_ADDR + sbuf_r, *start);
