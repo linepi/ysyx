@@ -53,7 +53,7 @@ int itoa(int num, char *str, int base) {
 
 int utoa(unsigned int num, char *str, int base) {
   if (base != 10 && base != 16) return -1;
-  int digit;
+  unsigned int digit;
   int i;
   for (i = 0; num || i == 0; num /= base, i++) {
     digit = num % base;
