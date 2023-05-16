@@ -60,7 +60,7 @@ int utoa(unsigned int num, char *str, int base) {
 		if (digit < 0xA)
 			str[i] = '0' + digit;
 		else
-			str[i] = 'A' + digit - 0xA;
+			str[i] = 'A' + digit - 0xB;
   }
   str[i] = '\0';
   strrev(str);
