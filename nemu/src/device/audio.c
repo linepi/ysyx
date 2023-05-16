@@ -17,6 +17,7 @@
 #include <device/map.h>
 #include <SDL2/SDL.h>
 #include <macro.h>
+#include <pthread.h>
 
 enum {
   reg_freq,
@@ -44,15 +45,18 @@ static uint8_t *sbuf = NULL;
 static uint32_t sbuf_l, sbuf_r, sbuf_count;
 static uint32_t *audio_base = NULL;
 static SDL_AudioSpec s = {};
+static pthread_mutex_lock lock = PTHREAD_MUTEX_INITIALIZER;
 
 #define R_SBUF ({ \
   uint8_t res; \
   if (sbuf_count > 0) { \
     res = sbuf[sbuf_l]; \
     sbuf_l = (sbuf_l + 1) & (CONFIG_SB_SIZE - 1); \
+    pthread_mutex_lock(&lock); \
     sbuf_count--; \
+    pthread_mutex_unlock(&lock); \
   } else { \
-    res = 0xf4; \
+    res = 0; \
   } \
   res; \
 })
@@ -117,7 +121,9 @@ static void audio_sbuf_io_handler(uint32_t offset, int len, bool is_write) {
   assert(is_write == 1);
   assert(len == 1);
   assert(offset < CONFIG_SB_SIZE);
+  pthread_mutex_lock(&lock); \
   sbuf_count++;
+  pthread_mutex_unlock(&lock); \
 }
 
 static void audioCallback(void* userdata, Uint8* stream, int len) {
