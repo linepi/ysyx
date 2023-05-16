@@ -77,24 +77,30 @@ static void init_SDL_AudioSpec() {
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   switch (offset) {
     case FREQ_OFFSET:
+      assert(is_write == 1);
       printf("device register -- freq writed with %d\n", audio_base[FREQ_OFFSET / OFFSET_DIV]);
       s.freq = audio_base[FREQ_OFFSET / OFFSET_DIV];
       break;
     case CHANNELS_OFFSET:
+      assert(is_write == 1);
       printf("device register -- channels writed with %d\n", audio_base[CHANNELS_OFFSET / OFFSET_DIV]);
       s.channels = audio_base[CHANNELS_OFFSET / OFFSET_DIV];
       break;
     case SAMPLES_OFFSET:
+      assert(is_write == 1);
       printf("device register -- samples writed with %d\n", audio_base[SAMPLES_OFFSET / OFFSET_DIV]);
       s.samples = audio_base[SAMPLES_OFFSET / OFFSET_DIV];
       break;
     case SBUF_SIZE_OFFSET:
+      assert(is_write == 0);
       audio_base[SBUF_SIZE_OFFSET / OFFSET_DIV] = CONFIG_SB_SIZE;
       break;
     case INIT_OFFSET:
+      assert(is_write == 1);
       init_SDL_AudioSpec();
       break;
     case COUNT_OFFSET:
+      assert(is_write == 0);
       audio_base[COUNT_OFFSET / OFFSET_DIV] = sbuf_count;
       break;
     default: panic("device/Audio.c: do not support offset = %d", offset);
