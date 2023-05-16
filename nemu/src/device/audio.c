@@ -45,7 +45,7 @@ static uint8_t *sbuf = NULL;
 static uint32_t sbuf_l, sbuf_r, sbuf_count;
 static uint32_t *audio_base = NULL;
 static SDL_AudioSpec s = {};
-static pthread_mutex_lock lock = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 #define R_SBUF ({ \
   uint8_t res; \
