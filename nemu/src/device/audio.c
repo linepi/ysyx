@@ -122,8 +122,7 @@ static void audio_sbuf_io_handler(uint32_t offset, int len, bool is_write) {
 
 static void audioCallback(void* userdata, Uint8* stream, int len) {
   for (int i = 0; i < len; i++) {
-    uint8_t t = R_SBUF;
-    stream[i] = t;
+    stream[i] = R_SBUF;
   }
 }
 
