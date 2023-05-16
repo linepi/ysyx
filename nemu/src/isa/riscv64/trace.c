@@ -119,7 +119,7 @@ void _frame_dump(vaddr_t pc, int n) {
 // dump n static instruction before and after pc
 void frame_dump(vaddr_t pc, int n) {
   if (functbl) 
-    printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func->name, cpu.pc);
+    printf(ANSI_FMT("In function %s(), frame dump:\n", ANSI_FG_GREEN), cur_func->name);
   vaddr_t _pc = MAX(pc - 4 * (n/2), CONFIG_MBASE);
   _frame_dump(_pc, n);
 }
@@ -132,7 +132,7 @@ void pc_trace(vaddr_t pc) {
 
 // dump the latest n instructions that are executed
 void pc_trace_dump(int n) {
-  printf(ANSI_FMT("Frame %s(), pc trace dump:\n", ANSI_FG_RED), cur_func->name);
+  printf(ANSI_FMT("In function %s(), pc trace dump:\n", ANSI_FG_RED), cur_func->name);
   char disa[128];
   for (int i = (pc_road.cur + NR_PC_ROAD - n) % NR_PC_ROAD; n--;i = (i + 1) % NR_PC_ROAD) {
     vaddr_t pc = pc_road.arr[i];
