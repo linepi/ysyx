@@ -56,7 +56,7 @@ static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
     sbuf_count--; \
     pthread_mutex_unlock(&lock); \
   } else { \
-    res = 0; \
+    res = 1; \
   } \
   res; \
 })
