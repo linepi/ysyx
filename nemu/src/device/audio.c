@@ -36,6 +36,10 @@ enum {
 #define COUNT_OFFSET 20
 #define OFFSET_DIV 4
 
+static void audio_sbuf_io_handler(uint32_t offset, int len, bool is_write);
+static void init_SDL_AudioSpec();
+static void audioCallback(void* userdata, Uint8* stream, int len);
+
 static uint8_t *sbuf = NULL;
 static uint32_t sbuf_l, sbuf_r, sbuf_count;
 static uint32_t *audio_base = NULL;
