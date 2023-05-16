@@ -123,13 +123,14 @@ static void audio_sbuf_io_handler(uint32_t offset, int len, bool is_write) {
   assert(offset < CONFIG_SB_SIZE);
   pthread_mutex_lock(&lock); \
   sbuf_count++;
-  printf("sbuf_count = %u\n", sbuf_count);
   pthread_mutex_unlock(&lock); \
 }
 
 static void audioCallback(void* userdata, Uint8* stream, int len) {
   for (int i = 0; i < len; i++) {
-    stream[i] = R_SBUF;
+    uint8_t t = R_SBUF;
+    stream[i] = t;
+    if (t == 0) printf("0");
   }
 }
 
