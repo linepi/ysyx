@@ -38,7 +38,6 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
   uint8_t *end = ctl->buf.end;
   int len = end - start;
   if (len < 0) {
-    printf("Try to play invalid audio\n"); 
     return;
   }
   // 若当前流缓冲区的空闲空间少于即将写入的音频数据, 此次写入将会一直等待
