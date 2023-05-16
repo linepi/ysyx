@@ -53,6 +53,7 @@ int itoa(int num, char *str, int base) {
 
 int utoa(unsigned int num, char *str, int base) {
   if (base != 10 && base != 16) return -1;
+  printf("str = %s ", str);
   int digit;
   int i;
   for (i = 0; num || i == 0; num /= base, i++) {
@@ -64,7 +65,7 @@ int utoa(unsigned int num, char *str, int base) {
   }
   str[i] = '\0';
   strrev(str);
-  printf("%s ", str);
+  printf("str = %s ", str);
   return i;
 }
 
