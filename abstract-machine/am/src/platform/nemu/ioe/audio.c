@@ -13,12 +13,12 @@ static uint32_t sbufsize;
 static uint32_t sbuf_r;
 
 void __am_audio_init() {
-  sbufsize = inl(AUDIO_SBUF_SIZE_ADDR);
 }
 
 void __am_audio_config(AM_AUDIO_CONFIG_T *cfg) {
   cfg->present = inl(AUDIO_INIT_ADDR);
   cfg->bufsize = inl(AUDIO_SBUF_SIZE_ADDR);
+  sbufsize = inl(AUDIO_SBUF_SIZE_ADDR);
 }
 
 void __am_audio_ctrl(AM_AUDIO_CTRL_T *ctrl) {
