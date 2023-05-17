@@ -68,8 +68,9 @@ module PC(input clk, input rst, output reg [63:0] pc, output [31:0] inst);
   // about pc and instruction 
   wire [63:0] snpc, dnpc;
   memory m_inst(.addr(pc), .wdata(64'd0), .wen(`false), .ren(~rst), .wmask(`mem_mask_read), .rdata({nothing, inst}));
-  alu #(64) a_snpc(.A(pc), .B(`inst_len), .sel(`alu_sel_add), .res(snpc));
-  mux_key_with_default #(2, 1, 64) pc_mux(dnpc, pc_sel, `PC_INIT, {
+
+  assign snpc = pc + 4;
+  mux_key #(2, 1, 64) pc_mux(dnpc, pc_sel, {
     `pc_sel_snpc, snpc, 
     `pc_sel_alu, alu_res
   });
