@@ -15,6 +15,7 @@ int isa_exec_once(Decode *s) {
   if (!inited) {
     PC = new VPC;
     PC->rst = true;
+    single_cycle();
     inited = true; 
   } else {
     PC->rst = false;
