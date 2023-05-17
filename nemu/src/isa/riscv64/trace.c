@@ -79,13 +79,13 @@ void ftrace(vaddr_t pc) {
       if (g_print_step) 
         printf(ANSI_FMT("call %s\n", ANSI_FG_BLUE), functbl[i].name);
       func_stack_top->func = &functbl[i];
-      cur_func = func_stack_top->func;
+      cur_func = &functbl[i];
       if (!func_stack_top->next) {
         func_stack_top->next = (struct func_stack_t *)wmalloc(sizeof(struct func_stack_t));
+        assert(func_stack_top->next != NULL);
         func_stack_top->next->pre = func_stack_top;
         func_stack_top->next->next = NULL;
         func_stack_top->next->func = NULL;
-        assert(func_stack_top->next != NULL);
       }
       func_stack_top = func_stack_top->next;
       break;
@@ -119,7 +119,7 @@ void _frame_dump(vaddr_t pc, int n) {
 // dump n static instruction before and after pc
 void frame_dump(vaddr_t pc, int n) {
   if (functbl) 
-    printf(ANSI_FMT("Frame %s(), with pc = 0x%016lx:\n", ANSI_FG_GREEN), cur_func->name, cur_func->addr);
+    printf(ANSI_FMT("In function %s(), frame dump:\n", ANSI_FG_GREEN), cur_func->name);
   vaddr_t _pc = MAX(pc - 4 * (n/2), CONFIG_MBASE);
   _frame_dump(_pc, n);
 }
@@ -132,7 +132,7 @@ void pc_trace(vaddr_t pc) {
 
 // dump the latest n instructions that are executed
 void pc_trace_dump(int n) {
-  printf(ANSI_FMT("pc trace dump:\n", ANSI_FG_GREEN));
+  printf(ANSI_FMT("In function %s(), pc trace dump:\n", ANSI_FG_RED), cur_func->name);
   char disa[128];
   for (int i = (pc_road.cur + NR_PC_ROAD - n) % NR_PC_ROAD; n--;i = (i + 1) % NR_PC_ROAD) {
     vaddr_t pc = pc_road.arr[i];

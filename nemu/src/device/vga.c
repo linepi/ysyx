@@ -92,9 +92,9 @@ static void vgactl_io_handler(uint32_t offset, int len, bool is_write) {
   }
 }
 
-static void vmem_io_handler(uint32_t offset, int len, bool is_write) {
+// static void vmem_io_handler(uint32_t offset, int len, bool is_write) {
 
-}
+// }
 
 
 void init_vga() {

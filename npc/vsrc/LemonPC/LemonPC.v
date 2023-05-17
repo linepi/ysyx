@@ -6,7 +6,7 @@ import "DPI-C" function void npc_vmem_read(input longint raddr, output longint r
 import "DPI-C" function void npc_vmem_write(input longint waddr, input longint wdata, input byte wmask);
 
 
-module PC(input clk, output reg [63:0] pc, output [31:0] inst);
+module PC(input clk, input rst, output reg [63:0] pc, output [31:0] inst);
   wire [31:0] nothing;
   // selects and flags
   wire ebreak_flag, pc_sel, alu_b_sel, 
@@ -67,17 +67,18 @@ module PC(input clk, output reg [63:0] pc, output [31:0] inst);
 
   // about pc and instruction 
   wire [63:0] snpc, dnpc;
-  memory m_inst(.addr(pc), .wdata(64'd0), .wen(`false), .ren(`true), .wmask(`mem_mask_read), .rdata({nothing, inst}));
+  memory m_inst(.addr(pc), .wdata(64'd0), .wen(`false), .ren(~rst), .wmask(`mem_mask_read), .rdata({nothing, inst}));
   alu #(64) a_snpc(.A(pc), .B(`inst_len), .sel(`alu_sel_add), .res(snpc));
   mux_key_with_default #(2, 1, 64) pc_mux(dnpc, pc_sel, `PC_INIT, {
     `pc_sel_snpc, snpc, 
     `pc_sel_alu, alu_res
   });
   always @(posedge clk) begin
-    pc <= dnpc;
+    if (rst) begin 
+      pc <= `PC_INIT;
+    end else begin 
+      pc <= dnpc;
+    end
     if (ebreak_flag) ebreak();
-  end
-  initial begin
-    pc = `PC_INIT;
   end
 endmodule

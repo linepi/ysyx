@@ -493,6 +493,7 @@ module control (
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_alu;
       end            
+      32'd0: ;
       default: begin
         ebreak_flag = `true;
         $display(`ANSI_FMT("Unspecified control case: %b", `ANSI_FG_RED), inst);

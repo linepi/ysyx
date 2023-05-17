@@ -25,7 +25,6 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   }
   uint32_t reg_screensize = inl(VGACTL_ADDR);
   int w = reg_screensize >> 16;  
-  int h = reg_screensize & 0xffff;  
   int p_idx = 0;
   uint32_t *pixels = (uint32_t *)ctl->pixels;
   for (int j = ctl->y; j < ctl->y + ctl->h; j++) {

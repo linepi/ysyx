@@ -44,7 +44,7 @@ int itoa(int num, char *str, int base) {
 		if (digit < 0xA)
 			str[i] = '0' + digit;
 		else
-			str[i] = 'A' + digit - 0xA;
+			str[i] = 'a' + digit - 0xA;
   }
   str[i] = '\0';
   strrev(str + off);
@@ -57,10 +57,11 @@ int utoa(unsigned int num, char *str, int base) {
   int i;
   for (i = 0; num || i == 0; num /= base, i++) {
     digit = num % base;
+    if (digit < 0) digit = -digit;
 		if (digit < 0xA)
 			str[i] = '0' + digit;
 		else
-			str[i] = 'A' + digit - 0xA;
+			str[i] = 'a' + digit - 0xA;
   }
   str[i] = '\0';
   strrev(str);
@@ -82,7 +83,7 @@ int ltoa(long num, char *str, int base) {
 		if (digit < 0xA)
 			str[i] = '0' + digit;
 		else
-			str[i] = 'A' + digit - 0xA;
+			str[i] = 'a' + digit - 0xA;
   }
   str[i] = '\0';
   strrev(str + off);
@@ -95,10 +96,11 @@ int ultoa(unsigned long num, char *str, int base) {
   int i;
   for (i = 0; num || i == 0; num /= base, i++) {
     digit = num % base;
+    if (digit < 0) digit = -digit;
 		if (digit < 0xA)
 			str[i] = '0' + digit;
 		else
-			str[i] = 'A' + digit - 0xA;
+			str[i] = 'a' + digit - 0xA;
   }
   str[i] = '\0';
   strrev(str);
