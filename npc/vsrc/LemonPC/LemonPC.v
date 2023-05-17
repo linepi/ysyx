@@ -6,7 +6,7 @@ import "DPI-C" function void npc_vmem_read(input longint raddr, output longint r
 import "DPI-C" function void npc_vmem_write(input longint waddr, input longint wdata, input byte wmask);
 
 
-module PC(input clk, output reg [63:0] pc, output [31:0] inst);
+module PC(input clk, input rst, output reg [63:0] pc, output [31:0] inst);
   wire [31:0] nothing;
   // selects and flags
   wire ebreak_flag, pc_sel, alu_b_sel, 
@@ -74,10 +74,11 @@ module PC(input clk, output reg [63:0] pc, output [31:0] inst);
     `pc_sel_alu, alu_res
   });
   always @(posedge clk) begin
-    pc <= dnpc;
+    if (rst) begin 
+      pc <= `PC_INIT;
+    end else begin 
+      pc <= dnpc;
+    end
     if (ebreak_flag) ebreak();
-  end
-  initial begin
-    pc = `PC_INIT;
   end
 endmodule

@@ -14,6 +14,7 @@ void single_cycle() {
 int isa_exec_once(Decode *s) {
   if (!inited) {
     PC = new VPC;
+    PC->rst = true;
     inited = true; 
   }
 
