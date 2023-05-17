@@ -5,7 +5,6 @@ import "DPI-C" function void set_gpr_ptr(input logic [63:0] a []);
 import "DPI-C" function void npc_vmem_read(input longint raddr, output longint rdata);
 import "DPI-C" function void npc_vmem_write(input longint waddr, input longint wdata, input byte wmask);
 
-
 module PC(input clk, input rst, output reg [63:0] pc, output [31:0] inst);
   wire [31:0] nothing;
   // selects and flags
@@ -51,7 +50,7 @@ module PC(input clk, input rst, output reg [63:0] pc, output [31:0] inst);
   });
   
   control i_control(
-    .clk(clk), .inst(inst), .ebreak_flag(ebreak_flag), 
+    .inst(inst), .ebreak_flag(ebreak_flag), 
     .imm_sel(imm_sel), .pc_sel(pc_sel), .alu_sel(alu_sel),
     .alu_a_sel(alu_a_sel), .alu_b_sel(alu_b_sel),
     .reg_wen(reg_wen), .mem_wen(mem_wen), .mem_ren(mem_ren), .mem_mask(mem_mask),
@@ -63,11 +62,11 @@ module PC(input clk, input rst, output reg [63:0] pc, output [31:0] inst);
   alu #(64) a(.A(alu_a), .B(alu_b), .sel(alu_sel), .res(alu_res));
   branch_comp i_bc(reg1, reg2, b_eq, b_lt, b_ltu);
   imm_gen i_imm_gen(inst, imm_sel, imm);
-  memory m_mem(.addr(alu_res), .wdata(reg2), .wen(mem_wen), .ren(mem_ren), .wmask(mem_mask), .rdata(_mem_data));
+  memory d_mem(.addr(alu_res), .wdata(reg2), .wen(mem_wen), .ren(mem_ren), .wmask(mem_mask), .rdata(_mem_data));
 
   // about pc and instruction 
   wire [63:0] snpc, dnpc;
-  memory m_inst(.addr(pc), .wdata(64'd0), .wen(`false), .ren(~rst), .wmask(`mem_mask_read), .rdata({nothing, inst}));
+  memory i_mem(.addr(pc), .wdata(64'd0), .wen(`false), .ren(~rst), .wmask(`mem_mask_read), .rdata({nothing, inst}));
 
   assign snpc = pc + 4;
   mux_key #(2, 1, 64) pc_mux(dnpc, pc_sel, {

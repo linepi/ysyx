@@ -1,7 +1,6 @@
 `include "defines.v"
 
 module control (
-  input clk,
   input [31:0] inst,
   input b_eq,
   input b_lt,
@@ -493,7 +492,8 @@ module control (
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_alu;
       end            
-      32'd0: ;
+      32'd0: begin
+      end
       default: begin
         ebreak_flag = `true;
         $display(`ANSI_FMT("Unspecified control case: %b", `ANSI_FG_RED), inst);
