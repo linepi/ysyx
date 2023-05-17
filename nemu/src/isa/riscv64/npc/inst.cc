@@ -16,6 +16,8 @@ int isa_exec_once(Decode *s) {
     PC = new VPC;
     PC->rst = true;
     inited = true; 
+  } else {
+    PC->rst = false;
   }
 
   s->snpc += 4;
