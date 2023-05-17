@@ -1,4 +1,4 @@
-module bad_alu #(N) (
+module alu #(N) (
   input [N-1:0] A, 
   input [N-1:0] B,
   input [4:0] sel,  
