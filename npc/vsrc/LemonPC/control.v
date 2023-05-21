@@ -72,14 +72,14 @@ module control (
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_alu;
       end
-      32'b0000000_zzzzz_zzzzz_100_zzzzz_0110011: begin // srl(R)
+      32'b0000000_zzzzz_zzzzz_101_zzzzz_0110011: begin // srl(R)
         alu_sel = `alu_sel_srl;
         alu_a_sel = `alu_a_sel_rs1;
         alu_b_sel = `alu_b_sel_rs2;
         reg_wen = `true;
         reg_w_sel = `reg_w_sel_alu;
       end
-      32'b0000000_zzzzz_zzzzz_100_zzzzz_0110011: begin // sra(R)
+      32'b0100000_zzzzz_zzzzz_101_zzzzz_0110011: begin // sra(R)
         alu_sel = `alu_sel_sra;
         alu_a_sel = `alu_a_sel_rs1;
         alu_b_sel = `alu_b_sel_rs2;
@@ -496,7 +496,7 @@ module control (
       end
       default: begin
         ebreak_flag = `true;
-        $display(`ANSI_FMT("Unspecified control case: %b", `ANSI_FG_RED), inst);
+        $display("Unspecified control case: %b", inst);
       end
     endcase
   end

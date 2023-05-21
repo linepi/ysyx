@@ -3,6 +3,7 @@
 import "DPI-C" function void ebreak ();
 import "DPI-C" function void set_gpr_ptr(input logic [63:0] a []);
 import "DPI-C" function void npc_vmem_read(input longint raddr, output longint rdata);
+import "DPI-C" function void npc_inst_read(input longint pc, output int inst);
 import "DPI-C" function void npc_vmem_write(input longint waddr, input longint wdata, input byte wmask);
 
 module PC(input clk, input rst, output reg [63:0] pc, output [31:0] inst);
@@ -49,7 +50,7 @@ module PC(input clk, input rst, output reg [63:0] pc, output [31:0] inst);
     `reg_w_sel_pc, snpc
   });
   
-  control i_control(
+  control2 i_control(
     .inst(inst), .ebreak_flag(ebreak_flag), 
     .imm_sel(imm_sel), .pc_sel(pc_sel), .alu_sel(alu_sel),
     .alu_a_sel(alu_a_sel), .alu_b_sel(alu_b_sel),
@@ -66,7 +67,7 @@ module PC(input clk, input rst, output reg [63:0] pc, output [31:0] inst);
 
   // about pc and instruction 
   wire [63:0] snpc, dnpc;
-  memory i_mem(.addr(pc), .wdata(64'd0), .wen(`false), .ren(~rst), .wmask(`mem_mask_read), .rdata({nothing, inst}));
+  imem i_mem(.pc(pc), .inst(inst));
 
   assign snpc = pc + 4;
   mux_key #(2, 1, 64) pc_mux(dnpc, pc_sel, {
@@ -81,4 +82,5 @@ module PC(input clk, input rst, output reg [63:0] pc, output [31:0] inst);
     end
     if (ebreak_flag) ebreak();
   end
+
 endmodule

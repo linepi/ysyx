@@ -14,10 +14,13 @@ extern "C" {
 #include <cpu/cpu.h>
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
+#include <memory/paddr.h>
 }
 #define R(i) gpr(i)
 
 extern bool npc_end;
+extern bool npc_error;
+extern bool npc_inited;
 extern uint32_t *inst;
 extern vaddr_t *pc;
 void clean_PC();

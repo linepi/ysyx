@@ -35,3 +35,16 @@ extern "C" void npc_vmem_write(long long waddr, long long wdata, char wmask) {
 		Error("wmask not implemented\n");
 	}
 }
+
+extern "C" void npc_inst_read(long long pc, int *inst) {
+	if (in_pmem(pc)) {
+		*inst = paddr_read((vaddr_t)pc, 4);
+	} else {
+		if (npc_inited) {
+			printf(ANSI_FMT("Read inst from invalid PC: 0x%08llx\n", ANSI_FG_RED), pc);
+			npc_end = true;
+			npc_error = true;
+		}
+		*inst = 0;
+	}
+}
