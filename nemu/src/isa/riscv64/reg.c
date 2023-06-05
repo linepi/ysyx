@@ -35,6 +35,14 @@ void isa_reg_display() {
 word_t isa_reg_str2val(const char *s, bool *success) {
   if (strcmp(s, "pc") == 0) {
     return cpu.pc;
+  } else if (strcmp(s, "mtvec") == 0) {
+    return cpu.mtvec;
+  } else if (strcmp(s, "mstatus") == 0) {
+    return cpu.mstatus;
+  } else if (strcmp(s, "mepc") == 0) {
+    return cpu.mepc;
+  } else if (strcmp(s, "mcause") == 0) {
+    return cpu.mcause;
   }
   for( int i = 0; i < 32; i++) {
     if (strcmp(s, regs[i]) == 0) {

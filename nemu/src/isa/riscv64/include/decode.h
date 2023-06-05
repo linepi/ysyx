@@ -14,3 +14,30 @@
   uint32_t ut = (BITS(cht, 6, 6) << 12) | (BITS(cht, 5, 0) << 5) | (BITS(clt, 0, 0) << 11) | (BITS(clt, 4, 1) << 1); \
   *imm = SEXT(ut, 13); \
 } while(0)
+#define immCSR() do { \
+  *imm = BITS(i, 19, 15); \
+} while(0)
+
+// csr寄存器的标识符，在指令的上12位
+#define csr_code (s->isa.inst.val >> 20)
+#define csr_reg ({ \
+  word_t *ptr_csr; \
+  switch (csr_code) { \
+    case 0x305: \
+      ptr_csr = &cpu.mtvec; \
+      break; \
+    case 0x341: \
+      ptr_csr = &cpu.mepc; \
+      break; \
+    case 0x342: \
+      ptr_csr = &cpu.mcause; \
+      break; \
+    case 0x300: \
+      ptr_csr = &cpu.mstatus; \
+      break; \
+    default: \
+      assert(0); \
+      break; \
+  } \
+  ptr_csr; \
+})

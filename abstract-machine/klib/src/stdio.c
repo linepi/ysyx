@@ -30,6 +30,7 @@ int vprintf(const char *fmt, va_list ap) {
 int vsprintf(char *out, const char *fmt, va_list ap) {
   bool valid = (out != NULL); // if out = NULL, do not dereference it
   char *base = out;
+  char errorbuf[30] = "Not implement ";
   while (*fmt) {
     if (*fmt != '%') {
       if (valid) *out = *fmt;
@@ -76,6 +77,11 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           if (valid) out += utoa(x, out, 16);
           else out += INTEGER_LEN(x, 16);
           break;
+        case 'p':
+          unsigned long p = (unsigned long)va_arg(ap, void *);
+          if (valid) out += ultoa(p, out, 16);
+          else out += INTEGER_LEN(p, 16);
+          break;
         case 'l':
           switch (*(fmt+1)) {
             case 'd':
@@ -94,12 +100,26 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
               else out += INTEGER_LEN(lx, 16);
               break;
             case 'f':
-            default: panic("Not implemented");
+            default: {
+              int len = strlen(errorbuf);
+              errorbuf[len] = '%';
+              errorbuf[len+1] = *fmt;
+              errorbuf[len+2] = *(fmt + 1);
+              errorbuf[len+3] = 0;
+              panic(errorbuf);
+              break;
+            }
           }
           fmt += 1;
           break;
         case 'f':
-        default: panic("Not implemented");
+        default: {
+          int len = strlen(errorbuf);
+          errorbuf[len] = '%';
+          errorbuf[len+1] = *fmt;
+          errorbuf[len+2] = 0;
+          panic(errorbuf);
+        }
       }
       fmt += 1;
       int added_len = out - saved_out;

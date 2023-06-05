@@ -25,7 +25,8 @@
 
 enum {
   TYPE_I, TYPE_U, TYPE_S, 
-  TYPE_UJ, TYPE_R, TYPE_SB,
+  TYPE_UJ, TYPE_R, TYPE_SB, 
+  TYPE_CSR,
   TYPE_N, // none
 };
 
@@ -42,13 +43,17 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     case TYPE_S: src1R(); src2R(); immS(); break;
     case TYPE_UJ: immUJ(); break;
     case TYPE_SB: src1R(); src2R(); immSB(); break;
+    case TYPE_CSR: src1R(); immCSR(); break;
   }
+}
+
+void tmpfunc(Decode *s, int rd, word_t src1) {
+  R(rd) = *csr_reg; *csr_reg = src1;
 }
 
 static int decode_exec(Decode *s) {
   int rd = 0;
   word_t src1 = 0, src2 = 0, imm = 0;
-  // why? something to be implemented?
   s->dnpc = s->snpc;
 
 #define INSTPAT_INST(s) ((s)->isa.inst.val)
@@ -120,6 +125,14 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 110 ????? 11000 11", bltu   , SB, s->dnpc = src1 < src2 ? s->pc + imm : s->snpc);
   INSTPAT("??????? ????? ????? 111 ????? 11000 11", bgeu   , SB, s->dnpc = src1 >= src2 ? s->pc + imm : s->snpc);
 
+  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw ,   CSR, R(rd) = *csr_reg; *csr_reg = src1); 
+  INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs ,   CSR, R(rd) = *csr_reg; *csr_reg = *csr_reg | src1); 
+  INSTPAT("??????? ????? ????? 011 ????? 11100 11", csrrc ,   CSR, R(rd) = *csr_reg; *csr_reg = *csr_reg & (~src1)); 
+  INSTPAT("??????? ????? ????? 101 ????? 11100 11", csrrwi ,  CSR, R(rd) = *csr_reg; *csr_reg = imm); 
+  INSTPAT("??????? ????? ????? 110 ????? 11100 11", csrrsi ,  CSR, R(rd) = *csr_reg; *csr_reg = *csr_reg | imm); 
+  INSTPAT("??????? ????? ????? 111 ????? 11100 11", csrrci ,  CSR, R(rd) = *csr_reg; *csr_reg = *csr_reg & (~imm)); 
+
+  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall ,   N, s->dnpc = isa_raise_intr(R(17), s->pc) ); 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak ,  N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    ,  N, INV(s->pc));
   INSTPAT_END();
@@ -128,6 +141,8 @@ static int decode_exec(Decode *s) {
 
   return 0;
 }
+
+
 
 int isa_exec_once(Decode *s) {
   s->isa.inst.val = inst_fetch_add(&s->snpc, 4);

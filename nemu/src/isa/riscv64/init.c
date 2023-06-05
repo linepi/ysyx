@@ -36,6 +36,8 @@ static void restart() {
 #ifndef NPC
   cpu.gpr[0] = 0;
 #endif
+  /* To use difftest, set mstatus to 0xa00001800 */
+  cpu.mstatus = 0xa00001800;
 }
 
 void init_isa() {
