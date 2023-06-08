@@ -261,7 +261,7 @@ int cmp(const void* a, const void* b) {
   return ((struct func_t*)b)->cnt - ((struct func_t*)a)->cnt;
 }
 
-int cmd_analize() {
+int cmd_analise() {
   IFNDEF(CONFIG_ITRACE, printf("ITRACE disabled, open it before backtrace\n"); return 0;);
   printf("Function Name                 Call Count:\n");
   int i;
@@ -277,6 +277,15 @@ int cmd_analize() {
   return 0;
 }
 
+int cmd_reboot() {
+  void clear_mem();
+  clear_mem();
+  void clear_reg();
+  clear_reg();
+  init_isa();
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -284,21 +293,22 @@ static struct {
   const char *description;
   int (*handler) (char *);
 } cmd_table [] = {
-  { "help", "Display information about all supported commands", cmd_help },
-  { "c", "   Continue the execution of the program", cmd_c },
-  { "q", "   Exit NEMU", cmd_q },
-  { "si", "  Usage: si [N]. Step N instruction, default 1. ", cmd_si },
-  { "info", "Usage: info <r|w>. r --> register, w --> watch points. ", cmd_info },
-  { "x", "   Usage: x <number of bytes> <expression>. example: x 10 0x80000000 ", cmd_x },
-  { "p", "   Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
-  { "p/x", " Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
-  { "w", "   Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
-  { "b", "   Usage: b <expression>. example: b 0x80000010", cmd_b },
-  { "bt", "  Usage: bt", cmd_bt },
-  { "pt", "  Usage: pt [N]. pc trace.", cmd_pt },
-  { "del", " Usage: del <watchpoint NO>. example: d 2", cmd_del },
-  { "list", "Usage list -i [N] or list -f. Show N instruction with default 1 or show functions", cmd_list},
-  { "analise", "analise the performance", cmd_analize},
+  { "help", "   Display information about all supported commands", cmd_help },
+  { "c", "      Continue the execution of the program", cmd_c },
+  { "q", "      Exit NEMU", cmd_q },
+  { "si", "     Usage: si [N]. Step N instruction, default 1. ", cmd_si },
+  { "info", "   Usage: info <r|w>. r --> register, w --> watch points. ", cmd_info },
+  { "x", "      Usage: x <number of bytes> <expression>. example: x 10 0x80000000 ", cmd_x },
+  { "p", "      Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
+  { "p/x", "    Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },
+  { "w", "      Usage: w <expression>. example: w $s0 + 5 ", cmd_w },
+  { "b", "      Usage: b <expression>. example: b 0x80000010", cmd_b },
+  { "bt", "     Usage: bt", cmd_bt },
+  { "pt", "     Usage: pt [N]. pc trace.", cmd_pt },
+  { "del", "    Usage: del <watchpoint NO>. example: d 2", cmd_del },
+  { "list", "   Usage list -i [N] or list -f. Show N instruction with default 1 or show functions", cmd_list},
+  { "analise", "analise the performance", cmd_analise},
+  { "reboot", " reboot nemu", cmd_reboot},
 };
 
 
@@ -312,13 +322,13 @@ static int cmd_help(char *args) {
   if (arg == NULL) {
     /* no argument given */
     for (i = 0; i < NR_CMD; i ++) {
-      printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
+      printf(ANSI_FMT("%s", ANSI_FG_GREEN)" %s\n", cmd_table[i].name, cmd_table[i].description);
     }
   }
   else {
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(arg, cmd_table[i].name) == 0) {
-        printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
+        printf(ANSI_FMT("%s", ANSI_FG_GREEN)" - %s\n", cmd_table[i].name, cmd_table[i].description);
         return 0;
       }
     }

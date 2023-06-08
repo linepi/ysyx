@@ -32,6 +32,10 @@ void init_wp_pool() {
   free_ = wp_pool;
 }
 
+void clear_wp() {
+
+}
+
 WP* get_wp_head() {
   return head;
 }

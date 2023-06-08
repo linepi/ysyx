@@ -48,6 +48,7 @@ WP* new_wp();
 void free_wp(WP *wp);
 WP* get_wp_head();
 void wp_display();
+void clear_wp();
 
 // elf related declaration
 #define FUNC_LEN 64
@@ -98,6 +99,7 @@ void backtrace();
 void pc_trace(vaddr_t pc);
 void pc_trace_dump(int n);
 void ftrace(vaddr_t pc);
+void clear_funcstack();
 extern struct func_t *functbl;
 
 #endif

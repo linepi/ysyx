@@ -40,10 +40,17 @@ static debug_module_config_t difftest_dm_config = {
   .support_impebreak = true
 };
 
+#ifdef NPC
+struct diff_context_t {
+  word_t *gpr;
+  word_t pc;
+};
+#else
 struct diff_context_t {
   word_t gpr[32];
   word_t pc;
 };
+#endif
 
 static sim_t* s = NULL;
 static processor_t *p = NULL;

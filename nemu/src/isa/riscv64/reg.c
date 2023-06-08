@@ -32,6 +32,12 @@ void isa_reg_display() {
   }
 }
 
+void clear_reg() {
+  for(int i = 0; i < 32; i++) {
+    gpr(i) = 0;
+  }
+}
+
 word_t isa_reg_str2val(const char *s, bool *success) {
   if (strcmp(s, "pc") == 0) {
     return cpu.pc;

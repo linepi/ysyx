@@ -22,7 +22,9 @@ int isa_exec_once(Decode *s) {
     reset(10);
     npc_inited = true; 
   } 
+}
 
+int isa_exec_once(Decode *s) {
   s->snpc += 4;
   s->isa.inst.val = PC->inst;
   single_cycle();

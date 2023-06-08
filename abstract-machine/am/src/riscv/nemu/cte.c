@@ -6,9 +6,18 @@ static Context* (*user_handler)(Event, Context*) = NULL;
 
 // 此函数接收Context上下文信息，并根据客户程序提供的函数user_handler对这些信息进行处理
 Context* __am_irq_handle(Context *c) {
+  printf("__am_irq_handle receive this Context:\n");
+  // for (int i = 0; i < 32; i++) {
+  //   printf("x%d: %lx\n", i, c->gpr[i]);
+  // }
+  printf("mcause: 0x%lx\n", c->mcause);
+  printf("mstatus: 0x%lx\n", c->mstatus);
+  printf("mepc: 0x%lx\n", c->mepc);
+
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
+      case EVENT_YIELD: ev.event = EVENT_YIELD; break;
       default: ev.event = EVENT_ERROR; break;
     }
 
@@ -40,6 +49,8 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
 }
 
 void yield() {
+  // let yield make mcause equals 1
+  asm volatile("csrwi mcause, 1");
   asm volatile("li a7, -1; ecall");
 }
 
