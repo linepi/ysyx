@@ -16,7 +16,7 @@ static void reset(int n) {
   PC->rst = false;
 }
 
-int isa_exec_once(Decode *s) {
+extern "C" void init_npc() {
   if (!npc_inited) {
     PC = new VPC;
     reset(10);

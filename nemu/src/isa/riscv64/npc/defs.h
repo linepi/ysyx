@@ -23,6 +23,5 @@ extern bool npc_error;
 extern bool npc_inited;
 extern uint32_t *inst;
 extern vaddr_t *pc;
-void clean_PC();
 
 #endif

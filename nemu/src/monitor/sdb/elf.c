@@ -23,7 +23,7 @@ void init_elf(const char *elf_file) {
     Log("No elf file specified");
     return;
   }
-  elf_fp = fopen(elf_file, "rb");;
+  elf_fp = fopen(elf_file, "rb");
   if (elf_fp && is_elf(elf_fp)) {
     Log("Elf is specified with %s", elf_file); 
     /* make elfinfo */

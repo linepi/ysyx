@@ -22,6 +22,7 @@
 typedef struct {
   word_t *gpr;
   vaddr_t pc;
+  word_t mepc, mcause, mstatus, mtvec;
 } riscv64_CPU_state;
 #else
 typedef struct {

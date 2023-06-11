@@ -34,6 +34,7 @@ void __am_audio_status(AM_AUDIO_STATUS_T *stat) {
 }
 
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
+  return;
   uint8_t *start = ctl->buf.start;
   uint8_t *end = ctl->buf.end;
   if (end - start < 0) return;
