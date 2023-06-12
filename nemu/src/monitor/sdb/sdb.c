@@ -247,7 +247,7 @@ static int cmd_list(char *args) {
   while (*args++ == '-');
   args--;
   if (*args == 'i') {
-    while (*args++ == ' ');
+    while (*args++ == ' ') {}
     IFDEF(CONFIG_ITRACE, frame_dump(cpu.pc, MAX(atoi(args), 1)));
   } else if (*args == 'f') {
     func_list();
@@ -277,6 +277,7 @@ int cmd_analise() {
   return 0;
 }
 
+// TODO
 int cmd_reboot() {
   void clear_mem();
   clear_mem();
