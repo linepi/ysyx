@@ -15,10 +15,14 @@
 
 #include <isa.h>
 
+#define EVENT_SYSCALL 2
+
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
-  /* TODO: Trigger an interrupt/exception with ``NO''.
-   * Then return the address of the interrupt/exception vector.
-   */
+  if (NO >= 0 && NO <= 19) {
+    cpu.mcause = EVENT_SYSCALL; // naive
+  } else if (NO == -1) {
+    cpu.mcause = -1; // yield
+  }
   cpu.mepc = epc + 4;
   return cpu.mtvec;
 }

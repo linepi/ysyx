@@ -23,6 +23,7 @@ void make_functbl() {
       int j = 0;
       char c;
       functbl[idx].addr = elfinfo.Sym[i].st_value;
+      functbl[idx].size = elfinfo.Sym[i].st_size;
       fseek(elf_fp, elfinfo.Shdr_strtab->sh_offset + elfinfo.Sym[i].st_name, SEEK_SET); 
       while ((c = fgetc(elf_fp)) != '\0') {
         functbl[idx].name[j++] = c;
@@ -51,11 +52,21 @@ void make_functbl() {
 void ftrace(vaddr_t pc) {
   vaddr_t save_pc = pc;
   uint32_t i = inst_fetch_add(&pc, 4);
+  // ret指令并不一定是返回到上一个函数栈帧，
+  // 而有可能返回到之前很远的一个栈帧，因为某些函数是没有ret指令的，ret指令在其子函数中
   if (i == 0x00008067) { // mean ret instuction
     if (g_print_step) 
       printf(ANSI_FMT("ret from %s\n", ANSI_FG_BLUE), func_stack_top->pre->func->name);
-    func_stack_top = func_stack_top->pre;
-    cur_func = func_stack_top->pre->func;
+
+    // 前向寻找，如果返回地址ra在cur_func的地址范围内，则返回到cur_func栈帧中
+    do {
+      func_stack_top = func_stack_top->pre;
+    } while ( // 如果不在此函数里面，继续循环
+      cpu.gpr[1] < func_stack_top->func->addr ||
+      cpu.gpr[1] >= func_stack_top->func->addr + func_stack_top->func->size
+    );
+    cur_func = func_stack_top->func;
+    func_stack_top = func_stack_top->next;
     return;
   }
 
