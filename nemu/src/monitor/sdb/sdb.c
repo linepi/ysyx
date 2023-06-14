@@ -194,6 +194,7 @@ static int cmd_w(char *args) {
 }
 
 static int cmd_del(char *args) {
+  if (args == NULL) return 0;
   int NO = atoi(args);
   assert(NO > 0 && NO <= 32);
   WP *i;
@@ -298,7 +299,7 @@ static struct {
   { "c", "      Continue the execution of the program", cmd_c },
   { "q", "      Exit NEMU", cmd_q },
   { "si", "     Usage: si [N]. Step N instruction, default 1. ", cmd_si },
-  { "info", "   Usage: info <r|w>. r --> register, w --> watch points. ", cmd_info },
+  { "info", "   Usage: info <r|w>. r -> register, w -> watch points. ", cmd_info },
   { "x", "      Usage: x <number of bytes> <expression>. example: x 10 0x80000000 ", cmd_x },
   { "p", "      Usage: p <expression>. example: p $s0 + 5 ", cmd_p },
   { "p/x", "    Usage: p/x <expression>. example: p/x $s0 + 5 ", cmd_px },

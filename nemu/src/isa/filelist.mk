@@ -17,5 +17,7 @@ INC_PATH += $(NEMU_HOME)/src/isa/$(GUEST_ISA)/include $(NEMU_HOME)/src/isa/$(GUE
 DIRS-y += src/isa/$(GUEST_ISA)
 
 ifeq ($(NPC),true)
-	DIRS-BLACKLIST-y += src/isa/$(GUEST_ISA)/nemu
+DIRS-BLACKLIST += src/isa/$(GUEST_ISA)/nemu
+else
+DIRS-BLACKLIST += src/isa/$(GUEST_ISA)/npc
 endif 

@@ -73,8 +73,9 @@ extern struct elfinfo_t elfinfo;
 #define NR_PC_ROAD 100
 
 struct func_t {
-  bool end;
+  bool end; 
   word_t addr;
+  int size;
   uint64_t cnt;
   char name[FUNC_LEN];
 };

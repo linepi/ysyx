@@ -79,6 +79,21 @@ config CC_CLANG
   bool "clang"
 endchoice
 
+choice
+  prompt "Debugger"
+  default GDB
+config GDB
+  bool "gdb"
+config LLDB
+  bool "lldb"
+endchoice
+
+config DEBUGGER
+  string 
+  default "gdb" if GDB
+  default "lldb" if LLDB
+  default "none"
+
 config CC
   string
   default "gcc" if CC_GCC
