@@ -75,7 +75,7 @@ static int cmd_si(char *args) {
     printf("program is ended\n");
     return 0;
   }
-  IFDEF(CONFIG_ITRACE, frame_dump(cpu.pc, 5));
+  IFDEF(CONFIG_ITRACE, frame_dump(5));
   return 0;
 }
 
@@ -128,14 +128,14 @@ static int cmd_b(char *args) {
   strcat(buf, args);
 
   int func_cnt = 0;
-  for (int i = 0; !functbl[i].end; i++) {
+  for (int i = 0; i < nr_functbl; i++) {
     if (strcmp(functbl[i].name, args + 1) == 0) {
       func_cnt++;
     }
   }
   if (func_cnt > 1) {
     printf("More than one %s() detected, please choose one below:\n", args + 1);
-    for (int i = 0; !functbl[i].end; i++) {
+    for (int i = 0; i < nr_functbl; i++) {
       if (strcmp(functbl[i].name, args + 1) == 0) {
         printf("0x%016lx\n", functbl[i].addr);
       }
@@ -253,7 +253,7 @@ static int cmd_list(char *args) {
   args--;
   if (*args == 'i') {
     while (*args++ == ' ') {}
-    IFDEF(CONFIG_ITRACE, frame_dump(cpu.pc, MAX(atoi(args), 1)));
+    IFDEF(CONFIG_ITRACE, frame_dump(MAX(atoi(args), 1)));
   } else if (*args == 'f') {
     func_list();
   } else {
@@ -270,15 +270,26 @@ int cmd_analise() {
   IFNDEF(CONFIG_ITRACE, printf("ITRACE disabled, open it before backtrace\n"); return 0;);
   printf("Function Name                 Call Count:\n");
   int i;
-  for (i = 0; !functbl[i].end; i++);
+  for (i = 0; i < nr_functbl; i++);
   qsort(functbl, i, sizeof(struct func_t), cmp);
   int space = 30;
-  for (i = 0; !functbl[i].end; i++) {
+  for (i = 0; i < nr_functbl; i++) {
     printf("%s", functbl[i].name);
     int len = strlen(functbl[i].name);
     for (int j = 0; j < space - len; j++) putchar(' ');
     printf("%ld\n", functbl[i].cnt);
   }
+  return 0;
+}
+
+int get_func_stack_len();
+int cmd_finish() {
+  IFNDEF(CONFIG_ITRACE, printf("ITRACE disabled, open it before finish\n"); return 0;)
+  int fsl = get_func_stack_len();
+  while (fsl <= get_func_stack_len()) {
+    cpu_exec(1);
+  }
+  frame_dump(7);
   return 0;
 }
 
@@ -313,6 +324,7 @@ static struct {
   { "pt", "     Usage: pt [N]. pc trace.", cmd_pt },
   { "del", "    Usage: del <watchpoint NO>. example: d 2", cmd_del },
   { "list", "   Usage list -i [N] or list -f. Show N instruction with default 1 or show functions", cmd_list},
+  { "finish", " Usage: finish. Jump out current function ", cmd_finish},
   { "analise", "analise the performance", cmd_analise},
   { "reboot", " reboot nemu", cmd_reboot},
 };

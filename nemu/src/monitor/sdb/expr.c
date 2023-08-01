@@ -54,7 +54,7 @@ static struct rule {
   {"<=", TK_LE},        
   {">", TK_GT},        
   {"<", TK_LT},        
-  {"&[_a-zA-Z][a-zA-Z0-9_]*", TK_FUNC_ADDR},
+  {"&[\\$#]*[_a-zA-Z][a-zA-Z0-9_]*", TK_FUNC_ADDR},
   {"&&", TK_AND},        
   {"\\|\\|", TK_OR},        
   {"!", TK_NOT},        
@@ -240,7 +240,7 @@ static expr_t eval(int p, int q, bool *status) {
         return 0;
       }
       bool found = false;
-      for (int i = 0; !functbl[i].end; i++) {
+      for (int i = 0; i < nr_functbl; i++) {
         if (strcmp(functbl[i].name, tokens[p].str + 1) == 0) {
           val = functbl[i].addr;
           found = true;

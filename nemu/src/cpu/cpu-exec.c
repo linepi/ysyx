@@ -27,20 +27,40 @@
 #define MAX_INST_TO_PRINT 10
 
 CPU_state cpu = {};
+CPU_state last_cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 bool g_print_step = false;
 
 void device_update();
 
-static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
+static void trace_and_difftest(Decode *_this) {
 #ifdef CONFIG_ITRACE
+  char *p = _this->logbuf;
+  p += snprintf(p, sizeof(_this->logbuf), FMT_WORD ":", _this->pc);
+  int ilen = _this->snpc - _this->pc;
+  int i;
+  uint8_t *inst = (uint8_t *)&_this->isa.inst.val;
+  for (i = ilen - 1; i >= 0; i --) {
+    p += snprintf(p, 4, " %02x", inst[i]);
+  }
+  int ilen_max = MUXDEF(CONFIG_ISA_x86, 8, 4);
+  int space_len = ilen_max - ilen;
+  if (space_len < 0) space_len = 0;
+  space_len = space_len * 3 + 1;
+  memset(p, ' ', space_len);
+  p += space_len;
+
+  void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+  disassemble(p, _this->logbuf + sizeof(_this->logbuf) - p,
+      MUXDEF(CONFIG_ISA_x86, _this->snpc, _this->pc), (uint8_t *)&_this->isa.inst.val, ilen);
+
   log_write("%s\n", _this->logbuf); 
-  pc_trace(_this->pc);
-  if (elf_fp) ftrace(_this->pc);
+  pc_trace();
+  if (image_elf_fp) ftrace();
 #endif
 
-  IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
+  IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, _this->dnpc));
 
 #ifdef CONFIG_WATCHPOINT
   // watch point check
@@ -59,7 +79,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
         } else {
           printf("%s()\n", i->funcName);
         }
-        frame_dump(cpu.pc, 5);
+        frame_dump(5);
         nemu_state.state = NEMU_STOP;
       } 
     } else {
@@ -76,44 +96,20 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 }
 
-static void exec_once(Decode *s, vaddr_t pc) {
-  s->pc = pc;
-  s->snpc = pc;
+static void exec_once(Decode *s) {
+  IFDEF(CONFIG_ITRACE, last_cpu = cpu);
+  s->pc = cpu.pc;
+  s->snpc = cpu.pc;
   isa_exec_once(s);
   cpu.pc = s->dnpc;
-  
-#ifdef CONFIG_ITRACE
-  char *p = s->logbuf;
-  p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
-  int ilen = s->snpc - s->pc;
-  int i;
-  uint8_t *inst = (uint8_t *)&s->isa.inst.val;
-  for (i = ilen - 1; i >= 0; i --) {
-    p += snprintf(p, 4, " %02x", inst[i]);
-  }
-  int ilen_max = MUXDEF(CONFIG_ISA_x86, 8, 4);
-  int space_len = ilen_max - ilen;
-  if (space_len < 0) space_len = 0;
-  space_len = space_len * 3 + 1;
-  memset(p, ' ', space_len);
-  p += space_len;
-
-#ifndef CONFIG_ISA_loongarch32r
-  void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-  disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
-      MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst.val, ilen);
-#else
-  p[0] = '\0'; // the upstream llvm does not support loongarch32r
-#endif
-#endif
 }
 
 static void execute(uint64_t n) {
   Decode s;
-  for (;n > 0; n --) {
-    exec_once(&s, cpu.pc);
+  for (; n > 0; n--) {
+    exec_once(&s);
+    trace_and_difftest(&s);
     g_nr_guest_inst++;
-    trace_and_difftest(&s, cpu.pc);
     if (nemu_state.state != NEMU_RUNNING) break;
     // update device only when every 0xff instuctions have been executed.
     // this is to improve performance, because get_time() consume so much.

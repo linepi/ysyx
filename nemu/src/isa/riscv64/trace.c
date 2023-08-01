@@ -3,7 +3,7 @@
 #include "include/decode.h"
 #include "syscall.h"
 
-struct func_t *functbl = NULL;
+int nr_functbl = 0;
 struct func_t *cur_func = NULL;
 struct func_stack_t func_stack_bottom = {};
 struct func_stack_t *func_stack_top;
@@ -39,32 +39,40 @@ void etrace(word_t reason, vaddr_t where) {
   printf(ANSI_FMT("[etrace]: %s at 0x%08lx\n", ANSI_FG_BLUE), etrace_reason[reason], where);
 }
 
-void make_functbl() {
-  int func_cnt = 0;
-  int idx = 0;
-  for (size_t i = 0; i < elfinfo.nr_sym; i++) {
-    if (ELF64_ST_TYPE(elfinfo.Sym[i].st_info) == STT_FUNC) func_cnt++;
-  }
-  functbl = (struct func_t*)wmalloc(sizeof(struct func_t) * (func_cnt + 1));
-  assert(functbl != NULL);
-  for (size_t i = 0; i < elfinfo.nr_sym; i++) {
-    if (ELF64_ST_TYPE(elfinfo.Sym[i].st_info) == STT_FUNC) {
+void build_functbl(struct elfinfo_t *elfinfo, bool user) {
+  FILE *elf_fp;
+  if (user) elf_fp = user_elf_fp;
+  else elf_fp = image_elf_fp;
+  assert(elf_fp != NULL);
+
+  for (size_t i = 0; i < elfinfo->nr_sym; i++) {
+    if (ELF64_ST_TYPE(elfinfo->Sym[i].st_info) == STT_FUNC) {
       int j = 0;
       char c;
-      functbl[idx].addr = elfinfo.Sym[i].st_value;
-      functbl[idx].size = elfinfo.Sym[i].st_size;
-      fseek(elf_fp, elfinfo.Shdr_strtab->sh_offset + elfinfo.Sym[i].st_name, SEEK_SET); 
-      while ((c = fgetc(elf_fp)) != '\0') {
-        functbl[idx].name[j++] = c;
+      functbl[nr_functbl].addr = elfinfo->Sym[i].st_value;
+      functbl[nr_functbl].size = elfinfo->Sym[i].st_size;
+      functbl[nr_functbl].user = user;
+      fseek(elf_fp, elfinfo->Shdr_strtab->sh_offset + elfinfo->Sym[i].st_name, SEEK_SET); 
+      if (user) {
+        functbl[nr_functbl].name[j++] = '$';
+      } else {
+        functbl[nr_functbl].name[j++] = '#';
       }
-      functbl[idx].name[j] = '\0';
+      while ((c = fgetc(elf_fp)) != '\0') {
+        functbl[nr_functbl].name[j++] = c;
+      }
+      functbl[nr_functbl].name[j] = '\0';
       // 如果是这个函数，则手动给出函数大小
-      if (strcmp(functbl[idx].name, "__am_asm_trap") == 0) {
-        functbl[idx].size = 316;
+      if (strcmp(functbl[nr_functbl].name, "#__am_asm_trap") == 0) {
+        functbl[nr_functbl].size = 316;
       }
       // init func stack
-      if (strcmp(functbl[idx].name, "_start") == 0) {
-        func_stack_bottom.func = &functbl[idx];
+      if (strcmp(functbl[nr_functbl].name, "#_start") == 0 || strcmp(functbl[nr_functbl].name, "$_start") == 0) {
+        if (functbl[nr_functbl].name[0] == '#')
+          functbl[nr_functbl].size = 16;
+        else 
+          functbl[nr_functbl].size = 8;
+        func_stack_bottom.func = &functbl[nr_functbl];
         func_stack_bottom.pre = NULL;
         func_stack_bottom.next = (struct func_stack_t *)wmalloc(sizeof(struct func_stack_t));
         assert(func_stack_bottom.next);
@@ -74,27 +82,30 @@ void make_functbl() {
         func_stack_top = func_stack_bottom.next;
         cur_func = func_stack_bottom.func;
       }
-      functbl[idx].cnt = 0;
-      functbl[idx].end = false;
-      idx++;
+      functbl[nr_functbl].cnt = 0;
+      nr_functbl++;
     }
   }
-  functbl[idx].end = true;
 }
 
+// jalr inst: c5c08017, with actual ra = 0x8300048c, think ra = 83000494
+// 0b110001011100 00001 000 00001 1100111
+// think jump to 0x830000f0
+// actually jump to 0x830000e8
+
 static bool unknown_address(vaddr_t addr) {
-  for (int i = 0; !functbl[i].end; i++) {
+  for (int i = 0; i < nr_functbl; i++) {
     if (addr >= functbl[i].addr && addr < functbl[i].addr + functbl[i].size) 
       return false;
   }
   return true;
 }
 
-void ftrace(vaddr_t pc) {
+void ftrace() {
   // static bool has_unknown = false;
 
-  vaddr_t save_pc = pc;
-  uint32_t i = inst_fetch_add(&pc, 4);
+  vaddr_t tmp = last_cpu.pc;
+  uint32_t i = inst_fetch_add(&tmp, 4);
   // ret指令并不一定是返回到上一个函数栈帧，
   // 而有可能返回到之前很远的一个栈帧，因为某些函数是没有ret指令的，ret指令在其子函数中
   if (i == 0x00008067 || i == 0b00110000001000000000000001110011) { // mean ret or mret instuction
@@ -102,8 +113,8 @@ void ftrace(vaddr_t pc) {
       printf(ANSI_FMT("ret from %s\n", ANSI_FG_BLUE), func_stack_top->pre->func->name);
 
     word_t ret_addr;
-    if (i == 0x00008067) ret_addr = cpu.gpr[1];
-    else ret_addr = cpu.mepc;
+    if (i == 0x00008067) ret_addr = last_cpu.gpr[1];
+    else ret_addr = last_cpu.mepc;
 
     // 如果要返回的位置不属于任何已知函数，则不更新函数栈
     if (unknown_address(ret_addr)) return;
@@ -125,21 +136,22 @@ void ftrace(vaddr_t pc) {
   vaddr_t jump_to = 0;
   word_t _imm = 0;
   word_t *imm = &_imm;
+  word_t src1 = 0;
   if ((i & 0b1111111) == 0b1101111) { // jal
     immUJ();
-    jump_to = *imm + save_pc;
+    jump_to = *imm + last_cpu.pc;
   }
   else if ((i & 0b111000001111111) == 0b000000001100111) { // jalr
-    word_t src1 = gpr(BITS(i, 19, 15));
+    src1 = last_cpu.gpr[BITS(i, 19, 15)];
     immI();
     jump_to = *imm + src1;
   }
   else if (i == 0b00000000000000000000000001110011) { // ecall
-    jump_to = cpu.mtvec;
+    jump_to = last_cpu.mtvec;
   }
   else return;
 
-  for (int i = 0; !functbl[i].end; i++) {
+  for (int i = 0; i < nr_functbl; i++) {
     if (functbl[i].addr == jump_to) {
       functbl[i].cnt++;
       if (g_print_step) 
@@ -158,28 +170,28 @@ void ftrace(vaddr_t pc) {
     }
   }
   // 未找到相应函数（假设jal, jalr, ecall都是前往一个函数)
-  // if (functbl[i].end) {
+  // if (i == nr_functbl) {
   //   func_t unknown_ 
   //   has_unknown = true;
   // }
 }
 
-// dump next n static instruction from pc
-void _frame_dump(vaddr_t pc, int n) {
-  if (!in_pmem(pc)) return;
+// dump next n static instruction from addr
+void _frame_dump(vaddr_t addr, int n) {
+  if (!in_pmem(addr)) return;
 
   char disa[128];
   for (int i = 0; i < n; i++) {
-    if (pc != cpu.pc)
+    if (addr != cpu.pc)
       printf("    ");
     else 
       printf(ANSI_FMT("=>  ", ANSI_FG_GREEN));
     // 这里保存pc的原因是，inst_fetch_add会使pc增加，以至于反汇编得不到所执行指令的正确相对地址
-    vaddr_t saved_pc = pc;
-    uint32_t inst = inst_fetch_add(&pc, 4);
-    IFDEF(CONFIG_ITRACE, disassemble(disa, 128, saved_pc, (uint8_t *)&inst, 4));
+    vaddr_t addr_bak = addr;
+    uint32_t inst = inst_fetch_add(&addr, 4);
+    IFDEF(CONFIG_ITRACE, disassemble(disa, 128, addr_bak, (uint8_t *)&inst, 4));
 
-    printf("0x%08lx: %s", saved_pc, disa); 
+    printf("0x%08lx: %s", addr_bak, disa); 
     for (int i = 0; i < 30 - strlen(disa); i++) putchar(' ');
     uint8_t *p_inst = (uint8_t *)&inst;
     for (int i = 3; i >= 0; i --) {
@@ -190,16 +202,16 @@ void _frame_dump(vaddr_t pc, int n) {
 }
 
 // dump n static instruction before and after pc
-void frame_dump(vaddr_t pc, int n) {
+void frame_dump(int n) {
   if (functbl) 
-    printf(ANSI_FMT("In function %s(), frame dump:\n", ANSI_FG_GREEN), unknown_address(pc) ? "unknown" : cur_func->name);
-  vaddr_t _pc = MAX(pc - 4 * (n/2), CONFIG_MBASE);
-  _frame_dump(_pc, n);
+    printf(ANSI_FMT("In function %s(), frame dump:\n", ANSI_FG_GREEN), unknown_address(cpu.pc) ? "unknown" : cur_func->name);
+  vaddr_t addr = MAX(cpu.pc - 4 * (n/2), CONFIG_MBASE);
+  _frame_dump(addr, n);
 }
 
 // trace the pc
-void pc_trace(vaddr_t pc) {
-  pc_road.arr[pc_road.cur] = pc;
+void pc_trace() {
+  pc_road.arr[pc_road.cur] = last_cpu.pc;
   pc_road.cur = (pc_road.cur + 1) % NR_PC_ROAD;
 }
 
@@ -228,6 +240,12 @@ void pc_trace_dump(int n) {
   _frame_dump(cpu.pc, 10);
 }
 
+int get_func_stack_len() {
+  int i = 0;
+  for (struct func_stack_t *p = func_stack_top->pre; p; p = p->pre, i++);
+  return i + 1;
+}
+
 void backtrace() {
   if (!functbl) {
     Error("No functbl specified\n");
@@ -236,7 +254,7 @@ void backtrace() {
   printf(ANSI_FMT("Backtrace:\n", ANSI_FG_GREEN));
   int i = 0;
   for (struct func_stack_t *p = func_stack_top->pre; p; p = p->pre, i++) {
-    printf("#%d: %s() 0x%016lx\n", i, p->func->name, p->func->addr);
+    printf("#%d: %s() -- 0x%08lx\n", i, p->func->name, p->func->addr);
   }
 }
 
@@ -246,7 +264,7 @@ void func_list() {
     return;
   }
   printf(ANSI_FMT("Address range                  Name\n", ANSI_FG_BLUE));
-  for (int i = 0; !functbl[i].end; i++) {
+  for (int i = 0; i < nr_functbl; i++) {
     printf("[0x%08lx, 0x%08lx]       %s\n", functbl[i].addr, functbl[i].addr + functbl[i].size, functbl[i].name);
   }
 }

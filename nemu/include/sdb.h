@@ -51,9 +51,10 @@ void wp_display();
 void clear_wp();
 
 // elf related declaration
-#define FUNC_LEN 64
+#define FUNC_NAME_LEN 128
 
-extern FILE *elf_fp;
+extern FILE *image_elf_fp;
+extern FILE *user_elf_fp;
 struct elfinfo_t {
   Elf64_Ehdr Ehdr;
   Elf64_Shdr *Shdr;
@@ -65,19 +66,17 @@ struct elfinfo_t {
   Elf64_Sym *Sym;
 };
 
-void init_elf(const char* elf_file);
-bool is_elf(FILE *e);
-extern struct elfinfo_t elfinfo;
+void init_elf(const char* image_elf_file, const char* user_elf_file);
 
 // trace.h
 #define NR_PC_ROAD 100
 
 struct func_t {
-  bool end; 
+  char name[FUNC_NAME_LEN];
   word_t addr;
   int size;
+  bool user;
   uint64_t cnt;
-  char name[FUNC_LEN];
 };
 
 struct func_stack_t {
@@ -92,15 +91,17 @@ struct pc_road {
   bool initialised;
 };
 
-void frame_dump(vaddr_t pc, int n);
+extern struct func_t *functbl;
+extern int nr_functbl;
+
+void frame_dump(int n);
 void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-void make_functbl();
+void build_functbl(struct elfinfo_t *elfinfo, bool user);
 void func_list();
 void backtrace();
-void pc_trace(vaddr_t pc);
+void pc_trace();
 void pc_trace_dump(int n);
-void ftrace(vaddr_t pc);
+void ftrace();
 void clear_funcstack();
-extern struct func_t *functbl;
 
 #endif

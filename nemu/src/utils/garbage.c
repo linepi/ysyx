@@ -27,6 +27,7 @@ void garbage_collect(int num) {
 }
 
 void close_file() {
-  if (elf_fp) fclose(elf_fp);
+  if (image_elf_fp) fclose(image_elf_fp);
+  if (user_elf_fp) fclose(user_elf_fp);
   if (log_fp) fclose(log_fp);
 }
