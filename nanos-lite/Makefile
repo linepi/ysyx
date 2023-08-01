@@ -1,21 +1,21 @@
-#HAS_NAVY = 1
+# HAS_NAVY = 1
 RAMDISK_FILE = build/ramdisk.img
 
 NAME = nanos-lite
-SRCS = $(shell find -L ./src/ -name "*.c" -o -name "*.cpp" -o -name "*.S")
+SRCS = $(shell find -L ./src -name "*.c" -o -name "*.cpp" -o -name "*.S")
 include $(AM_HOME)/Makefile
 
 ifeq ($(ARCH),native)
 ISA = am_native
 else
-INC_PATH += include $(NAVY_HOME)/libs/libc/include 
+INC_PATH += include $(NAVY_HOME)/libs/libc/include $(NAVY_HOME)/libs/libos/src  
 endif
 
 ./src/resources.S: $(RAMDISK_FILE)
 	@touch $@
 
 ifeq ($(HAS_NAVY),)
-files = $(RAMDISK_FILE) src/files.h src/syscall.h
+files = $(RAMDISK_FILE) src/files.h 
 # create an empty file if it does not exist
 $(foreach f,$(files),$(if $(wildcard $f),, $(shell touch $f)))
 else

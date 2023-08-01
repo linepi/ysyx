@@ -114,9 +114,13 @@ static int cmd_x(char *args) {
 
 static int cmd_b(char *args) {
   if (args == NULL) {
-    printf("Usage: b <expression>. example: b 0x80000010\n");
+    printf("Usage: b (<address> | &<funcname>)\n");
     return 0;
   }
+#ifndef CONFIG_WATCHPOINT
+  Error("breakpoint need CONFIG_WATCHPOINT\n");
+  return 0;
+#endif
 
   bool success;
   char *buf = (char *)wmalloc(strlen(args) + 7);

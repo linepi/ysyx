@@ -13,23 +13,13 @@ Context* __am_irq_handle(Context *c) {
 
   if (user_handler) {
     Event ev = {0};
-    switch (c->mcause) {
-      case -1: {
-        ev.event = EVENT_YIELD;
-        break;
-      }
-      case EVENT_SYSCALL: {
-        ev.event = EVENT_SYSCALL; 
-        break;
-      }
-      default: ev.event = EVENT_ERROR; break;
-    }
-
+    // a7
+    ev.event = EVENT_SYSCALL;
     c = user_handler(ev, c);
     assert(c != NULL);
   }
-
   return c;
+  // return后直接segmentation fault，为什么？？？？？
 }
 
 // 这个函数先把当前寄存器（包括系统寄存器）的值入栈，然后当作参数传递
@@ -53,7 +43,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
 }
 
 void yield() {
-  asm volatile("li a7, -1; ecall");
+  asm volatile("li a7, 1; ecall");
 }
 
 bool ienabled() {

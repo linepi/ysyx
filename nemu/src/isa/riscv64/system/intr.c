@@ -17,12 +17,11 @@
 
 #define EVENT_SYSCALL 2
 
+void etrace(word_t, vaddr_t);
+
+/* in riscv64, this function do exactly what ecall do */
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
-  if (NO >= 0 && NO <= 1) {
-    cpu.mcause = EVENT_SYSCALL; // naive
-  } else if (NO == -1) {
-    cpu.mcause = -1; // yield
-  }
+  IFDEF(CONFIG_ETRACE, etrace(NO, epc));
   cpu.mepc = epc + 4;
   return cpu.mtvec;
 }

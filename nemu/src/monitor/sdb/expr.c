@@ -38,7 +38,6 @@ static struct rule {
   const char *regex;
   int token_type;
 } rules[] = {
-
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"\\(", '('},         
@@ -55,7 +54,7 @@ static struct rule {
   {"<=", TK_LE},        
   {">", TK_GT},        
   {"<", TK_LT},        
-  {"&([_]|[a-z]|[A-Z])\\w*", TK_FUNC_ADDR},
+  {"&[_a-zA-Z][a-zA-Z0-9_]*", TK_FUNC_ADDR},
   {"&&", TK_AND},        
   {"\\|\\|", TK_OR},        
   {"!", TK_NOT},        
@@ -67,7 +66,7 @@ static struct rule {
   {"\\*", TK_DEREFERENCE},        
   {"0[xX]([0-9]|[a-f]|[A-F])+", TK_HEX},    
   {"[0-9]+", TK_DEC},    // digital number
-  {"\\$\\w+", TK_REG},   
+  {"\\$[a-z0-9A-Z]+", TK_REG},   
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -97,7 +96,7 @@ typedef struct token {
   char str[TOKEN_STR_LEN];
 } Token;
 
-static Token tokens[10000] __attribute__((used)) = {};
+static Token tokens[1000] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 static bool make_token(char *e) {

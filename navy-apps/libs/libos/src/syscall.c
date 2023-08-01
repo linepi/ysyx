@@ -62,11 +62,17 @@ int _open(const char *path, int flags, mode_t mode) {
 }
 
 int _write(int fd, void *buf, size_t count) {
-  _exit(SYS_write);
-  return 0;
+  return _syscall_(SYS_write, fd, (intptr_t)buf, count);
 }
 
 void *_sbrk(intptr_t increment) {
+  extern int _end;
+  static intptr_t pg_break = (intptr_t)&_end;
+  if (_syscall_(SYS_brk, pg_break + increment, 0, 0) == 0) { // success
+    void* ret = (void *)pg_break;
+    pg_break += increment;
+    return ret;
+  } 
   return (void *)-1;
 }
 

@@ -24,8 +24,8 @@ $(BINARY): compile_git
 
 # Some convenient rules
 
-override LOG ?= --log=$(BUILD_DIR)/nemu-log.txt
-override ARGS += $(ARGS_DIFF) $(LOG)
+# override LOG ?= --log=$(BUILD_DIR)/nemu-log.txt
+# override ARGS += $(ARGS_DIFF) $(LOG)
 
 # Command to execute NEMU
 IMG ?=
@@ -42,7 +42,7 @@ gdb: run-env
 ifeq ($(DEBUGGER),gdb)
 	$(DEBUGGER) -s $(BINARY) --args $(NEMU_EXEC)
 else
-	$(DEBUGGER) $(BINARY) -- $(ARGS) $(IMG)
+	$(DEBUGGER) -- $(NEMU_EXEC)
 endif
 
 clean-tools = $(dir $(shell find ./tools -maxdepth 2 -mindepth 2 -name "Makefile"))

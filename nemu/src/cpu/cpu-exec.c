@@ -34,13 +34,14 @@ bool g_print_step = false;
 void device_update();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
-#ifdef CONFIG_ITRACE_COND
+#ifdef CONFIG_ITRACE
   log_write("%s\n", _this->logbuf); 
+  pc_trace(_this->pc);
+  if (elf_fp) ftrace(_this->pc);
 #endif
-  IFDEF(CONFIG_ITRACE_COND, if (g_print_step) puts(_this->logbuf));
-  IFDEF(CONFIG_ITRACE, pc_trace(_this->pc));
+
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
-  IFDEF(CONFIG_ITRACE, if (elf_fp) ftrace(_this->pc));
+
 #ifdef CONFIG_WATCHPOINT
   // watch point check
   for (WP *i = get_wp_head(); i; i = i->next) {
@@ -81,7 +82,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   isa_exec_once(s);
   cpu.pc = s->dnpc;
   
-#ifdef CONFIG_ITRACE_COND
+#ifdef CONFIG_ITRACE
   char *p = s->logbuf;
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
   int ilen = s->snpc - s->pc;
@@ -109,14 +110,12 @@ static void exec_once(Decode *s, vaddr_t pc) {
 
 static void execute(uint64_t n) {
   Decode s;
-  if (g_print_step && n)
-    IFDEF(CONFIG_ITRACE_COND, printf(ANSI_FMT("Lines executed:\n", ANSI_FG_GREEN)));
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
-    g_nr_guest_inst ++;
+    g_nr_guest_inst++;
     trace_and_difftest(&s, cpu.pc);
     if (nemu_state.state != NEMU_RUNNING) break;
-    // update device only when every 0xfff instuctions have been executed.
+    // update device only when every 0xff instuctions have been executed.
     // this is to improve performance, because get_time() consume so much.
     if ((g_nr_guest_inst & 0xff) != 0) continue;
     IFDEF(CONFIG_DEVICE, device_update());

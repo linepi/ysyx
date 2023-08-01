@@ -102,6 +102,7 @@ config CC
   default "none"
 
 choice
+  depends on !CC_DEBUG
   prompt "Optimization Level"
   default CC_O2
 config CC_O0
@@ -115,6 +116,7 @@ config CC_O3
 endchoice
 
 config CC_OPT
+  depends on !CC_DEBUG
   string
   default "-O0" if CC_O0
   default "-O1" if CC_O1
@@ -123,7 +125,7 @@ config CC_OPT
   default "none"
 
 config CC_LTO
-  depends on !TARGET_AM
+  depends on !TARGET_AM && !CC_DEBUG
   bool "Enable link-time optimization"
   default n
 
@@ -159,11 +161,6 @@ config ITRACE
   bool "Enable instruction tracer"
   default y
 
-config ITRACE_COND
-  depends on ITRACE
-  bool "Enable inst by inst trace"
-  default n
-
 config WATCHPOINT
   depends on ITRACE
   bool "Enable watchpoint"
@@ -172,6 +169,11 @@ config WATCHPOINT
 config DTRACE
   depends on TRACE
   bool "Enable divice tracer"
+  default n
+
+config ETRACE
+  depends on TRACE
+  bool "Enable exception tracer"
   default n
 
 config DIFFTEST
