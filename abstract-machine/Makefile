@@ -82,7 +82,7 @@ READELF   = $(CROSS_COMPILE)readelf
 INC_PATH += $(WORK_DIR)/include $(addsuffix /include/, $(addprefix $(AM_HOME)/, $(LIBS)))
 INCFLAGS += $(addprefix -I, $(INC_PATH))
 
-SPEEDFLAGS += -O2
+SPEEDFLAGS += -O3
 
 CFLAGS   += -MMD -Wall $(INCFLAGS) $(SPEEDFLAGS) \
             -D__ISA__=\"$(ISA)\" -D__ISA_$(shell echo $(ISA) | tr a-z A-Z)__ \

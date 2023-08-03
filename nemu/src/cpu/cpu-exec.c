@@ -115,6 +115,7 @@ static void execute(uint64_t n) {
     // this is to improve performance, because get_time() consume so much.
     if ((g_nr_guest_inst & 0xff) != 0) continue;
     IFDEF(CONFIG_DEVICE, device_update());
+    if (nemu_state.state != NEMU_RUNNING) break;
   }
 }
 

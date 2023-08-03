@@ -166,6 +166,11 @@ config WATCHPOINT
   bool "Enable watchpoint"
   default y
 
+config FTRACE
+  depends on ITRACE
+  bool "Enable function trace"
+  default y
+
 config DTRACE
   depends on TRACE
   bool "Enable divice tracer"
