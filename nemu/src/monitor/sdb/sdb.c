@@ -158,7 +158,7 @@ static int cmd_b(char *args) {
     new->funcName = (char *)wmalloc(strlen(args) + 1); 
     strcpy(new->funcName, args + 1);
   }
-  return 0;
+  return new->NO;
 }
 
 static int cmd_p(char *args) {
@@ -212,6 +212,30 @@ static int cmd_del(char *args) {
     Error("Watchpoint %d does not exist.\n", NO);
   }
   return 0;
+}
+
+static int cmd_ni(char *args) {
+  if (nemu_state.state == NEMU_ABORT) {
+    printf("nemu is aborted\n");
+    return 0;
+  }
+  if (nemu_state.state == NEMU_END) {
+    printf("program is ended\n");
+    return 0;
+  }
+
+  int steps = 1;
+  if(args != NULL) {
+    steps = atoi(args);
+  }
+  
+  char arg_buf[30];
+  sprintf(arg_buf, "0x%8x", cpu.pc + steps * 4);
+  int watchpointNO = cmd_b(arg_buf);
+  cmd_c(NULL);
+  sprintf(arg_buf, "%d", watchpointNO);
+  cmd_del(arg_buf);
+  return 0; 
 }
 
 static int cmd_bt(char *args) { 
@@ -284,7 +308,7 @@ int cmd_analise() {
 
 int get_func_stack_len();
 int cmd_finish() {
-  IFNDEF(CONFIG_ITRACE, printf("ITRACE disabled, open it before finish\n"); return 0;)
+  IFNDEF(CONFIG_FTRACE, printf("ITRACE disabled, open it before finish\n"); return 0;)
   int fsl = get_func_stack_len();
   while (fsl <= get_func_stack_len()) {
     cpu_exec(1);
@@ -314,6 +338,7 @@ static struct {
   { "c", "      Continue the execution of the program", cmd_c },
   { "q", "      Exit NEMU", cmd_q },
   { "si", "     Usage: si [N]. Step N instruction, default 1. ", cmd_si },
+  { "ni", "     Usage: ni [N]. Step N instruction, default 1. ", cmd_ni },
   { "info", "   Usage: info <r|w>. r -> register, w -> watch points. ", cmd_info },
   { "x", "      Usage: x <number of bytes> <expression>. example: x 10 0x80000000 ", cmd_x },
   { "p", "      Usage: p <expression>. example: p $s0 + 5 ", cmd_p },

@@ -1,8 +1,11 @@
 #include <stdint.h>
 #include <stdio.h>
+#include <stdbool.h>
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <sys/time.h>
 
 static int evtdev = -1;
@@ -16,7 +19,24 @@ uint32_t NDL_GetTicks() {
 }
 
 int NDL_PollEvent(char *buf, int len) {
-  return 0;
+  // static bool init = false;
+  // static FILE *fe;
+  // if (!init) {
+  //   fe = fopen("/dev/events", "r+");
+  //   init = true;
+  // }
+
+  // FILE *fe = fopen("/dev/events", "r");
+  // assert(fe);
+  // fseek(fe, 0, SEEK_SET);
+  // int readed = fread(buf, 1, len, fe); 
+
+  int fd = open("/dev/events", 0);
+  lseek(fd, 0, SEEK_SET);
+  int readed = read(fd, buf, len);
+
+  // printf("NDL_PollEvent: read %d into buf(max %d)\n", readed, len);
+  return readed;
 }
 
 void NDL_OpenCanvas(int *w, int *h) {

@@ -3,9 +3,9 @@
 #include "fs.h"
 #include <sys/types.h>
 
-static const bool strace_open = true;
+static const bool strace_open = false;
 static const int strace_set[] = {
-  SYS_lseek, SYS_open, SYS_read, SYS_close, SYS_gettimeofday
+  SYS_lseek, SYS_open, SYS_read, SYS_close, SYS_gettimeofday, SYS_write
 };
 
 extern Finfo file_table[];
@@ -31,6 +31,9 @@ uintptr_t sys_open(uintptr_t a0, uintptr_t a1, uintptr_t a2) {
 
 uintptr_t sys_read(uintptr_t a0, uintptr_t a1, uintptr_t a2) {
   assert(a0 >= 0 && a0 < get_nr_file());
+  if (a0 == FD_EVENT) {
+    return file_table[a0].read((void *)a1, 0, a2);
+  }
   return fs_read(a0, (void *)a1, a2);
 }
 

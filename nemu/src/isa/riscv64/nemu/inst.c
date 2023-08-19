@@ -51,16 +51,17 @@ void tmpfunc(Decode *s, int rd, word_t src1) {
   R(rd) = *csr_reg; *csr_reg = src1;
 }
 
-static int decode_exec(Decode *s) {
-  int rd = 0;
-  word_t src1 = 0, src2 = 0, imm = 0;
-  s->dnpc = s->snpc;
-
 #define INSTPAT_INST(s) ((s)->isa.inst.val)
 #define INSTPAT_MATCH(s, name, type, ... /* execute body */ ) { \
   decode_operand(s, &rd, &src1, &src2, &imm, concat(TYPE_, type)); \
   __VA_ARGS__ ; \
 }
+
+static int decode_exec(Decode *s) {
+  int rd = 0;
+  word_t src1 = 0, src2 = 0, imm = 0;
+  s->dnpc = s->snpc;
+
   INSTPAT_START();
   INSTPAT("??????? ????? ????? 010 ????? 00000 11", lw     ,  I, R(rd) = SEXT(Mr(src1 + imm, 4), 32));
   INSTPAT("??????? ????? ????? 011 ????? 00000 11", ld     ,  I, R(rd) = SEXT(Mr(src1 + imm, 8), 64));
