@@ -5,6 +5,8 @@
 # define __USE_GNU
 #endif
 
+#define _XOPEN_SOURCE
+
 #include <ucontext.h>
 
 struct Context {

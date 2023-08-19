@@ -73,6 +73,7 @@
 #endif
 
 #include <stdint.h>
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -83,11 +84,13 @@ typedef int32_t fixedpt;
 typedef	int64_t	fixedptd;
 typedef	uint32_t fixedptu;
 typedef	uint64_t fixedptud;
+#define FIXEDPT_WMASK	(0xffffffff ^ FIXEDPT_FMASK)
 #elif FIXEDPT_BITS == 64
 typedef int64_t fixedpt;
 typedef	__int128_t fixedptd;
 typedef	uint64_t fixedptu;
 typedef	__uint128_t fixedptud;
+#define FIXEDPT_WMASK	(0xffffffffffffffff ^ FIXEDPT_FMASK)
 #else
 #error "FIXEDPT_BITS must be equal to 32 or 64"
 #endif
@@ -127,35 +130,41 @@ typedef	__uint128_t fixedptud;
 
 /* Multiplies a fixedpt number with an integer, returns the result. */
 static inline fixedpt fixedpt_muli(fixedpt A, int B) {
-	return 0;
+	return A * B;
 }
 
 /* Divides a fixedpt number with an integer, returns the result. */
 static inline fixedpt fixedpt_divi(fixedpt A, int B) {
-	return 0;
+	return A / B;
 }
 
 /* Multiplies two fixedpt numbers, returns the result. */
 static inline fixedpt fixedpt_mul(fixedpt A, fixedpt B) {
-	return 0;
+	return (A * B) >> FIXEDPT_FBITS;
 }
 
 
 /* Divides two fixedpt numbers, returns the result. */
 static inline fixedpt fixedpt_div(fixedpt A, fixedpt B) {
-	return 0;
+	return (A / B) << FIXEDPT_FBITS;
 }
 
 static inline fixedpt fixedpt_abs(fixedpt A) {
-	return 0;
+	return A | (1 << (FIXEDPT_BITS - 1));
 }
 
 static inline fixedpt fixedpt_floor(fixedpt A) {
-	return 0;
+	int isint = (FIXEDPT_FMASK & A) == 0;
+	if (isint) return A;
+
+	return A & FIXEDPT_WMASK;		
 }
 
 static inline fixedpt fixedpt_ceil(fixedpt A) {
-	return 0;
+	int isint = (FIXEDPT_FMASK & A) == 0;
+	if (isint) return A;
+
+	return (A & FIXEDPT_WMASK) + FIXEDPT_ONE;
 }
 
 /*
