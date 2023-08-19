@@ -11,6 +11,55 @@
 static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
+static int system_w = 0, system_h = 0;
+
+static char *get_key_value(const char *buf, const char *key) {
+  const char *enter;
+  const char *colon;
+  while (*buf) {
+    enter = buf;
+    colon = buf;
+    while (*colon != ':') {
+      colon++;
+    }
+    while (*enter != '\n') {
+      enter++;
+    }
+
+    const char *start = buf;
+    while (*start == ' ' || *start == '\t') {
+      start++;
+    }
+    const char *end = start;
+    while (*end != ' ' && *end != '\t') {
+      end++;
+    }
+    assert(end <= colon);
+
+    char tmpbuf[64];
+    memcpy(tmpbuf, start, end - start);
+    tmpbuf[end - start] = 0;
+    // match
+    if (strcmp(tmpbuf, key) == 0) {
+      start = colon + 1; 
+      while (*start == ' ' || *start == '\t') {
+        start++;
+      }
+      end = start;
+      while (*end != '\n' && *end != ' ' && *end != '\t') {
+        end++;
+      }
+      assert(end <= enter);
+
+      char *ret = malloc(end - start + 1);
+      memcpy(ret, start, end - start);
+      ret[end - start] = 0;
+      return ret;
+    }
+    buf = enter + 1;
+  }
+  return NULL;
+}
 
 uint32_t NDL_GetTicks() {
   struct timeval tmp;
@@ -32,7 +81,6 @@ int NDL_PollEvent(char *buf, int len) {
   // int readed = fread(buf, 1, len, fe); 
 
   int fd = open("/dev/events", 0);
-  lseek(fd, 0, SEEK_SET);
   int readed = read(fd, buf, len);
 
   // printf("NDL_PollEvent: read %d into buf(max %d)\n", readed, len);
@@ -57,9 +105,37 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
+  int fd = open("/proc/dispinfo", 0);
+  char buf[64];
+  int readed = read(fd, buf, sizeof(buf));
+
+  char *width = get_key_value(buf, "WIDTH");
+  char *height = get_key_value(buf, "HEIGHT");
+  system_w = atoi(width);
+  system_h = atoi(height);
+
+  if (*w == 0 && *h == 0) {
+    *w = system_w;
+    *h = system_h;
+  }
+  assert(*w <= system_w && *h <= system_h);
+  screen_w = *w; screen_h = *h;
+
+  free(width);
+  free(height);
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
+  int fd = open("/dev/fb", 0);
+  int more_x = (system_w - screen_w) / 2;
+  int more_y = (system_h - screen_h) / 2;
+  for (int yi = y; yi < y + h; yi++) {
+    int actual_x = x + more_x;
+    int actual_y = yi + more_y;
+    lseek(fd, (actual_y * system_w + actual_x) * 4, SEEK_SET);
+    write(fd, pixels, 4 * w);
+    pixels += w;
+  }
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {

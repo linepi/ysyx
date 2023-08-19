@@ -12,12 +12,16 @@ size_t invalid_write(const void *buf, size_t offset, size_t len) {
 
 size_t serial_write(const void *buf, size_t offset, size_t len);
 size_t events_read(void *buf, size_t offset, size_t len);
+size_t dispinfo_read(void *buf, size_t offset, size_t len);
+size_t fb_write(const void *buf, size_t offset, size_t len);
 /* This is the information about all files in disk. */
 Finfo file_table[] __attribute__((used)) = {
   [FD_STDIN]  = {"stdin",  0, 0, 0, invalid_read, invalid_write},
   [FD_STDOUT] = {"stdout", 0, 0, 0, invalid_read, serial_write},
   [FD_STDERR] = {"stderr", 0, 0, 0, invalid_read, serial_write},
   [FD_EVENT] =  {"/dev/events", 0, 0, 0, events_read, invalid_write},
+  [FD_DISPINFO] =  {"/proc/dispinfo", 0, 0, 0, dispinfo_read, invalid_write},
+  [FD_FB] =  {"/dev/fb", 0, 0, 0, invalid_read, fb_write},
 #include "files.h"
 };
 
@@ -46,11 +50,11 @@ size_t fs_read(int fd, void *buf, size_t len) {
 
 size_t fs_write(int fd, const void *buf, size_t len) {
   size_t offset = file_table[fd].disk_offset + file_table[fd].seek_offset;
-  size_t size = file_table[fd].size;
-  if (len > size) Log("warning: fs write overflow");
-  ramdisk_write(buf, offset, MIN(size, len));
-  file_table[fd].seek_offset += MIN(size, len);
-  return MIN(size, len);
+  size_t left_size = file_table[fd].size - file_table[fd].seek_offset;
+  if (len > left_size) Log("warning: fs write overflow");
+  ramdisk_write(buf, offset, MIN(left_size, len));
+  file_table[fd].seek_offset += MIN(left_size, len);
+  return MIN(left_size, len);
 }
 
 int fs_open(const char *pathname, int flags, int mode) {
@@ -80,6 +84,11 @@ int fs_close(int fd) {
   return 0;
 }
 
+extern int system_w;
+extern int system_h;
 void init_fs() {
   // TODO: initialize the size of /dev/fb
+  system_w = io_read(AM_GPU_CONFIG).width;
+  system_h = io_read(AM_GPU_CONFIG).height;
+  file_table[FD_FB].size = system_w * system_h * 4;
 }

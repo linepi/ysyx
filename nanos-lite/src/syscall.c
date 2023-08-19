@@ -31,7 +31,7 @@ uintptr_t sys_open(uintptr_t a0, uintptr_t a1, uintptr_t a2) {
 
 uintptr_t sys_read(uintptr_t a0, uintptr_t a1, uintptr_t a2) {
   assert(a0 >= 0 && a0 < get_nr_file());
-  if (a0 == FD_EVENT) {
+  if (a0 == FD_EVENT || a0 == FD_DISPINFO) {
     return file_table[a0].read((void *)a1, 0, a2);
   }
   return fs_read(a0, (void *)a1, a2);
