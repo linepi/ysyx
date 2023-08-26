@@ -1,7 +1,18 @@
 ifeq ($(ISA), native)
-build/native.so: src/native.cpp
-	mkdir -p build/
-	g++ -std=c++11 -O1 -fPIC -shared -o build/native.so src/native.cpp -ldl -lSDL2
+
+ifeq ($(shell uname),Darwin)
+NATIVE_FILE = src/native_osx.c
+NATIVE_DY = build/native.dylib
+$(NATIVE_DY): $(NATIVE_FILE)
+	@mkdir -p build/
+	clang -O1 -fpic -shared -g -o $(realpath $@) $^ -ldl -lSDL2
+else
+NATIVE_FILE = src/native.cpp
+NATIVE_DY = build/native.so
+$(NATIVE_DY): $(NATIVE_FILE)
+	@mkdir -p build/
+	g++ -std=c++11 -O1 -fPIC -shared -g -o $@ $^ -ldl -lSDL2
+endif
 
 else
 NAME = libos

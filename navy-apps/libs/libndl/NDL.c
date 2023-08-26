@@ -31,7 +31,7 @@ static char *get_key_value(const char *buf, const char *key) {
       start++;
     }
     const char *end = start;
-    while (*end != ' ' && *end != '\t') {
+    while (*end != ':' && *end != ' ' && *end != '\t') {
       end++;
     }
     assert(end <= colon);

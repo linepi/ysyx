@@ -51,6 +51,7 @@ LIBS += libc libos libndl libfixedptc
 CFLAGS += -U_FORTIFY_SOURCE  # fix compile error in Newlib on ubuntu
 else
 WL = -Wl,
+NATIVE_ENV = env
 endif
 
 ### 32-bit ISA may need compiler-rt to support 64-bit mul/div
@@ -68,7 +69,7 @@ endif
 ### Files to be linked: object files (`.o`) and libraries (`.a`)
 OBJS      = $(addprefix $(DST_DIR)/, $(addsuffix .o, $(basename $(SRCS))))
 LIBS     := $(sort $(LIBS)) # lazy evaluation ("=") causes infinite recursions
-LINKAGE   = $(OBJS) $(foreach l,$(LIBS),$(NAVY_HOME)/libs/$(l)/build/$(l)-$(ISA).a)
+LINKAGE  := $(OBJS) $(foreach l,$(LIBS),$(NAVY_HOME)/libs/$(l)/build/$(l)-$(ISA).a) $(LINKAGE)
 
 ## 3. General Compilation Flags
 
@@ -83,9 +84,9 @@ LD        = $(CROSS_COMPILE)ld
 INC_PATH += $(WORK_DIR)/include $(foreach l,$(LIBS_INC),$(NAVY_HOME)/libs/$(l)/include/)
 INCFLAGS += $(addprefix -I, $(INC_PATH))
 
-CFLAGS   += -O2 -MMD $(INCFLAGS) -static -D__NAVY__ \
+CFLAGS   += -O2 -g -MMD $(INCFLAGS) -static -D__NAVY__ \
             -D__ISA__=\"$(ISA)\" -D__ISA_$(shell echo $(ISA) | tr a-z A-Z)__ \
-            -fno-asynchronous-unwind-tables -fno-builtin -fno-stack-protector
+            -fno-asynchronous-unwind-tables -fno-builtin -fno-stack-protector 
 CXXFLAGS +=  $(CFLAGS) -ffreestanding -fno-rtti -fno-exceptions
 ASFLAGS  +=  $(CFLAGS)
 
@@ -121,9 +122,14 @@ libs:
 	@for t in $(LIBS); do $(MAKE) -s -C $(NAVY_HOME)/libs/$$t archive; done
 
 ### Rule (link): objects (`*.o`) and libraries (`*.a`) -> `$(APP)`, the final ELF binary to be packed into application (ld)
-$(APP): $(OBJS) libs
+$(APP): $(OBJS) libs $(NATIVE_ENV)
 	@echo + LD "->" $(shell realpath $@ --relative-to .)
+# OSX ld do not support --start-group param
+ifeq ($(shell uname)$(ISA),Darwinnative)
+	$(LD) $(LDFLAGS) -o $@ $(LINKAGE) $(NAVY_HOME)/libs/libos/build/native.dylib
+else
 	$(LD) $(LDFLAGS) -o $@ $(WL)--start-group $(LINKAGE) $(WL)--end-group
+endif
 
 ### Rule (archive): objects (`*.o`) -> `ARCHIVE.a` (ar)
 $(ARCHIVE): $(OBJS) libs
