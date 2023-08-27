@@ -66,12 +66,14 @@ void build_functbl(struct elfinfo_t *elfinfo, bool user) {
       if (strcmp(functbl[nr_functbl].name, "#__am_asm_trap") == 0) {
         functbl[nr_functbl].size = 316;
       }
+      if (strcmp(functbl[nr_functbl].name, "#_start") == 0) {
+        functbl[nr_functbl].size = 16;
+      }
+      if (strcmp(functbl[nr_functbl].name, "$_start") == 0) {
+        functbl[nr_functbl].size = 8;
+      }
       // init func stack
-      if (strcmp(functbl[nr_functbl].name, "#_start") == 0 || strcmp(functbl[nr_functbl].name, "$_start") == 0) {
-        if (functbl[nr_functbl].name[0] == '#')
-          functbl[nr_functbl].size = 16;
-        else 
-          functbl[nr_functbl].size = 8;
+      if (strcmp(functbl[nr_functbl].name, "#_start") == 0) {
         func_stack_bottom.func = &functbl[nr_functbl];
         func_stack_bottom.pre = NULL;
         func_stack_bottom.next = (struct func_stack_t *)wmalloc(sizeof(struct func_stack_t));

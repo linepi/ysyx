@@ -21,7 +21,7 @@ image: $(IMAGE).elf
 	@echo + OBJCOPY "->" $(IMAGE_REL).bin
 	@$(OBJCOPY) -S --set-section-flags .bss=alloc,contents -O binary $(IMAGE).elf $(IMAGE).bin
 
-ifeq ($(RAMDISK_FILE),)
+ifeq ($(APP_ELF_FILE),)
 exec: image
 	$(MAKE) -C $(NEMU_HOME) NPC=$(NPC) ISA=$(ISA) run ARGS="$(NEMUFLAGS) -b -e $(IMAGE).elf " IMG=$(IMAGE).bin
 
@@ -32,11 +32,11 @@ gdb: image
 	$(MAKE) -C $(NEMU_HOME) NPC=$(NPC) ISA=$(ISA) gdb ARGS="$(NEMUFLAGS) -e $(IMAGE).elf" IMG=$(IMAGE).bin 
 else
 exec: image
-	$(MAKE) -C $(NEMU_HOME) NPC=$(NPC) ISA=$(ISA) run ARGS="$(NEMUFLAGS) -b -e $(IMAGE).elf -u $(realpath $(RAMDISK_FILE))" IMG=$(IMAGE).bin
+	$(MAKE) -C $(NEMU_HOME) NPC=$(NPC) ISA=$(ISA) run ARGS="$(NEMUFLAGS) -b -e $(IMAGE).elf -u $(APP_ELF_FILE)" IMG=$(IMAGE).bin
 
 run: image
-	$(MAKE) -C $(NEMU_HOME) NPC=$(NPC) ISA=$(ISA) run ARGS="$(NEMUFLAGS) -e $(IMAGE).elf -u $(realpath $(RAMDISK_FILE))" IMG=$(IMAGE).bin 
+	$(MAKE) -C $(NEMU_HOME) NPC=$(NPC) ISA=$(ISA) run ARGS="$(NEMUFLAGS) -e $(IMAGE).elf -u $(APP_ELF_FILE)" IMG=$(IMAGE).bin 
 
 gdb: image
-	$(MAKE) -C $(NEMU_HOME) NPC=$(NPC) ISA=$(ISA) gdb ARGS="$(NEMUFLAGS) -e $(IMAGE).elf -u $(realpath $(RAMDISK_FILE))" IMG=$(IMAGE).bin 
+	$(MAKE) -C $(NEMU_HOME) NPC=$(NPC) ISA=$(ISA) gdb ARGS="$(NEMUFLAGS) -e $(IMAGE).elf -u $(APP_ELF_FILE)" IMG=$(IMAGE).bin 
 endif

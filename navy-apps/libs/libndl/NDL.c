@@ -14,6 +14,7 @@ static int screen_w = 0, screen_h = 0;
 static int system_w = 0, system_h = 0;
 
 char *get_key_value(const char *buf, const char *key) {
+  static char ret[100];
   const char *enter;
   const char *colon;
   while (*buf) {
@@ -51,7 +52,6 @@ char *get_key_value(const char *buf, const char *key) {
       }
       assert(end <= enter);
 
-      char *ret = malloc(end - start + 1);
       memcpy(ret, start, end - start);
       ret[end - start] = 0;
       return ret;
@@ -91,30 +91,20 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
-  int fd = open("/proc/dispinfo", 0);
-  char buf[64];
-  int readed = read(fd, buf, sizeof(buf));
-
-  char *width = get_key_value(buf, "WIDTH");
-  char *height = get_key_value(buf, "HEIGHT");
-  system_w = atoi(width);
-  system_h = atoi(height);
-
   if (*w == 0 && *h == 0) {
     *w = system_w;
     *h = system_h;
   }
   assert(*w <= system_w && *h <= system_h);
   screen_w = *w; screen_h = *h;
-
-  free(width);
-  free(height);
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   int fd = open("/dev/fb", 0);
   int more_x = (system_w - screen_w) / 2;
   int more_y = (system_h - screen_h) / 2;
+  w = (x + w > screen_w) ? screen_w - x : w;
+  h = (y + h > screen_h) ? screen_h - y : h;
   for (int yi = y; yi < y + h; yi++) {
     int actual_x = x + more_x;
     int actual_y = yi + more_y;
@@ -142,6 +132,16 @@ int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
+  int fd = open("/proc/dispinfo", 0);
+  char buf[64];
+  int readed = read(fd, buf, sizeof(buf));
+
+  char *width = get_key_value(buf, "WIDTH");
+  system_w = atoi(width);
+  char *height = get_key_value(buf, "HEIGHT");
+  system_h = atoi(height);
+  screen_w = system_w;
+  screen_h = system_h;
   return 0;
 }
 

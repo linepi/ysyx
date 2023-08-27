@@ -25,7 +25,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   Elf_Ehdr Ehdr;
   fs_read(fd, &Ehdr, sizeof(Elf_Ehdr));
-  // ramdisk_read(&Ehdr, 0, sizeof(Elf_Ehdr));
   assert(*(uint32_t *)Ehdr.e_ident == 0x464c457f);
   assert(Ehdr.e_machine == EXPECT_ISA);
   assert(Ehdr.e_type == ET_EXEC);
@@ -34,24 +33,22 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf64_Shdr *Shdrs = malloc(sizeof(Elf64_Shdr) * Ehdr.e_shnum);
   fs_lseek(fd, Ehdr.e_shoff, SEEK_SET);
   fs_read(fd, Shdrs, sizeof(Elf64_Shdr) * Ehdr.e_shnum);
-  // ramdisk_read(Shdrs, Ehdr.e_shoff, sizeof(Elf64_Shdr) * Ehdr.e_shnum);
 
   Elf_Phdr *Phdrs = malloc(sizeof(Elf_Phdr) * Ehdr.e_phnum);
   fs_lseek(fd, Ehdr.e_phoff, SEEK_SET);
   fs_read(fd, Phdrs, sizeof(Elf64_Phdr) * Ehdr.e_phnum);
-  // ramdisk_read(Phdrs, Ehdr.e_phoff, sizeof(Elf_Phdr) * Ehdr.e_phnum);
 
   // copy file into memory
   for (int i = 0; i < Ehdr.e_phnum; i++) {
     if (Phdrs[i].p_type != PT_LOAD) continue;
     fs_lseek(fd, Phdrs[i].p_offset, SEEK_SET);
     fs_read(fd, (void*)Phdrs[i].p_paddr, Phdrs[i].p_filesz);
-    // ramdisk_read((void*)Phdrs[i].p_paddr, Phdrs[i].p_offset, Phdrs[i].p_filesz);
     memset((void*)(Phdrs[i].p_paddr + Phdrs[i].p_filesz), 0x00, Phdrs[i].p_memsz - Phdrs[i].p_filesz);
   }
 
   free(Phdrs);
   free(Shdrs);
+  fs_close(fd);
   return ret;
 }
 

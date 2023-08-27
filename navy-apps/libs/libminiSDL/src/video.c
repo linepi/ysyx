@@ -3,17 +3,60 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+
+  SDL_Rect r1;
+  SDL_Rect r2;
+  if (srcrect == NULL) {
+    r1.x = 0; r1.y = 0;
+    r1.w = src->w; r1.h = src->h;
+    srcrect = &r1;
+  }
+  if (dstrect == NULL) {
+    r2.x = 0; r2.y = 0;
+    r2.w = dst->w; r2.h = dst->h;
+    dstrect = &r2;
+  }
+
+  for (int r = srcrect->y; r < srcrect->y + srcrect->h; r++) {
+    for (int c = srcrect->x; c < srcrect->x + srcrect->w; c++) {
+      uint32_t pixel = ((uint32_t *)src->pixels)[r * src->w + c];
+      int idx = (dstrect->y + r - srcrect->y) * dst->w + (dstrect->x + c - srcrect->x); 
+      ((uint32_t *)dst->pixels)[idx] = pixel; 
+    }
+  }
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
+  SDL_Rect r;
+  if (dstrect = NULL) {
+    r.x = 0;
+    r.y = 0;
+    r.w = dst->w;
+    r.h = dst->h;
+    dstrect = &r;
+  }
+  assert(dst);
+  assert(dstrect->x + dstrect->w <= dst->w);
+  assert(dstrect->y + dstrect->h <= dst->h);
+
+  uint32_t *pixels = (uint32_t *)dst->pixels;
+  for (int r = dstrect->y; r < dstrect->y + dstrect->h; r++) {
+    for (int c = dstrect->x; c < dstrect->x + dstrect->w; c++) {
+      putchar('a');
+      pixels[r * dst->w + c] = color;
+    }
+  }
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
-  NDL_DrawRect((uint32_t *)s->pixels, x, y, s->w, s->h);
+  int act_w = w == 0 ? s->w : w;
+  int act_h = h == 0 ? s->h : h;
+  NDL_DrawRect((uint32_t *)s->pixels, x, y, act_w, act_h);
 }
 
 // APIs below are already implemented.

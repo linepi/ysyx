@@ -20,7 +20,7 @@ int SDL_PollEvent(SDL_Event *ev) {
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
-  static char buf[100];
+  char buf[100];
   int readed = NDL_PollEvent(buf, sizeof(buf));
   if (readed == 0) return 1;
 
