@@ -173,7 +173,7 @@ $(CLEAN_ALL):
 .PHONY: clean-all $(CLEAN_ALL)
 
 ### Build fsimg and aamdisk for Nanos-lite
-APPS = nslider menu
+APPS = nslider menu NTerm bird
 TESTS = 
 
 fsimg: $(addprefix apps/, $(APPS)) $(addprefix tests/, $(TESTS))

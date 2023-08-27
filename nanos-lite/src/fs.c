@@ -72,7 +72,6 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
   if (whence == SEEK_CUR) {
     file_table[fd].seek_offset += offset;
   } else if (whence == SEEK_END) {
-    Log("warning: whence is SEEK_END");
     file_table[fd].seek_offset = offset + file_table[fd].size;
   } else if (whence == SEEK_SET) {
     file_table[fd].seek_offset = offset;

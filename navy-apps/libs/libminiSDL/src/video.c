@@ -32,22 +32,21 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
+  assert(dst);
   SDL_Rect r;
-  if (dstrect = NULL) {
+  if (dstrect == NULL) {
     r.x = 0;
     r.y = 0;
     r.w = dst->w;
     r.h = dst->h;
     dstrect = &r;
   }
-  assert(dst);
   assert(dstrect->x + dstrect->w <= dst->w);
   assert(dstrect->y + dstrect->h <= dst->h);
 
   uint32_t *pixels = (uint32_t *)dst->pixels;
   for (int r = dstrect->y; r < dstrect->y + dstrect->h; r++) {
     for (int c = dstrect->x; c < dstrect->x + dstrect->w; c++) {
-      putchar('a');
       pixels[r * dst->w + c] = color;
     }
   }
