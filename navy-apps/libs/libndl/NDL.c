@@ -13,7 +13,7 @@ static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
 static int system_w = 0, system_h = 0;
 
-static char *get_key_value(const char *buf, const char *key) {
+char *get_key_value(const char *buf, const char *key) {
   const char *enter;
   const char *colon;
   while (*buf) {
@@ -68,22 +68,8 @@ uint32_t NDL_GetTicks() {
 }
 
 int NDL_PollEvent(char *buf, int len) {
-  // static bool init = false;
-  // static FILE *fe;
-  // if (!init) {
-  //   fe = fopen("/dev/events", "r+");
-  //   init = true;
-  // }
-
-  // FILE *fe = fopen("/dev/events", "r");
-  // assert(fe);
-  // fseek(fe, 0, SEEK_SET);
-  // int readed = fread(buf, 1, len, fe); 
-
   int fd = open("/dev/events", 0);
   int readed = read(fd, buf, len);
-
-  // printf("NDL_PollEvent: read %d into buf(max %d)\n", readed, len);
   return readed;
 }
 
