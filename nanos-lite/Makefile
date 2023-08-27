@@ -1,6 +1,6 @@
 HAS_NAVY = 1
 RAMDISK_FILE = build/ramdisk.img
-APP_ELF_FILE = /Users/wu/dev/ysyx/navy-apps/fsimg/bin/menu
+APP_ELF_FILE = /Users/wu/dev/ysyx/navy-apps/fsimg/bin/bird
 
 NAME = nanos-lite
 SRCS = $(shell find -L src -name "*.c" -o -name "*.cpp" -o -name "*.S")

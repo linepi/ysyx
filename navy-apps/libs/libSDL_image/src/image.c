@@ -17,10 +17,12 @@ SDL_Surface* IMG_Load(const char *filename) {
     printf("IMG_Load: error open file\n");
     return NULL;
   }
+
   fseek(f, 0, SEEK_END);
   int file_size = ftell(f);
-  printf("file_size = %d\n", file_size);
   unsigned char *buffer = malloc(file_size);
+
+  fseek(f, 0, SEEK_SET);
   if (fread(buffer, 1, file_size, f) != file_size) {
     printf("IMG_Load: fread error\n");
     return NULL;

@@ -43,18 +43,18 @@ size_t fs_read(int fd, void *buf, size_t len) {
   size_t size = file_table[fd].size;
 
   if (len > size) Log("warning: fs read overflow");
-  ramdisk_read(buf, offset, MIN(size, len));
-  file_table[fd].seek_offset += MIN(size, len);
-  return MIN(size, len);
+  size_t readed = ramdisk_read(buf, offset, MIN(size, len));
+  file_table[fd].seek_offset += readed;
+  return readed;
 }
 
 size_t fs_write(int fd, const void *buf, size_t len) {
   size_t offset = file_table[fd].disk_offset + file_table[fd].seek_offset;
   size_t left_size = file_table[fd].size - file_table[fd].seek_offset;
   if (len > left_size) Log("warning: fs write overflow");
-  ramdisk_write(buf, offset, MIN(left_size, len));
-  file_table[fd].seek_offset += MIN(left_size, len);
-  return MIN(left_size, len);
+  size_t writed = ramdisk_write(buf, offset, MIN(left_size, len));
+  file_table[fd].seek_offset += writed;
+  return writed;
 }
 
 int fs_open(const char *pathname, int flags, int mode) {
